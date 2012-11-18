@@ -26,7 +26,7 @@
 
   <!-- Doc target -->
     <target name="build:doc"
-          depends="build:prepare, doc:phpdoc"
+          depends="doc:phpdoc"
           description="Generates app API documentation." />
 
   <!-- Check target -->
@@ -82,7 +82,6 @@
                         showSources="true"
                         haltonerror="true">
 			<fileset dir="${dir.src}">
-				<include name="**/*.php" />
 				<exclude name="**/*Test.php" />
 			</fileset>
             <formatter type="checkstyle" outfile="${dir.reports}/checkstyle.xml" />
