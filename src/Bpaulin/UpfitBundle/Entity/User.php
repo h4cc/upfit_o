@@ -22,11 +22,10 @@ class User extends BaseUser
      */
     protected $id;
 
-
     /**
      * Get id
      *
-     * @return integer 
+     * @return integer
      */
     public function getId()
     {

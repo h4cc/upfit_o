@@ -12,13 +12,11 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 class DefaultController extends Controller
 {
     /**
-     * @return array
-     * 
      * @Route("/hello")
      * @Template()
      */
     public function indexAction()
     {
-        return array('name' => 'bruno');
+        return array( 'name' => 'bruno' );
     }
 }
