@@ -9,7 +9,7 @@ use Doctrine\ORM\Mapping as ORM;
  * User
  *
  * @ORM\Table()
- * @ORM\Entity
+ * @ORM\Entity(repositoryClass="Bpaulin\UpfitBundle\Entity\UserRepository")
  */
 class User extends BaseUser
 {
