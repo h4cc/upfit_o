@@ -27,7 +27,7 @@ class AjaxController extends Controller
         /* Array of database columns which should be read and sent back to DataTables. Use a space where
         * you want to insert a non-database field (for example a counter or static image)
         */
-        $columns = array( 'id', 'username', 'email');
+        $columns = array('id', 'username', 'email');
         $get['columns'] = &$columns;
 
         $em = $this->getDoctrine()->getEntityManager();
@@ -49,9 +49,10 @@ class AjaxController extends Controller
         foreach ($rResult as $aRow) {
             $row = array();
             for ($i=0; $i<count($columns); $i++) {
-                if ($columns[$i] == "version") {
+                if ($columns[$i] == "email") {
                     /* Special output formatting for 'version' column */
-                    //$row[] = ($aRow[ $columns[$i] ]=="0") ? '-' : $aRow[ $columns[$i] ];
+                    $row[] = $aRow[ $columns[$i] ];
+                    $row[] = md5(strtolower(trim($aRow[ $columns[$i] ])));
                 } elseif ($columns[$i] != ' ') {
                     /* General output */
                     $row[] = $aRow[ $columns[$i] ];
