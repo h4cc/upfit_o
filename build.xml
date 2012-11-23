@@ -162,10 +162,10 @@
 
   <!-- Unit tests -->
     <target name="test:unit" description="Executes unit tests.">
-        <!--<echo msg="Creating database..." />
+        <echo msg="Creating database..." />
         <exec logoutput="true"
             passthru="true"
-            command="./loadDbTest.sh" escape="false" />-->
+            command="./loadDbTest.sh" escape="false" />
         <echo msg="Running unit tests ..." />
         <exec
             checkreturn="true"
