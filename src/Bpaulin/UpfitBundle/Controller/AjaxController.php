@@ -31,8 +31,10 @@ class AjaxController extends Controller
         $get['columns'] = &$columns;
 
         $em = $this->getDoctrine()->getEntityManager();
-        $rResult = $em->getRepository('BpaulinUpfitBundle:User')->ajaxTable($get, true)->getArrayResult();
+        $ajaxTable = $em->getRepository('BpaulinUpfitBundle:User')->ajaxTable($get, true);
 
+        $countUnfiltered = $ajaxTable[0];
+        $rResult =  $ajaxTable[1]->getArrayResult();
         /* Data set length after filtering */
         $iFilteredTotal = count($rResult);
 
@@ -42,7 +44,7 @@ class AjaxController extends Controller
         $output = array(
             "sEcho" => intval($get['sEcho']),
             "iTotalRecords" => $em->getRepository('BpaulinUpfitBundle:User')->getCount(),
-            "iTotalDisplayRecords" => $iFilteredTotal,
+            "iTotalDisplayRecords" => $countUnfiltered,
             "aaData" => array()
         );
 

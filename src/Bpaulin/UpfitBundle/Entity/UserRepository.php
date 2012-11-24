@@ -28,37 +28,26 @@ class UserRepository extends EntityRepository
         $tableObjectName = 'BpaulinUpfitBundle:User';
 
         /**
-         * Set to default
+         * Columns definitions
          */
         if (!isset($get['columns']) || empty($get['columns'])) {
             $get['columns'] = array('id');
         }
-
         $aColumns = array();
         foreach ($get['columns'] as $value) {
             $aColumns[] = $alias .'.'. $value;
         }
 
         $cb = $this->getEntityManager()
-            ->getRepository($tableObjectName)
-            ->createQueryBuilder($alias)
-            ->select(str_replace(" , ", " ", implode(", ", $aColumns)));
+                   ->getRepository($tableObjectName)
+                   ->createQueryBuilder($alias)
+                   ->select(str_replace(" , ", " ", implode(", ", $aColumns)));
 
-        if ( isset($get['iDisplayStart']) && $get['iDisplayLength'] != '-1' ) {
-            $cb->setFirstResult((int) $get['iDisplayStart'])
-                ->setMaxResults((int) $get['iDisplayLength']);
-        }
-
-        /*
-         * Ordering
-         */
-        if (isset($get['iSortCol_0'])) {
-            for ($i=0; $i<intval($get['iSortingCols']); $i++) {
-                if ($get['bSortable_'.intval($get['iSortCol_'.$i])] == "true") {
-                    $cb->orderBy($aColumns[(int) $get['iSortCol_'.$i]], $get['sSortDir_'.$i]);
-                }
-            }
-        }
+        $cbCount = $this->getEntityManager()
+                        ->getRepository($tableObjectName)
+                        ->createQueryBuilder($alias)
+                        ->select('COUNT (a)')
+                        ->setMaxResults(1);
 
         /*
          * Filtering
@@ -75,9 +64,30 @@ class UserRepository extends EntityRepository
             }
             if (count($aLike) > 0) {
                 $cb->andWhere(new Expr\Orx($aLike));
+                $cbCount->andWhere(new Expr\Orx($aLike));
             } else {
                 unset($aLike);
             }
+        }
+
+        $countUnfiltered = $cbCount->getQuery()->getResult()[0][1];
+        /*
+         * Ordering
+         */
+        if (isset($get['iSortCol_0'])) {
+            for ($i=0; $i<intval($get['iSortingCols']); $i++) {
+                if ($get['bSortable_'.intval($get['iSortCol_'.$i])] == "true") {
+                    $cb->orderBy($aColumns[(int) $get['iSortCol_'.$i]], $get['sSortDir_'.$i]);
+                }
+            }
+        }
+
+        /*
+         * Limiting
+         */
+        if ( isset($get['iDisplayStart']) && $get['iDisplayLength'] != '-1' ) {
+            $cb->setFirstResult((int) $get['iDisplayStart'])
+                ->setMaxResults((int) $get['iDisplayLength']);
         }
 
         /*
@@ -87,9 +97,9 @@ class UserRepository extends EntityRepository
         $query = $cb->getQuery();
 
         if ($flag) {
-            return $query;
+            return array($countUnfiltered, $query);
         } else {
-            return $query->getResult();
+            return array($countUnfiltered, $query->getResult());
         }
     }
 
@@ -97,6 +107,21 @@ class UserRepository extends EntityRepository
      * @return int
      */
     public function getCount()
+    {
+        $aResultTotal = $this->getEntityManager()
+            ->createQuery('SELECT COUNT(a) FROM BpaulinUpfitBundle:User a')
+            ->setMaxResults(1)
+            ->getResult();
+
+         return $aResultTotal[0][1];
+    }
+
+    /**
+     * @param array $get
+     *
+     * @return int
+     */
+    public function getFilteredCount(array $get)
     {
         $aResultTotal = $this->getEntityManager()
             ->createQuery('SELECT COUNT(a) FROM BpaulinUpfitBundle:User a')
