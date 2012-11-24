@@ -1,3 +1,4 @@
+syntax: glob
 web/bundles/
 app/bootstrap.php.cache
 app/config/parameters.yml
@@ -8,6 +9,7 @@ vendor
 composer.phar
 php-cs-fixer.phar
 ~
-syntax: glob
 upfit.sublime-project
 upfit.sublime-workspace
+composer.lock
+version.txt

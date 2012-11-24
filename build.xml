@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project name="Upfit" basedir="." default="build:main">
 
-    <version releasetype="Bugfix" file="version.txt" property="version.number"/>
+    <!-- <version releasetype="Bugfix" file="version.txt" property="version.number"/> -->
 
   <!-- Properties -->
     <property name="dir.app" value="${project.basedir}/app" />
