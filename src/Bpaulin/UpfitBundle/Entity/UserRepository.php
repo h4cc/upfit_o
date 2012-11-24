@@ -15,9 +15,9 @@ class UserRepository extends EntityRepository
 {
 
     /**
-     * @param  array                     $get
-     * @param  bool                      $flag
-     * @return array|\Doctrine\ORM\Query
+     * @param  array $get
+     * @param  bool  $flag
+     * @return array
      */
     public function ajaxTable(array $get, $flag = false)
     {
@@ -107,21 +107,6 @@ class UserRepository extends EntityRepository
      * @return int
      */
     public function getCount()
-    {
-        $aResultTotal = $this->getEntityManager()
-            ->createQuery('SELECT COUNT(a) FROM BpaulinUpfitBundle:User a')
-            ->setMaxResults(1)
-            ->getResult();
-
-         return $aResultTotal[0][1];
-    }
-
-    /**
-     * @param array $get
-     *
-     * @return int
-     */
-    public function getFilteredCount(array $get)
     {
         $aResultTotal = $this->getEntityManager()
             ->createQuery('SELECT COUNT(a) FROM BpaulinUpfitBundle:User a')
