@@ -1,5 +1,6 @@
 {% extends "BpaulinUpfitBundle::base.html.twig" %}
 
+
 {% block body %}
 <table id="userlist">
     <thead>
@@ -13,21 +14,25 @@
 </table>
 {% endblock %}
 
+
 {% block javascripts %}
 {{ parent() }}
-{% javascripts '@BpaulinUpfitBundle/Resources/public/datatables/js/jquery.dataTables.min.js' %}
+{% javascripts '@BpaulinUpfitBundle/Resources/public/datatables/js/jquery.dataTables.min.js'
+                '@BpaulinUpfitBundle/Resources/public/js/datatables.js' %}
 <script type="text/javascript" src="{{ asset_url }}"></script>
 {% endjavascripts %}
 <script>
 $(document).ready(function() {
     $('#userlist').dataTable( {
+        "sDom": "<'row'<'span8'l><'span8'f>r>t<'row'<'span8'i><'span8'p>>",
+        "sPaginationType": "bootstrap",
         "bProcessing": true,
         "bServerSide": true,
         "sAjaxSource": "{{ path('admin_ajax_users_list') }}",
         "aoColumnDefs": [
 			{
 				"fnRender": function ( oObj ) {
-					return "<a href='#'><img src='http://www.gravatar.com/avatar/"+oObj.aData[3]+"?s=50&d=mm'/>"+oObj.aData[1]+"</a>";
+					return "<a href='#'><img src='http://www.gravatar.com/avatar/"+oObj.aData[3]+"?s=40&d=mm'/>"+oObj.aData[1]+"</a>";
 				},
 				"aTargets": [ 0 ]
 			}
@@ -37,9 +42,11 @@ $(document).ready(function() {
 </script>
 {% endblock %}
 
+
 {% block stylesheets %}
 {{ parent() }}
-{% stylesheets '@BpaulinUpfitBundle/Resources/public/datatables/css/jquery.dataTables.css' %}
+{% stylesheets '@BpaulinUpfitBundle/Resources/public/datatables/css/jquery.dataTables.css'
+                '@BpaulinUpfitBundle/Resources/public/css/datatables.css' %}
  <link rel="stylesheet" href="{{ asset_url }}" media="screen"/>
 {% endstylesheets %}
 {% endblock %}

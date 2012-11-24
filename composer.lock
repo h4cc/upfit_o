@@ -1229,12 +1229,12 @@
             "source": {
                 "type": "git",
                 "url": "git://github.com/symfony/symfony.git",
-                "reference": "aa124288676648f727370876ccdf6dd7f208dc46"
+                "reference": "1c0ba78833d35de66b3ae8ad3b088c1ffd9381b7"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://github.com/symfony/symfony/archive/aa124288676648f727370876ccdf6dd7f208dc46.zip",
-                "reference": "aa124288676648f727370876ccdf6dd7f208dc46",
+                "url": "https://github.com/symfony/symfony/archive/1c0ba78833d35de66b3ae8ad3b088c1ffd9381b7.zip",
+                "reference": "1c0ba78833d35de66b3ae8ad3b088c1ffd9381b7",
                 "shasum": ""
             },
             "require": {
@@ -1283,7 +1283,7 @@
                 "propel/propel1": "dev-master",
                 "monolog/monolog": "1.*"
             },
-            "time": "2012-11-21 15:37:43",
+            "time": "2012-11-24 12:04:10",
             "type": "library",
             "extra": {
                 "branch-alias": {

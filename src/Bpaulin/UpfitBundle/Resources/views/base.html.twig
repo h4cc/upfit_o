@@ -1,20 +1,21 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title>Bootstrap 101 Template</title>
+    <title>{% block title %}Upfit{% endblock %}</title>
     {% block stylesheets %}
     <!-- Bootstrap -->
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     {% stylesheets '@BpaulinUpfitBundle/Resources/public/bootstrap/css/bootstrap.min.css'
-                    '@BpaulinUpfitBundle/Resources/public/bootstrap/css/bootstrap-responsive.min.css' %}
+                    '@BpaulinUpfitBundle/Resources/public/bootstrap/css/bootstrap-responsive.min.css'
+                     filter='cssrewrite' %}
     <link rel="stylesheet" href="{{ asset_url }}" media="screen"/>
     {% endstylesheets %}
     {% endblock %}
   </head>
   <body>
-    <h1>Hello, world!</h1>
     {% block body %}
     {% endblock %}
+
     {% block javascripts %}
     {% javascripts '@BpaulinUpfitBundle/Resources/public/jquery/jquery-1.8.3.min.js'
                    '@BpaulinUpfitBundle/Resources/public/bootstrap/js/bootstrap.min.js' %}
