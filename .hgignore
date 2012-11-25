@@ -13,3 +13,7 @@ upfit.sublime-project
 upfit.sublime-workspace
 composer.lock
 version.txt
+.settings/org.eclipse.php.core.prefs
+.buildpath
+.project
+.settings/org.eclipse.wst.common.project.facet.core.xml
