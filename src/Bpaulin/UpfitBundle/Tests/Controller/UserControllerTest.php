@@ -6,12 +6,26 @@ use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 
 class UserControllerTest extends WebTestCase
 {
-    public function testIndex()
+    public function testList()
     {
         $client = static::createClient();
 
         $crawler = $client->request('GET', '/admin/users/list');
 
-        $this->assertTrue($crawler->filter('#userlist')->count() > 0);
+        $this->assertTrue($crawler->filter('#userslist')->count() > 0);
+    }
+
+    public function testAjax()
+    {
+        $client = static::createClient();
+
+        $crawler = $client->request('GET', '/admin/users/ajax');
+        $this->assertTrue($crawler->filter('html:contains("user1@upfit.com")')->count() > 0);
+
+        $crawler = $client->request('GET', '/admin/users/ajax?sSearch=user2&bSearchable_0=true');
+        $this->assertTrue($crawler->filter('html:contains("user1@upfit.com")')->count() == 0);
+
+        $crawler = $client->request('GET', '/admin/users/ajax?sSearch=user2');
+        $this->assertTrue($crawler->filter('html:contains("user1@upfit.com")')->count() > 0);
     }
 }

@@ -44,7 +44,7 @@ class UserController extends Controller
 
         $countUnfiltered = $ajaxTable[0];
         $rResult =  $ajaxTable[1]->getArrayResult();
-        
+
         /* Data set length after filtering */
         $iFilteredTotal = count($rResult);
 

@@ -2,51 +2,61 @@
 
 
 {% block body %}
-<table id="userlist">
-    <thead>
-        <tr>
-            <th>Column 1</th>
-            <th>Column 2</th>
-        </tr>
-    </thead>
-    <tbody>
-    </tbody>
+    <table id="userslist">
+        <thead>
+            <tr>
+                <th>User</th>
+                <th>E-mail</th>
+            </tr>
+        </thead>
+        <tbody>
+        </tbody>
 </table>
 {% endblock %}
 
 
 {% block javascripts %}
-{{ parent() }}
-{% javascripts '@BpaulinUpfitBundle/Resources/public/datatables/js/jquery.dataTables.min.js'
-                '@BpaulinUpfitBundle/Resources/public/js/datatables.js' %}
-<script type="text/javascript" src="{{ asset_url }}"></script>
-{% endjavascripts %}
-<script>
-$(document).ready(function() {
-    $('#userlist').dataTable( {
-        "sDom": "<'row'<'span8'l><'span8'f>r>t<'row'<'span8'i><'span8'p>>",
-        "sPaginationType": "bootstrap",
-        "bProcessing": true,
-        "bServerSide": true,
-        "sAjaxSource": "{{ path('admin_ajax_users_list') }}",
-        "aoColumnDefs": [
-			{
-				"fnRender": function ( oObj ) {
-					return "<a href='#'><img src='http://www.gravatar.com/avatar/"+oObj.aData[3]+"?s=40&d=mm'/>"+oObj.aData[1]+"</a>";
-				},
-				"aTargets": [ 0 ]
-			}
-		 ]
+    {{ parent() }}
+    {% javascripts '@BpaulinUpfitBundle/Resources/public/datatables/js/jquery.dataTables.min.js'
+                    '@BpaulinUpfitBundle/Resources/public/js/datatables.js' %}
+    <script type="text/javascript" src="{{ asset_url }}"></script>
+    {% endjavascripts %}
+    <script>
+    $(document).ready(function() {
+        $('#userslist').dataTable( {
+            "sDom": "<'row'<'span6'l><'span6'f>r>t<'row'<'span6'i><'span6'p>>",
+            "sPaginationType": "bootstrap",
+            "bProcessing": true,
+            "bServerSide": true,
+            "bStateSave": true,
+            "aLengthMenu": [ [10, 25, 50, 100, -1], [10, 25, 50, 100, "All"] ],
+            "iDisplayLength" : 10,
+            "sAjaxSource": "{{ path('admin_ajax_users_list') }}",
+            "aoColumnDefs": [
+                {
+                    "mRender": function ( data, type, row ) {
+                        return "<a href='#'><img src='http://www.gravatar.com/avatar/"+
+                                row[3]+"?s=40&d=mm'/>"+row[1]+"</a>";
+                    },
+                    "aTargets": [ 0 ]
+                },
+                {
+                    "mRender": function ( data, type, row ) {
+                        return "<a href='mailto:"+row[2]+"'>"+row[2]+"</a>";
+                    },
+                    "aTargets": [ 1 ]
+                }
+    		 ]
+        } );
     } );
-} );
-</script>
+    </script>
 {% endblock %}
 
 
 {% block stylesheets %}
-{{ parent() }}
-{% stylesheets '@BpaulinUpfitBundle/Resources/public/datatables/css/jquery.dataTables.css'
-                '@BpaulinUpfitBundle/Resources/public/css/datatables.css' %}
- <link rel="stylesheet" href="{{ asset_url }}" media="screen"/>
-{% endstylesheets %}
+    {{ parent() }}
+    {% stylesheets '@BpaulinUpfitBundle/Resources/public/datatables/css/jquery.dataTables.css'
+                    '@BpaulinUpfitBundle/Resources/public/css/datatables.css' %}
+     <link rel="stylesheet" href="{{ asset_url }}" media="screen"/>
+    {% endstylesheets %}
 {% endblock %}
