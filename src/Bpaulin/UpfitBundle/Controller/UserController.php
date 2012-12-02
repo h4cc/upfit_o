@@ -62,7 +62,7 @@ class UserController extends Controller
             $row = array();
             for ($i=0; $i<count($columns); $i++) {
                 if ($columns[$i] == "email") {
-                    /* Special output formatting for 'version' column */
+                    /* Special output formatting for columns */
                     $row[] = $aRow[ $columns[$i] ];
                     $row[] = md5(strtolower(trim($aRow[ $columns[$i] ])));
                 } elseif ($columns[$i] != ' ') {
