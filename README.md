@@ -1,3 +1,5 @@
+[![Build Status](https://secure.travis-ci.org/bpaulin/upfit.png?branch=master)](https://travis-ci.org/bpaulin/upfit)
+
 Symfony Upfit
 ========================
 
