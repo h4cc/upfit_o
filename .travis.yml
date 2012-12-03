@@ -8,7 +8,7 @@ php:
 before_script:
   - mv app/config/parameters.travis.yml app/config/parameters.yml
   - mysql -e 'create database upfit_test;'
-  - ./loadDbTest.sh
   - composer install
+  - ./loadDbTest.sh
 
 script: phpunit --coverage-text -c app
