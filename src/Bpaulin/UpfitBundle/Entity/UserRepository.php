@@ -70,7 +70,8 @@ class UserRepository extends EntityRepository
             }
         }
 
-        $countUnfiltered = $cbCount->getQuery()->getResult()[0][1];
+        $result = $cbCount->getQuery()->getResult();
+        $countUnfiltered = $result[0][1];
         /*
          * Ordering
          */

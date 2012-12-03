@@ -14,3 +14,4 @@ pear install --alldeps phpunit/phpcpd
 pear install --alldeps phpdoc/phpDocumentor-alpha
 pear install --alldeps phpmd/PHP_PMD
 pear install --alldeps PHP_CodeSniffer
+phpenv rehash

@@ -5,6 +5,14 @@ php:
   - 5.3
   - 5.4
 
-before_script: composer install
+before_script:
+  - pear config-set auto_discover 1
+  - pear channel-discover pear.phing.info
+  - pear install --alldeps phing/phing-alpha
+  - rm app/config/parameters.yml
+  - mv app/config/parameters.travis.yml app/config/parameters.yml
+  - mysql -e 'create database upfit_test;'
+  - ./loadDbTest.sh
+  - composer install
 
-script: phpunit -c app
+script: phpunit --coverage-text -c app
