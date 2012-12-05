@@ -11,4 +11,4 @@ before_script:
   - composer install
   - ./loadDbTest.sh
 
-script: phpunit -c app
+script: phpunit --coverage-text -c app

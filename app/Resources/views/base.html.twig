@@ -2,6 +2,7 @@
 <html>
   <head>
     <title>{% block title %}Upfit{% endblock %}</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     {% block stylesheets %}
     <!-- Bootstrap -->
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -39,12 +40,8 @@
     </div>
 
     <div class="container">
-      <div class="row">
-        <div class="span12">
     {% block body %}
     {% endblock %}
-        </div>
-      </div>
     </div>
 
     {% block javascripts %}

@@ -39,12 +39,11 @@
 
 
 {% block fos_user_content %}
-{% if error %}
-    <div>{{ error|trans({}, 'FOSUserBundle') }}</div>
-{% endif %}
-
 <form class="form-signin" action="{{ path("fos_user_security_check") }}" method="post">
 	<h2 class="form-signin-heading">{{ 'layout.login'|trans({}, 'FOSUserBundle') }}</h2>
+	{% if error %}
+		<div class="alert alert-error">{{ error|trans({}, 'FOSUserBundle') }}</div>
+	{% endif %}
     <input type="hidden" name="_csrf_token" value="{{ csrf_token }}" />
 
     <label for="username">{{ 'security.login.username'|trans({}, 'FOSUserBundle') }}</label>
