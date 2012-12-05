@@ -29,14 +29,14 @@ class UserController extends Controller
      */
     public function usersAjaxAction(Request $request)
     {
-        return $this->_ajaxAction(
-                            $request, 
-                            'BpaulinUpfitBundle:User', 
-                            array('id', 'username', 'email')
-                            );
+        return $this->ajaxActionGen(
+            $request,
+            'BpaulinUpfitBundle:User',
+            array('id', 'username', 'email')
+        );
     }
 
-    protected function _ajaxAction(Request $request, $entity, $columns)
+    protected function ajaxActionGen(Request $request, $entity, $columns)
     {
         $get = $request->query->all();
         if (!isset($get['sEcho'])) {

@@ -14,8 +14,8 @@ use Doctrine\ORM\Query\Expr;
 class UserRepository extends EntityRepository
 {
 
-    public function _ajaxTable(array $get, $tableObjectName, $flag = false)
-    {        
+    public function ajaxTableGen(array $get, $tableObjectName, $flag = false)
+    {
         /* Indexed column (used for fast and accurate table cardinality) */
         $alias = 'a';
 
@@ -103,9 +103,8 @@ class UserRepository extends EntityRepository
      */
     public function ajaxTable(array $get, $flag = false)
     {
-        return $this->_ajaxTable($get, 'BpaulinUpfitBundle:User', $flag);
+        return $this->ajaxTableGen($get, 'BpaulinUpfitBundle:User', $flag);
     }
-
 
     /**
      * @return int
