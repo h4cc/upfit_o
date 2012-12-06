@@ -32,7 +32,7 @@ class UserController extends Controller
         return $this->ajaxActionGen(
             $request,
             'BpaulinUpfitBundle:User',
-            array('id', 'username', 'email')
+            array('id', 'username', 'email', 'gravatarUrl')
         );
     }
 
@@ -51,7 +51,7 @@ class UserController extends Controller
         $ajaxTable = $em->getRepository($entity)->ajaxTable($get, true);
 
         $countUnfiltered = $ajaxTable[0];
-        $rResult =  $ajaxTable[1]->getArrayResult();
+        $rResult =  $ajaxTable[1]->getResult();
 
         /* Data set length after filtering */
         $iFilteredTotal = count($rResult);
@@ -67,17 +67,13 @@ class UserController extends Controller
         );
 
         foreach ($rResult as $aRow) {
-            $row = array();
-            for ($i=0; $i<count($columns); $i++) {
-                if ($columns[$i] == "email") {
-                    /* Special output formatting for columns */
-                    $row[] = $aRow[ $columns[$i] ];
-                    $row[] = md5(strtolower(trim($aRow[ $columns[$i] ])));
-                } elseif ($columns[$i] != ' ') {
-                    /* General output */
-                    $row[] = $aRow[ $columns[$i] ];
-                }
-            }
+            $row = array(
+                $aRow->getId(),
+                $aRow->getUsername(),
+                $aRow->getEmail(),
+                $aRow->getGravatarurl(),
+                );
+
             $output['aaData'][] = $row;
         }
 

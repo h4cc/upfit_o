@@ -33,7 +33,7 @@ class UserRepository extends EntityRepository
         $cb = $this->getEntityManager()
                    ->getRepository($tableObjectName)
                    ->createQueryBuilder($alias)
-                   ->select(str_replace(" , ", " ", implode(", ", $aColumns)));
+                   ->select('a');
 
         $cbCount = $this->getEntityManager()
                         ->getRepository($tableObjectName)

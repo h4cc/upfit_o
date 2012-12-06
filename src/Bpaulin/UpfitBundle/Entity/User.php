@@ -42,7 +42,7 @@ class User extends BaseUser
      *
      * @return String containing a URL
      */
-    public function getGravatarUrl($s = 80, $d = 'mm', $r = 'g')
+    public function getGravatarUrl($s = 40, $d = 'identicon', $r = 'g')
     {
         $url = 'http://www.gravatar.com/avatar/';
         $url .= md5(strtolower(trim($this->getEmail())));
