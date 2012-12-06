@@ -13,4 +13,6 @@ before_script:
   - phpenv rehash
   - ./loadDbTest.sh
 
-script: phpunit --coverage-text -c app
+script: 
+  - pphpcs -p --standard=PSR2 --extensions=php src/
+  - phpunit --coverage-text -c app
