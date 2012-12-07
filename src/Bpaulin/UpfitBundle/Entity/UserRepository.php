@@ -2,9 +2,6 @@
 
 namespace Bpaulin\UpfitBundle\Entity;
 
-use Doctrine\ORM\EntityRepository;
-use Doctrine\ORM\Query\Expr;
-
 /**
  * UserRepository
  *

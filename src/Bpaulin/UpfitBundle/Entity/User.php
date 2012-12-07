@@ -60,6 +60,7 @@ class User extends BaseUser
         $url = 'http://www.gravatar.com/avatar/'
              . md5(strtolower(trim($this->getEmail())))
              . "?s=$s&d=$d&r=$r";
+
         return $url;
     }
 }
