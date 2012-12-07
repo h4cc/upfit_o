@@ -33,6 +33,19 @@ class User extends BaseUser
     }
 
     /**
+     * Renvoie le tableau des elements à inclure dans une réponse Json pour datatables
+     */
+    public function getArrayForJson()
+    {
+        return array(
+                $this->getId(),
+                $this->getUsername(),
+                $this->getEmail(),
+                $this->getGravatarurl(),
+                );
+    }
+
+    /**
      * Get either a Gravatar URL or complete image tag for a specified email address.
      *
      * @param string $email The email address
@@ -44,10 +57,9 @@ class User extends BaseUser
      */
     public function getGravatarUrl($s = 40, $d = 'identicon', $r = 'g')
     {
-        $url = 'http://www.gravatar.com/avatar/';
-        $url .= md5(strtolower(trim($this->getEmail())));
-        $url .= "?s=$s&d=$d&r=$r";
-
+        $url = 'http://www.gravatar.com/avatar/'
+             . md5(strtolower(trim($this->getEmail())))
+             . "?s=$s&d=$d&r=$r";
         return $url;
     }
 }
