@@ -19,7 +19,7 @@ class LoadUsersData implements FixtureInterface
             $user->setUsername("user$idUser");
             $user->setPlainPassword("user$idUser");
             $user->setEmail("user$idUser@upfit.com");
-            $user->setEnabled(True);
+            $user->setEnabled(true);
 
             $manager->persist($user);
         }

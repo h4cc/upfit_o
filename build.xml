@@ -116,7 +116,8 @@
                         showSniffs="false"
                         showWarnings="true"
                         showSources="true"
-                        haltonerror="true">
+                        haltonerror="true"
+                        haltonwarning="true">
             <fileset dir="${dir.src}">
                 <include name="**/*.php" />
                 <exclude name="**/*Test.php" />

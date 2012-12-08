@@ -13,7 +13,6 @@ class FosUserTest extends WebTestCase
         $crawler = $client->request('GET', '/login');
         $this->assertTrue(200 === $client->getResponse()->getStatusCode());
 
-
         $form = $crawler->selectButton('_submit')->form(array(
             '_username'       => 'user1',
             '_password'         => 'user1'
@@ -29,7 +28,6 @@ class FosUserTest extends WebTestCase
 
         $crawler = $client->request('GET', '/login');
         $this->assertTrue(200 === $client->getResponse()->getStatusCode());
-
 
         $form = $crawler->selectButton('_submit')->form(array(
             '_username'       => 'user1',
