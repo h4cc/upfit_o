@@ -23,6 +23,11 @@ class User extends BaseUser
     protected $id;
 
     /**
+     *@ORM\OneToMany(targetEntity="UserSocial", mappedBy="user")
+     */
+    private $userSocials;
+
+    /**
      * Get id
      *
      * @return integer
@@ -62,5 +67,46 @@ class User extends BaseUser
              . "?s=$s&d=$d&r=$r";
 
         return $url;
+    }
+    /**
+     * Constructor
+     */
+    public function __construct()
+    {
+        parent::__construct();
+        $this->userSocials = new \Doctrine\Common\Collections\ArrayCollection();
+    }
+    
+    /**
+     * Add userSocials
+     *
+     * @param \Bpaulin\UpfitBundle\Entity\UserSocial $userSocials
+     * @return User
+     */
+    public function addUserSocial(\Bpaulin\UpfitBundle\Entity\UserSocial $userSocials)
+    {
+        $this->userSocials[] = $userSocials;
+    
+        return $this;
+    }
+
+    /**
+     * Remove userSocials
+     *
+     * @param \Bpaulin\UpfitBundle\Entity\UserSocial $userSocials
+     */
+    public function removeUserSocial(\Bpaulin\UpfitBundle\Entity\UserSocial $userSocials)
+    {
+        $this->userSocials->removeElement($userSocials);
+    }
+
+    /**
+     * Get userSocials
+     *
+     * @return \Doctrine\Common\Collections\Collection 
+     */
+    public function getUserSocials()
+    {
+        return $this->userSocials;
     }
 }

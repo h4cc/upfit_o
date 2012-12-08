@@ -8,8 +8,7 @@ build/
 vendor
 composer.phar
 php-cs-fixer.phar
-~
-upfit.sublime-project
+*~
 upfit.sublime-workspace
 composer.lock
 version.txt
