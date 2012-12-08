@@ -15,4 +15,4 @@ before_script:
 
 script:
   - phpcs -p --standard=PSR2 --extensions=php src/
-  - phpunit --coverage-text -c app
+  - phpunit -c app

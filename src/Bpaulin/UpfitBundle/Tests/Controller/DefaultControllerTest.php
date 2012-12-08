@@ -11,7 +11,6 @@ class DefaultControllerTest extends WebTestCase
         $client = static::createClient();
 
         $crawler = $client->request('GET', '/');
-
-        $this->assertTrue($crawler->filter('html:contains("Hello bruno")')->count() > 0);
+        $this->assertTrue(200 === $client->getResponse()->getStatusCode());
     }
 }
