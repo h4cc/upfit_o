@@ -6,9 +6,23 @@ use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 
 class UserControllerTest extends WebTestCase
 {
-    public function testList()
+    public function createClientAdmin()
     {
         $client = static::createClient();
+        $crawler = $client->request('GET', '/login');
+        $form = $crawler->selectButton('_submit')->form(
+            array(
+            '_username'       => 'admin',
+            '_password'         => 'admin'
+            )
+        );
+        $client->submit($form);
+        return $client;
+    }
+
+    public function testList()
+    {
+        $client = $this->createClientAdmin();
 
         $crawler = $client->request('GET', '/admin/users/list');
         $this->assertTrue(200 === $client->getResponse()->getStatusCode());
@@ -18,7 +32,7 @@ class UserControllerTest extends WebTestCase
 
     public function testAjax()
     {
-        $client = static::createClient();
+        $client = $this->createClientAdmin();
 
         $crawler = $client->request('GET', '/admin/users/ajax');
         $this->assertTrue(200 === $client->getResponse()->getStatusCode());

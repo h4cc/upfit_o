@@ -13,7 +13,7 @@ class LoadUsersData implements FixtureInterface
      */
     public function load(ObjectManager $manager)
     {
-        for ($idUser=0; $idUser < 100; $idUser++) {
+        for ($idUser=0; $idUser < 33; $idUser++) {
             $user = new User();
 
             $user->setUsername("user$idUser");
@@ -23,6 +23,16 @@ class LoadUsersData implements FixtureInterface
 
             $manager->persist($user);
         }
+
+        $user = new User();
+        $user->setUsername("admin");
+        $user->setPlainPassword("admin");
+        $user->setEmail("bpupfit@gmail.com");
+        $user->setEnabled(true);
+        $user->addRole('ROLE_ADMIN');
+
+        $manager->persist($user);
+
         $manager->flush();
     }
 }

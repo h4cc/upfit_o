@@ -41,7 +41,7 @@ class User extends BaseUser
                 $this->getId(),
                 $this->getUsername(),
                 $this->getEmail(),
-                $this->getGravatarurl(),
+                $this->getGravatarurl(24),
                 );
     }
 

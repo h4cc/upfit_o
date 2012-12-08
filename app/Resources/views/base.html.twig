@@ -4,7 +4,8 @@
     <title>{% block title %}Upfit{% endblock %}</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     {% block stylesheets %}
-    <!-- Bootstrap -->
+
+    <link rel="icon" type="image/x-icon" href="{{ asset('favicon.ico') }}" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     {% stylesheets '@BpaulinUpfitBundle/Resources/public/bootstrap/css/bootstrap.min.css'
                     '@BpaulinUpfitBundle/Resources/public/bootstrap/css/bootstrap-responsive.min.css'
@@ -27,24 +28,35 @@
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
           </a>
-          <a class="brand" href="#">Project name</a>
+          <a class="brand" href="{{ path('upfit_home') }}">Upfit</a>
           <ul class="nav pull-right">
             <li class="dropdown">
+            {% if app.user.username is defined %}
               <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-                Espace membre
+                <img src='{{ app.user.gravatarUrl(24) }}'/>
                 <b class="caret"></b>
               </a>
               <ul class="dropdown-menu">
-                <li><a href="{{ path('fos_user_security_login') }}">Login</a></li>
-                <li><a href="{{ path('fos_user_registration_register') }}">Register</a></li>
+                <li><a href="{{ path('fos_user_security_logout') }}">Me déconnecter</a></li>
+                <li><a href="{{ path('fos_user_profile_edit') }}">Modifier mon profil</a></li>
+                <li><a href="{{ path('fos_user_change_password') }}">Changer mon mot de passe</a></li>
               </ul>
+            {% else %}
+              <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                Mon espace
+                <b class="caret"></b>
+              </a>
+              <ul class="dropdown-menu">
+                <li><a href="{{ path('fos_user_security_login') }}">M'identifier</a></li>
+                <li><a href="{{ path('fos_user_resetting_request') }}">Mot de passe oublié</a></li>
+                <li><a href="{{ path('fos_user_registration_register') }}">Créer mon compte</a></li>
+              </ul>
+            {% endif %}
             </li>
           </ul>
           <div class="nav-collapse collapse">
             <ul class="nav">
-              <li class="active"><a href="#">Home</a></li>
-              <li><a href="#about">About</a></li>
-              <li><a href="#contact">Contact</a></li>
+              <li><a href="https://github.com/bpaulin/upfit" target='_blank'>Github</a></li>
             </ul>
           </div><!--/.nav-collapse -->
         </div>
