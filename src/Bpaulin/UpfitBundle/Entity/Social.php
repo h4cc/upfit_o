@@ -2,16 +2,15 @@
 
 namespace Bpaulin\UpfitBundle\Entity;
 
-use FOS\UserBundle\Entity\User as BaseUser;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * User
+ * Social
  *
  * @ORM\Table()
- * @ORM\Entity(repositoryClass="Bpaulin\UpfitBundle\Entity\UserRepository")
+ * @ORM\Entity(repositoryClass="Bpaulin\UpfitBundle\Entity\SocialRepository")
  */
-class User extends BaseUser
+class Social
 {
     /**
      * @var integer
@@ -20,10 +19,17 @@ class User extends BaseUser
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="AUTO")
      */
-    protected $id;
+    private $id;
 
     /**
-     *@ORM\OneToMany(targetEntity="UserSocial", mappedBy="user")
+     * @var \DateTime
+     *
+     * @ORM\Column(name="created_date", type="datetime")
+     */
+    private $createdDate;
+
+    /**
+     *@ORM\OneToMany(targetEntity="UserSocial", mappedBy="socialGroup")
      */
     private $userSocials;
 
@@ -38,42 +44,32 @@ class User extends BaseUser
     }
 
     /**
-     * Renvoie le tableau des elements à inclure dans une réponse Json pour datatables
+     * Set createdDate
+     *
+     * @param  \DateTime   $createdDate
+     * @return SocialGroup
      */
-    public function getArrayForJson()
+    public function setCreatedDate($createdDate)
     {
-        return array(
-                $this->getId(),
-                $this->getUsername(),
-                $this->getEmail(),
-                $this->getGravatarurl(24),
-                );
+        $this->createdDate = $createdDate;
+
+        return $this;
     }
 
     /**
-     * Get either a Gravatar URL or complete image tag for a specified email address.
+     * Get createdDate
      *
-     * @param string $email The email address
-     * @param string $s     Size in pixels, defaults to 80px [ 1 - 2048 ]
-     * @param string $d     Default imageset to use [ 404 | mm | identicon | monsterid | wavatar ]
-     * @param string $r     Maximum rating (inclusive) [ g | pg | r | x ]
-     *
-     * @return String containing a URL
+     * @return \DateTime
      */
-    public function getGravatarUrl($s = 40, $d = 'identicon', $r = 'g')
+    public function getCreatedDate()
     {
-        $url = 'http://www.gravatar.com/avatar/'
-             . md5(strtolower(trim($this->getEmail())))
-             . "?s=$s&d=$d&r=$r";
-
-        return $url;
+        return $this->createdDate;
     }
     /**
      * Constructor
      */
     public function __construct()
     {
-        parent::__construct();
         $this->userSocials = new \Doctrine\Common\Collections\ArrayCollection();
     }
 
@@ -81,7 +77,7 @@ class User extends BaseUser
      * Add userSocials
      *
      * @param  \Bpaulin\UpfitBundle\Entity\UserSocial $userSocials
-     * @return User
+     * @return SocialGroup
      */
     public function addUserSocial(\Bpaulin\UpfitBundle\Entity\UserSocial $userSocials)
     {

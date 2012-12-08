@@ -1,0 +1,9 @@
+{
+	"folders":
+	[
+		{
+			"path": "/home/bruno/projets/upfit",
+            "file_exclude_patterns": ["*~"]
+		}
+	]
+}

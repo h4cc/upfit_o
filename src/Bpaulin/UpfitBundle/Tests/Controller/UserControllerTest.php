@@ -17,6 +17,7 @@ class UserControllerTest extends WebTestCase
             )
         );
         $client->submit($form);
+
         return $client;
     }
 
