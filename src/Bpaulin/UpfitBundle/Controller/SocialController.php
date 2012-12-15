@@ -22,7 +22,14 @@ class SocialController extends Controller
      */
     public function indexAction()
     {
-        return array();
+        $em = $this->getDoctrine()->getEntityManager();
+        $entities = $em->getRepository('BpaulinUpfitBundle:UserSocial')->findByUser(
+            $this->get('security.context')->getToken()->getUser()
+        );
+
+        return array(
+            'entities' => $entities,
+        );
     }
 
     /**

@@ -65,6 +65,7 @@ class SocialControllerTest extends WebTestCase
         $crawler = $client->followRedirect();
         $this->assertEquals('http://localhost/user/social', $client->getRequest()->getUri());
         $this->assertEquals(1, $crawler->filter('.alert-success')->count());
+        $this->assertTrue($crawler->filter('td:contains("social1")')->count() > 0);
     }
 
     public function testSocialInvalidCreation()

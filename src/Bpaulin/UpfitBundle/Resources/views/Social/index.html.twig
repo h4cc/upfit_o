@@ -2,4 +2,22 @@
 
 {% block body %}
 <a href='{{ path('user_social_new') }}'>créer</a>
+<table class="table">
+	<thead>
+		<tr>
+			<th>id</th>
+			<th>nom</th>
+			<th>statut</th>
+		</tr>
+	</thead>
+	{% for entity in entities %}
+	<tbody>
+		<tr>
+			<td>{{ entity.id }}</td>
+			<td>{{ entity.groupName }}</td>
+			<td>{{ entity.status }}</td>
+		</tr>
+	</tbody>
+	{% endfor %}
+</table>
 {% endblock %}
