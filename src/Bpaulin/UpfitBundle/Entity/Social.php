@@ -3,6 +3,7 @@
 namespace Bpaulin\UpfitBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * Social
@@ -20,6 +21,14 @@ class Social
      * @ORM\GeneratedValue(strategy="AUTO")
      */
     private $id;
+
+    /**
+     * @var string
+     * @Assert\NotBlank()
+     *
+     * @ORM\Column(name="name", type="string", length=255)
+     */
+    private $name;
 
     /**
      * @var \DateTime
@@ -104,5 +113,28 @@ class Social
     public function getUserSocials()
     {
         return $this->userSocials;
+    }
+
+    /**
+     * Set name
+     *
+     * @param  string $name
+     * @return Social
+     */
+    public function setName($name)
+    {
+        $this->name = $name;
+
+        return $this;
+    }
+
+    /**
+     * Get name
+     *
+     * @return string
+     */
+    public function getName()
+    {
+        return $this->name;
     }
 }
