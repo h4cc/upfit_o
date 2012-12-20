@@ -1,0 +1,12 @@
+{% extends "::base.html.twig" %}
+
+{% block body %}
+
+<form class="form-horizontal" action="{{ path('user_social_invite', { 'socialId':socialId }) }}" method="post" {{ form_enctype(form) }}>
+    {{ form_widget(form) }}
+    <div class="controls">
+        <button class="btn" type="submit" id='submit-social-invite'>Créer</button>
+    </div>
+</form>
+
+{% endblock %}

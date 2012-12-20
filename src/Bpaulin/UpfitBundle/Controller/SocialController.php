@@ -10,6 +10,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Bpaulin\UpfitBundle\Entity\Social;
 use Bpaulin\UpfitBundle\Entity\UserSocial;
 use Bpaulin\UpfitBundle\Form\SocialType;
+use Bpaulin\UpfitBundle\Form\InvitationType;
 
 /**
  * @Route("/user/social")
@@ -48,7 +49,7 @@ class SocialController extends Controller
     }
 
     /**
-     * Creates a new Social entity and invite currentuser.
+     * Creates a new Social entity and invite current user.
      *
      * @param Request $request
      *
@@ -93,6 +94,66 @@ class SocialController extends Controller
         return array(
             'entity' => $entity,
             'form'   => $form->createView(),
+        );
+    }
+
+    /**
+     * @Route("/{socialId}/invite", name="user_social_invite")
+     * @Template()
+     */
+    public function inviteAction($socialId)
+    {
+        $entity = new Social();
+        $form   = $this->createForm(new InvitationType());
+
+        return array(
+            'entity' => $entity,
+            'form'   => $form->createView(),
+            'socialId' => $socialId,
+        );
+    }
+
+    /**
+     * @Route("/{socialId}/checkinvite", name="user_social_checkinvite")
+     * @Method("POST")
+     * @Template("BpaulinUpfitBundle:Social:invite.html.twig")
+     */
+    public function checkInviteAction(Request $request, $socialId)
+    {
+        $entity  = new Social();
+        $form = $this->createForm(new InvitationType());
+
+        $form->bind($request);
+        if ($form->isValid()) {
+            $entity->setCreatedDate(new \DateTime('now'));
+            $em = $this->getDoctrine()->getManager();
+            $em->persist($entity);
+
+            $userSocial = new UserSocial();
+            $userSocial->setSocial($entity)
+                        ->setUser($this->get('security.context')->getToken()->getUser())
+                        ->setGroupName($entity->getName())
+                        ->setInvitedDate(new \DateTime('now'))
+                        ->setStatus(2);
+            $em->persist($userSocial);
+
+            $em->flush();
+            $this->get('session')->setFlash(
+                'success',
+                'Your changes were saved!'
+            );
+
+            return $this->redirect($this->generateUrl('user_social_list'));
+        }
+        $this->get('session')->setFlash(
+            'error',
+            'Problem!'
+        );
+
+        return array(
+            'entity' => $entity,
+            'form'   => $form->createView(),
+            'socialId' => $socialId,
         );
     }
 }

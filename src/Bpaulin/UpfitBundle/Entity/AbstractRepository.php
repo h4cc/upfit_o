@@ -47,10 +47,10 @@ abstract class AbstractRepository extends EntityRepository
          * word by word on any field. It's possible to do here, but concerned about efficiency
          * on very large tables, and MySQL's regex functionality is very limited
          */
-        if ( isset($get['sSearch']) && $get['sSearch'] != '' ) {
+        if (isset($get['sSearch']) && $get['sSearch'] != '') {
             $aLike = array();
             for ($i=0; $i<count($aColumns); $i++) {
-                if ( isset($get['bSearchable_'.$i]) && $get['bSearchable_'.$i] == "true" ) {
+                if (isset($get['bSearchable_'.$i]) && $get['bSearchable_'.$i] == "true") {
                     $aLike[] = $cb->expr()->like($aColumns[$i], '\'%'. $get['sSearch'] .'%\'');
                 }
             }
@@ -78,7 +78,7 @@ abstract class AbstractRepository extends EntityRepository
         /*
          * Limiting
          */
-        if ( isset($get['iDisplayStart']) && $get['iDisplayLength'] != '-1' ) {
+        if (isset($get['iDisplayStart']) && $get['iDisplayLength'] != '-1') {
             $cb->setFirstResult((int) $get['iDisplayStart'])
                 ->setMaxResults((int) $get['iDisplayLength']);
         }
