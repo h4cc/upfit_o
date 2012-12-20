@@ -8,11 +8,9 @@ php:
 before_script:
   - mv app/config/parameters.travis.yml app/config/parameters.yml
   - mysql -e 'create database upfit_test;'
-  - composer install
-  - pyrus install pear/PHP_CodeSniffer
-  - phpenv rehash
+  - composer install --dev
   - ./loadDbTest.sh
 
 script:
-  - phpcs -p --standard=PSR2 --extensions=php src/
-  - phpunit -c app
+  - ./vendor/bin/phpcs -p --standard=PSR2 --extensions=php src/
+  - ./vendor/bin/phpunit -c app
