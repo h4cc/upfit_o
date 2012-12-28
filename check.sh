@@ -1,2 +1,2 @@
 #!/bin/bash
-./vendor/bin/phpcs -p --standard=PSR2 --extensions=php src/ && ./vendor/bin/phpunit -c app
+./loadDbTest.sh && ./vendor/bin/phpcs -p --standard=PSR2 --extensions=php,twig src/ && ./vendor/bin/phpunit -c app

@@ -10,7 +10,6 @@ namespace Bpaulin\UpfitBundle\Entity;
  */
 class UserRepository extends AbstractRepository
 {
-
     /**
      * @param  array $get
      * @param  bool  $flag

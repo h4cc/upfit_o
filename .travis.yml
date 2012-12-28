@@ -9,7 +9,6 @@ before_script:
   - mv app/config/parameters.travis.yml app/config/parameters.yml
   - mysql -e 'create database upfit_test;'
   - composer install --dev
-  - ./loadDbTest.sh
 
 script:
   - ./check.sh

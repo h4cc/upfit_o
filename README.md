@@ -10,3 +10,6 @@ Symfony Upfit
 
 
 [Visionneur markdown](http://daringfireball.net/projects/markdown/dingus)
+
+
+    ln -s `pwd`/check.sh .git/hooks/pre-commit
