@@ -74,7 +74,7 @@ class SocialControllerTest extends WebTestCase
         $this->assertEquals(1, $crawler->filter('.alert-success')->count());
         $this->assertTrue($crawler->filter('td:contains("social2")')->count() > 0);
     }
-    /*
+
     public function testSocialInvalidCreation()
     {
         $client = $this->createClientUser();
@@ -94,6 +94,8 @@ class SocialControllerTest extends WebTestCase
 
     public function testSendInvitation()
     {
+        $this->markTestSkipped('TODO: Invitations');
+
         $client = $this->createClientUser('user1', 'user1');
         $crawler = $client->request('GET', '/user/social/1/invite');
         $this->assertEquals(200, $client->getResponse()->getStatusCode());
@@ -109,5 +111,5 @@ class SocialControllerTest extends WebTestCase
         $this->assertEquals('http://localhost/user/social/1/users', $client->getRequest()->getUri());
         $this->assertEquals(1, $crawler->filter('.alert-success')->count());
         $this->assertTrue($crawler->filter('td:contains("social2")')->count() > 0);
-    }*/
+    }
 }
