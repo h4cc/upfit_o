@@ -32,7 +32,7 @@
     <target name="check:style">
         <exec command="vendor/bin/php-cs-fixer fix . --config=sf21"
               passthru="true" />
-        <exec command=" ./vendor/bin/phpcs -p --standard=PSR2 --extensions=php,twig src/"
+        <exec command=" ./vendor/bin/phpcs -p --standard=PSR2 --extensions=php src/"
               passthru="true"
               checkreturn="true"/>
     </target>
