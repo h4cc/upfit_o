@@ -25,7 +25,10 @@
         "phpunit/phpunit": "3.7.*",
         "phing/phing": "dev-master",
         "squizlabs/php_codesniffer": "dev-master",
-        "fabpot/php-cs-fixer": "0.1.*@dev"
+        "fabpot/php-cs-fixer": "0.1.*@dev",
+        "phploc/phploc": "dev-master",
+        "phpmd/phpmd" : "1.4.0",
+        "sami/sami": "dev-master"
     },
     "scripts": {
         "post-install-cmd": [

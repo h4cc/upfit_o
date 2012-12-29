@@ -1,73 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project name="Upfit" basedir="." default="build:main">
+<project name="Upfit" basedir="." default="check">
 
-    <!-- <version releasetype="Bugfix" file="version.txt" property="version.number"/> -->
-
-  <!-- Properties -->
     <property name="dir.app" value="${project.basedir}/app" />
     <property name="dir.src" value="${project.basedir}/src" />
     <property name="dir.build" value="${project.basedir}/build" />
-    <property name="dir.docs" value="${dir.build}/docs" />
-    <property name="dir.docs.phpdoc" value="${dir.docs}/phpdoc" />
-    <property name="dir.reports" value="${dir.build}/logs" />
-    <property name="dir.reports.pdepend" value="${dir.reports}/pdepend" />
-    <property name="dir.docs.cb" value="${dir.docs}/phpcb" />
+    <property name="dir.reports" value="${dir.build}/reports" />
     <property name="dir.reports.coverage" value="${dir.reports}/coverage" />
 
-  <!-- Filesets -->
-    <fileset id="sourcecode" dir="${dir.src}">
-        <include name="**/*.php" />
-    </fileset>
-
-  <!-- Default target -->
-    <target name="build:main"
-          depends="build:clean, build:prepare, build:check, build:test, build:doc"
-          description="Run all test and build everything" />
-
-  <!-- Doc target -->
-    <target name="build:doc"
-          depends="doc:phpdoc"
-          description="Generates app API documentation." />
-
-  <!-- Check target -->
-    <target name="build:check"
-          depends="check:loc, check:cs, check:md, check:cpd, check:depend, check:cb"
-          description="Analyzes app code." />
-
-  <!-- Test target -->
-    <target name="build:test"
-          depends="test:unit"
-          description="Executes all tests.." />
-
-  <!-- Project build clean -->
-    <target name="build:clean" description="Clean up build directories.">
-        <echo msg="Cleaning build directories ..." />
-        <delete dir="${dir.build}" verbose="false" />
-    </target>
-
-  <!-- Project build prepare -->
-    <target name="build:prepare" description="Create build directories.">
-        <echo msg="Creating build directories ..." />
-        <mkdir dir="${dir.build}" />
-        <mkdir dir="${dir.docs}" />
-        <mkdir dir="${dir.docs.phpdoc}" />
-        <mkdir dir="${dir.reports}" />
-        <mkdir dir="${dir.reports.coverage}" />
-        <mkdir dir="${dir.reports.pdepend}" />
-        <mkdir dir="${dir.docs.cb}" />
-        <if>
-            <available file="php-cs-fixer.phar"/>
-            <then>
-                <exec logoutput="true"
-                        command="php php-cs-fixer.phar self-update" escape="false"
-                />
-            </then>
-            <else>
-                <exec logoutput="true"
-                        command="wget http://cs.sensiolabs.org/get/php-cs-fixer.phar" escape="false"
-                />
-            </else>
-        </if>
+    <target name="update">
         <if>
             <available file="composer.phar"/>
             <then>
@@ -77,101 +17,75 @@
             </then>
             <else>
                 <exec logoutput="true"
-                        command="wget http://getcomposer.org/composer.phar" escape="false"
+                        command="curl -s https://getcomposer.org/installer | php" escape="false"
                 />
             </else>
         </if>
-        <if>
-            <not>
-                <available file="app/config/parameters.yml"/>
-            </not>
-            <then>
-                <copy file="app/config/parameters.dist.yml" tofile="app/config/parameters.yml" overwrite="false"/>
-            </then>
-        </if>
-        <exec passthru="true" command="php composer.phar update" escape="true" checkreturn="true"/>
+        <exec passthru="true" command="php composer.phar update --dev" checkreturn="true"/>
     </target>
 
-  <!-- PHPDOC API documentation target -->
-    <target name="doc:phpdoc" description="Generate API documentation.">
-        <echo msg="Generating API documentation with PHPDoc..." />
-        <phpdoc2 title="${phing.project.name} :: API Documentation"
-                destdir="${dir.docs.phpdoc}"
-                template="responsive">
-            <fileset refid="sourcecode" />
-        </phpdoc2>
+    <target name="check">
+        <phingcall target="check:style"/>
+        <phingcall target="check:test"/>
     </target>
 
-  <!-- Symfony2 phploc -->
-    <target name="check:loc" description="measuring the size and analyzing the structure.">
-        <echo msg="Measuring the size and analyzing the structure ..." />
-        <exec command="phploc ${dir.src} > ${dir.reports}/loc.txt" />
+    <target name="check:style">
+        <exec command="vendor/bin/php-cs-fixer fix . --config=sf21"
+              passthru="true" />
+        <exec command=" ./vendor/bin/phpcs -p --standard=PSR2 --extensions=php,twig src/"
+              passthru="true"
+              checkreturn="true"/>
     </target>
 
-  <!-- Symfony2 code sniffer -->
-    <target name="check:cs" description="Checks coding standard.">
-        <exec logoutput="true" command="php php-cs-fixer.phar fix . --config=sf21" escape="true" checkreturn="true"/>
-        <echo msg="Checking coding standard ..." />
-        <phpcodesniffer standard="PSR2"
-                        showSniffs="false"
-                        showWarnings="true"
-                        showSources="true"
-                        haltonerror="true"
-                        haltonwarning="true">
-            <fileset dir="${dir.src}">
-                <include name="**/*.php" />
-                <exclude name="**/*Test.php" />
-            </fileset>
-            <formatter type="checkstyle" outfile="${dir.reports}/checkstyle.xml" />
-        </phpcodesniffer>
+    <target name="check:test">
+        <exec command="./loadDbDev.sh"
+              passthru="true"
+              checkreturn="true" />
+        <exec command="./vendor/bin/phpunit -c app"
+              passthru="true"
+              checkreturn="true" />
     </target>
 
-  <!-- copy/paste detector -->
-    <target name="check:cpd" description="Checks similar code blocks.">
-        <echo msg="Checking similar code blocks ..." />
-        <phpcpd>
-            <fileset refid="sourcecode" />
-            <formatter type="pmd" outfile="${dir.reports}/pmd-cpd.xml" />
-        </phpcpd>
+    <target name="report">
+        <phingcall target="report:clean"/>
+        <phingcall target="report:prepare"/>
+        <phingcall target="report:loc"/>
+        <phingcall target="report:phpcs"/>
+        <phingcall target="report:phpmd"/>
+        <phingcall target="report:test"/>
+        <phingcall target="report:doc"/>
+        <!-- phpcpd, phpcb-->
     </target>
 
-  <!-- Mess detector -->
-    <target name="check:md" description="Generate code metrics.">
-        <echo msg="Generating code metrics ..." />
-        <phpmd rulesets="codesize,unusedcode,naming">
-            <fileset refid="sourcecode" />
-            <formatter type="xml" outfile="${dir.reports}/pmd.xml" />
-        </phpmd>
+    <target name="report:clean">
+        <delete dir="${dir.build}" verbose="false" />
     </target>
 
-  <!-- Code dependency -->
-    <target name="check:depend" description="Checks coupling and dependency.">
-        <echo msg="Checking coupling and dependency ..." />
-        <phpdepend haltonerror="true">
-            <fileset refid="sourcecode" />
-            <logger type="jdepend-xml" outfile="${dir.reports.pdepend}/jdepend.xml" />
-            <logger type="jdepend-chart" outfile="${dir.reports.pdepend}/dependencies.svg" />
-            <logger type="overview-pyramid" outfile="${dir.reports.pdepend}/overview-pyramid.svg" />
-        </phpdepend>
+    <target name="report:prepare">
+        <mkdir dir="${dir.build}" />
+        <mkdir dir="${dir.reports}" />
+        <mkdir dir="${dir.reports.coverage}" />
     </target>
 
-  <!-- Code browser -->
-    <target name="check:cb">
-        <exec logoutput="true"
-            command="phpcb --log '${dir.reports}' --source '${dir.src}' --output '${dir.docs.cb}'" escape="false" />
+    <target name="report:loc">
+        <exec command="./vendor/bin/phploc --count-tests ${dir.src} > ${dir.reports}/loc.txt" />
     </target>
 
-  <!-- Unit tests -->
-    <target name="test:unit" description="Executes unit tests.">
-        <echo msg="Creating database..." />
-        <exec logoutput="true"
-            passthru="true"
-            command="./loadDbTest.sh" escape="false" />
-        <echo msg="Running unit tests ..." />
-        <exec
-            checkreturn="true"
-            passthru="true"
-            command="phpunit --log-junit ${dir.reports}/phpunit.xml --coverage-clover ${dir.reports.coverage}/clover.xml --coverage-html ${dir.reports.coverage}/ -c ${dir.app}"/>
+    <target name="report:phpcs">
+        <exec command=" ./vendor/bin/phpcs -p --standard=PSR2 --extensions=php,twig --report-checkstyle=${dir.reports}/checkstyle.xml src/" />
     </target>
 
+    <target name="report:phpmd">
+        <exec command=" ./vendor/bin/phpmd src xml codesize,unusedcode,naming --reportfile=${dir.reports}/pmd.xml"/>
+    </target>
+
+    <target name="report:test">
+        <exec command="phpunit --log-junit ${dir.reports}/phpunit.xml --coverage-clover ${dir.reports}/clover.xml --coverage-html ${dir.reports.coverage}/ -c ${dir.app}"
+              passthru="true" />
+    </target>
+
+    <target name="report:doc">
+        <exec command="./vendor/bin/sami.php update sami.conf.php -v"
+              passthru="true" />
+    </target>
 </project>
