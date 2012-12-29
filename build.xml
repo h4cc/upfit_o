@@ -72,7 +72,7 @@
     </target>
 
     <target name="report:phpcs">
-        <exec command=" ./vendor/bin/phpcs -p --standard=PSR2 --extensions=php,twig --report-checkstyle=${dir.reports}/checkstyle.xml src/" />
+        <exec command=" ./vendor/bin/phpcs -p --standard=PSR2 --extensions=php --report-checkstyle=${dir.reports}/checkstyle.xml src/" />
     </target>
 
     <target name="report:phpmd">
