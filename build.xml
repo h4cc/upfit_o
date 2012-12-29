@@ -38,7 +38,7 @@
     </target>
 
     <target name="check:test">
-        <exec command="./loadDbDev.sh"
+        <exec command="./loadDbTest.sh"
               passthru="true"
               checkreturn="true" />
         <exec command="./vendor/bin/phpunit -c app"
