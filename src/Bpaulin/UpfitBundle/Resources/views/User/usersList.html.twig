@@ -19,7 +19,8 @@
 {% block javascripts %}
     {{ parent() }}
     {% javascripts '@BpaulinUpfitBundle/Resources/public/datatables/js/jquery.dataTables.min.js'
-                    '@BpaulinUpfitBundle/Resources/public/js/datatables.js' %}
+                    '@BpaulinUpfitBundle/Resources/public/js/datatables.js'
+                     filter='cssrewrite' %}
     <script type="text/javascript" src="{{ asset_url }}"></script>
     {% endjavascripts %}
     <script>
