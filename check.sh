@@ -1,2 +1,2 @@
 #!/bin/bash
-./vendor/bin/phing check
+./bin/phing check

@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Reports</title>
+    <link href="http://netdna.bootstrapcdn.com/twitter-bootstrap/latest/css/bootstrap-combined.min.css" rel="stylesheet">
+  </head>
+  <body>
+    <h1>Reports</h1>
+    <div class="tabbable">
+      <ul class="nav nav-tabs">
+        <li class="active">
+          <a href="#tab1" data-toggle="tab">Api Doc</a>
+        </li>
+        <li>
+          <a href="#tab2" data-toggle="tab">Coverage</a>
+        </li>
+        <li>
+          <a href="#tab3" data-toggle="tab">Mess Detector</a>
+        </li>
+        <li>
+          <a href="#tab4" data-toggle="tab">Style</a>
+        </li>
+      </ul>
+      <div class="tab-content">
+        <div class="tab-pane active" id="tab1">
+          <iframe src='build/reports/apidoc/index.html' width='100%' height='500px'></iframe>
+        </div>
+        <div class="tab-pane" id="tab2">
+          <iframe src='build/reports/coverage/index.html' width='100%' height='500px'></iframe>
+        </div>
+        <div class="tab-pane" id="tab3">
+          <iframe src='build/reports/pmd.html' width='100%' height='500px'></iframe>
+        </div>
+        <div class="tab-pane" id="tab4">
+          <iframe src='build/reports/checkstyle.xml' width='100%' height='500px'></iframe>
+        </div>
+      </div>
+    </div>
+    <script src="http://code.jquery.com/jquery-latest.js"></script>
+    <script src="http://netdna.bootstrapcdn.com/twitter-bootstrap/latest/js/bootstrap.min.js"></script>
+  </body>
+</html>

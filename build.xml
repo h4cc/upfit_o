@@ -30,9 +30,7 @@
     </target>
 
     <target name="check:style">
-        <exec command="vendor/bin/php-cs-fixer fix . --config=sf21"
-              passthru="true" />
-        <exec command=" ./vendor/bin/phpcs -p --standard=PSR2 --extensions=php src/"
+        <exec command=" ./bin/phpcs -p --standard=PSR2 --extensions=php src/"
               passthru="true"
               checkreturn="true"/>
     </target>
@@ -41,7 +39,7 @@
         <exec command="./loadDbTest.sh"
               passthru="true"
               checkreturn="true" />
-        <exec command="./vendor/bin/phpunit -c app"
+        <exec command="./bin/phpunit -c app"
               passthru="true"
               checkreturn="true" />
     </target>
@@ -68,15 +66,15 @@
     </target>
 
     <target name="report:loc">
-        <exec command="./vendor/bin/phploc --count-tests ${dir.src} > ${dir.reports}/loc.txt" />
+        <exec command="./bin/phploc --count-tests ${dir.src} > ${dir.reports}/loc.txt" />
     </target>
 
     <target name="report:phpcs">
-        <exec command=" ./vendor/bin/phpcs -p --standard=PSR2 --extensions=php --report-checkstyle=${dir.reports}/checkstyle.xml src/" />
+        <exec command=" ./bin/phpcs -p --standard=PSR2 --extensions=php --report-checkstyle=${dir.reports}/checkstyle.xml src/" />
     </target>
 
     <target name="report:phpmd">
-        <exec command=" ./vendor/bin/phpmd src xml codesize,unusedcode,naming --reportfile=${dir.reports}/pmd.xml"/>
+        <exec command=" ./bin/phpmd src xml codesize,unusedcode,naming --reportfile=${dir.reports}/pmd.xml"/>
     </target>
 
     <target name="report:test">
@@ -85,7 +83,7 @@
     </target>
 
     <target name="report:doc">
-        <exec command="./vendor/bin/sami.php update sami.conf.php -v"
+        <exec command="./bin/sami.php update sami.conf.php -v"
               passthru="true" />
     </target>
 </project>
