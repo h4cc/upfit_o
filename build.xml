@@ -47,7 +47,6 @@
     <target name="report">
         <phingcall target="report:clean"/>
         <phingcall target="report:prepare"/>
-        <phingcall target="report:loc"/>
         <phingcall target="report:phpcs"/>
         <phingcall target="report:phpmd"/>
         <phingcall target="report:test"/>
@@ -74,11 +73,11 @@
     </target>
 
     <target name="report:phpmd">
-        <exec command=" ./bin/phpmd src xml codesize,unusedcode,naming --reportfile=${dir.reports}/pmd.xml"/>
+        <exec command=" ./bin/phpmd src html codesize,unusedcode,naming --reportfile ${dir.reports}/pmd.html"/>
     </target>
 
     <target name="report:test">
-        <exec command="phpunit --log-junit ${dir.reports}/phpunit.xml --coverage-clover ${dir.reports}/clover.xml --coverage-html ${dir.reports.coverage}/ -c ${dir.app}"
+        <exec command="phpunit --testdox-html ${dir.reports}/testdox.html --log-junit ${dir.reports}/phpunit.xml --coverage-clover ${dir.reports}/clover.xml --coverage-html ${dir.reports.coverage}/ -c ${dir.app}"
               passthru="true" />
     </target>
 
