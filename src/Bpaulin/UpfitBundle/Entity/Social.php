@@ -38,7 +38,7 @@ class Social
     private $createdDate;
 
     /**
-     *@ORM\OneToMany(targetEntity="UserSocial", mappedBy="socialGroup")
+     * @ORM\OneToMany(targetEntity="UserSocial", mappedBy="social")
      */
     private $userSocials;
 

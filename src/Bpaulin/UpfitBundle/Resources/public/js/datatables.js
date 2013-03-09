@@ -1,10 +1,18 @@
+/* Set the defaults for DataTables initialisation */
+$.extend( true, $.fn.dataTable.defaults, {
+	"sDom": "<'row-fluid'<'span6'l><'span6'f>r>t<'row-fluid'<'span6'i><'span6'p>>",
+	"sPaginationType": "bootstrap",
+	"oLanguage": {
+		"sLengthMenu": "_MENU_ records per page"
+	}
+} );
+
 
 /* Default class modification */
 $.extend( $.fn.dataTableExt.oStdClasses, {
-	"sSortAsc": "header headerSortDown",
-	"sSortDesc": "header headerSortUp",
-	"sSortable": "header"
+	"sWrapper": "dataTables_wrapper form-inline"
 } );
+
 
 /* API method to get paging information */
 $.fn.dataTableExt.oApi.fnPagingInfo = function ( oSettings )
@@ -18,7 +26,8 @@ $.fn.dataTableExt.oApi.fnPagingInfo = function ( oSettings )
 		"iPage":          Math.ceil( oSettings._iDisplayStart / oSettings._iDisplayLength ),
 		"iTotalPages":    Math.ceil( oSettings.fnRecordsDisplay() / oSettings._iDisplayLength )
 	};
-}
+};
+
 
 /* Bootstrap style pagination control */
 $.extend( $.fn.dataTableExt.oPagination, {
@@ -26,6 +35,7 @@ $.extend( $.fn.dataTableExt.oPagination, {
 		"fnInit": function( oSettings, nPaging, fnDraw ) {
 			var oLang = oSettings.oLanguage.oPaginate;
 			var fnClickHandler = function ( e ) {
+				e.preventDefault();
 				if ( oSettings.oApi._fnPageChange(oSettings, e.data.action) ) {
 					fnDraw( oSettings );
 				}
@@ -43,23 +53,24 @@ $.extend( $.fn.dataTableExt.oPagination, {
 		},
 
 		"fnUpdate": function ( oSettings, fnDraw ) {
+			var iListLength = 5;
 			var oPaging = oSettings.oInstance.fnPagingInfo();
 			var an = oSettings.aanFeatures.p;
-			var i, sClass, iStart, iEnd, iHalf=Math.floor(oPaging.iTotalPages/2);
+			var i, j, sClass, iStart, iEnd, iHalf=Math.floor(iListLength/2);
 
-			if ( oPaging.iTotalPages < 5) {
+			if ( oPaging.iTotalPages < iListLength) {
 				iStart = 1;
 				iEnd = oPaging.iTotalPages;
 			}
 			else if ( oPaging.iPage <= iHalf ) {
 				iStart = 1;
-				iEnd = 5;
-			} else if ( oPaging.iPage >= (5-iHalf) ) {
-				iStart = oPaging.iTotalPages - 5 + 1;
+				iEnd = iListLength;
+			} else if ( oPaging.iPage >= (oPaging.iTotalPages-iHalf) ) {
+				iStart = oPaging.iTotalPages - iListLength + 1;
 				iEnd = oPaging.iTotalPages;
 			} else {
-				iStart = oPaging.iPage - Math.ceil(5/2) + 1;
-				iEnd = iStart + 5 - 1;
+				iStart = oPaging.iPage - iHalf + 1;
+				iEnd = iStart + iListLength - 1;
 			}
 
 			for ( i=0, iLen=an.length ; i<iLen ; i++ ) {
@@ -67,11 +78,12 @@ $.extend( $.fn.dataTableExt.oPagination, {
 				$('li:gt(0)', an[i]).filter(':not(:last)').remove();
 
 				// Add the new list items and their event handlers
-				for ( i=iStart ; i<=iEnd ; i++ ) {
-					sClass = (i==oPaging.iPage+1) ? 'class="active"' : '';
-					$('<li '+sClass+'><a href="#">'+i+'</a></li>')
-						.insertBefore('li:last', an[i])
-						.bind('click', function () {
+				for ( j=iStart ; j<=iEnd ; j++ ) {
+					sClass = (j==oPaging.iPage+1) ? 'class="active"' : '';
+					$('<li '+sClass+'><a href="#">'+j+'</a></li>')
+						.insertBefore( $('li:last', an[i])[0] )
+						.bind('click', function (e) {
+							e.preventDefault();
 							oSettings._iDisplayStart = (parseInt($('a', this).text(),10)-1) * oPaging.iLength;
 							fnDraw( oSettings );
 						} );
@@ -84,13 +96,51 @@ $.extend( $.fn.dataTableExt.oPagination, {
 					$('li:first', an[i]).removeClass('disabled');
 				}
 
-				if ( oPaging.iPage === oPaging.iTotalPages-1 ) {
+				if ( oPaging.iPage === oPaging.iTotalPages-1 || oPaging.iTotalPages === 0 ) {
 					$('li:last', an[i]).addClass('disabled');
 				} else {
 					$('li:last', an[i]).removeClass('disabled');
 				}
 			}
-
 		}
 	}
 } );
+
+
+/*
+ * TableTools Bootstrap compatibility
+ * Required TableTools 2.1+
+ */
+if ( $.fn.DataTable.TableTools ) {
+	// Set the classes that TableTools uses to something suitable for Bootstrap
+	$.extend( true, $.fn.DataTable.TableTools.classes, {
+		"container": "DTTT btn-group",
+		"buttons": {
+			"normal": "btn",
+			"disabled": "disabled"
+		},
+		"collection": {
+			"container": "DTTT_dropdown dropdown-menu",
+			"buttons": {
+				"normal": "",
+				"disabled": "disabled"
+			}
+		},
+		"print": {
+			"info": "DTTT_print_info modal"
+		},
+		"select": {
+			"row": "active"
+		}
+	} );
+
+	// Have the collection use a bootstrap compatible dropdown
+	$.extend( true, $.fn.DataTable.TableTools.DEFAULTS.oTags, {
+		"collection": {
+			"container": "ul",
+			"button": "li",
+			"liner": "a"
+		}
+	} );
+}
+
