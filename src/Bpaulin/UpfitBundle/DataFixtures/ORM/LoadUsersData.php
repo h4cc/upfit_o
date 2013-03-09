@@ -2,13 +2,14 @@
 
 namespace Bpaulin\UpfitBundle\DataFixtures\ORM;
 
-use Doctrine\Common\DataFixtures\FixtureInterface;
+use Doctrine\Common\DataFixtures\AbstractFixture;
+use Doctrine\Common\DataFixtures\OrderedFixtureInterface;
 use Doctrine\Common\Persistence\ObjectManager;
 use Bpaulin\UpfitBundle\Entity\User;
 use Bpaulin\UpfitBundle\Entity\Social;
 use Bpaulin\UpfitBundle\Entity\UserSocial;
 
-class LoadUsersData implements FixtureInterface
+class LoadUsersData extends AbstractFixture implements OrderedFixtureInterface
 {
     /**
      * {@inheritDoc}
@@ -76,5 +77,13 @@ class LoadUsersData implements FixtureInterface
         $manager->persist($userSocial);
 
         $manager->flush();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getOrder()
+    {
+        return 1;
     }
 }

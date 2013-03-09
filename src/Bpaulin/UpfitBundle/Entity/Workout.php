@@ -27,7 +27,7 @@ class Workout
     private $session;
 
     /**
-     *@ORM\ManyToOne(targetEntity="Exercise", inversedBy="exercises")
+     *@ORM\ManyToOne(targetEntity="Exercise", inversedBy="workouts")
      */
     private $exercise;
 

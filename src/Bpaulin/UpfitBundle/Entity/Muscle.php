@@ -32,6 +32,7 @@ class Muscle
      * @ORM\OneToMany(targetEntity="Exercise", mappedBy="muscle")
      */
     private $exercises;
+
     /**
      * Constructor
      */

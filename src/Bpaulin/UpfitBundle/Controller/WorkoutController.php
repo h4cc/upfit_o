@@ -6,19 +6,19 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
-use Bpaulin\UpfitBundle\Entity\Session;
+use Bpaulin\UpfitBundle\Entity\Workout;
 
 /**
- * Session controller.
+ * Workout controller.
  *
- * @Route("/session")
+ * @Route("/workout")
  */
-class SessionController extends Controller
+class WorkoutController extends Controller
 {
     /**
-     * Lists all Session entities.
+     * Lists all Workout entities.
      *
-     * @Route("/", name="session")
+     * @Route("/", name="workout")
      * @Method("GET")
      * @Template()
      */
@@ -26,7 +26,7 @@ class SessionController extends Controller
     {
         $em = $this->getDoctrine()->getManager();
 
-        $entities = $em->getRepository('BpaulinUpfitBundle:Session')->findAll();
+        $entities = $em->getRepository('BpaulinUpfitBundle:Workout')->findAll();
 
         return array(
             'entities' => $entities,
@@ -34,9 +34,9 @@ class SessionController extends Controller
     }
 
     /**
-     * Finds and displays a Session entity.
+     * Finds and displays a Workout entity.
      *
-     * @Route("/{id}", name="session_show")
+     * @Route("/{id}", name="workout_show")
      * @Method("GET")
      * @Template()
      */
@@ -44,10 +44,10 @@ class SessionController extends Controller
     {
         $em = $this->getDoctrine()->getManager();
 
-        $entity = $em->getRepository('BpaulinUpfitBundle:Session')->find($id);
+        $entity = $em->getRepository('BpaulinUpfitBundle:Workout')->find($id);
 
         if (!$entity) {
-            throw $this->createNotFoundException('Unable to find Session entity.');
+            throw $this->createNotFoundException('Unable to find Workout entity.');
         }
 
         return array(

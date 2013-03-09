@@ -80,6 +80,7 @@ class User extends BaseUser
     {
         parent::__construct();
         $this->userSocials = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->members = new \Doctrine\Common\Collections\ArrayCollection();
     }
 
     /**

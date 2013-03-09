@@ -6,19 +6,19 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
-use Bpaulin\UpfitBundle\Entity\Session;
+use Bpaulin\UpfitBundle\Entity\Member;
 
 /**
- * Session controller.
+ * Member controller.
  *
- * @Route("/session")
+ * @Route("/member")
  */
-class SessionController extends Controller
+class MemberController extends Controller
 {
     /**
-     * Lists all Session entities.
+     * Lists all Member entities.
      *
-     * @Route("/", name="session")
+     * @Route("/", name="member")
      * @Method("GET")
      * @Template()
      */
@@ -26,7 +26,7 @@ class SessionController extends Controller
     {
         $em = $this->getDoctrine()->getManager();
 
-        $entities = $em->getRepository('BpaulinUpfitBundle:Session')->findAll();
+        $entities = $em->getRepository('BpaulinUpfitBundle:Member')->findAll();
 
         return array(
             'entities' => $entities,
@@ -34,9 +34,9 @@ class SessionController extends Controller
     }
 
     /**
-     * Finds and displays a Session entity.
+     * Finds and displays a Member entity.
      *
-     * @Route("/{id}", name="session_show")
+     * @Route("/{id}", name="member_show")
      * @Method("GET")
      * @Template()
      */
@@ -44,10 +44,10 @@ class SessionController extends Controller
     {
         $em = $this->getDoctrine()->getManager();
 
-        $entity = $em->getRepository('BpaulinUpfitBundle:Session')->find($id);
+        $entity = $em->getRepository('BpaulinUpfitBundle:Member')->find($id);
 
         if (!$entity) {
-            throw $this->createNotFoundException('Unable to find Session entity.');
+            throw $this->createNotFoundException('Unable to find Member entity.');
         }
 
         return array(

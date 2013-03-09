@@ -29,12 +29,12 @@ class Exercise
     private $name;
 
     /**
-     * @ORM\OneToMany(targetEntity="Workout", mappedBy="exercices")
+     * @ORM\OneToMany(targetEntity="Workout", mappedBy="exercise")
      */
     private $workouts;
 
     /**
-     *@ORM\ManyToOne(targetEntity="Muscle", inversedBy="exercices")
+     *@ORM\ManyToOne(targetEntity="Muscle", inversedBy="exercises")
      */
     private $muscle;
     /**
