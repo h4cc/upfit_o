@@ -6,7 +6,7 @@ use Doctrine\Common\DataFixtures\FixtureInterface;
 use Doctrine\Common\Persistence\ObjectManager;
 use Bpaulin\UpfitBundle\Entity\Muscle;
 
-class LoadMusclessData implements FixtureInterface
+class LoadMusclesData implements FixtureInterface
 {
     /**
      * {@inheritDoc}

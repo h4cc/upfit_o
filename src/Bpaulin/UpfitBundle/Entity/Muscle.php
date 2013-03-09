@@ -32,7 +32,13 @@ class Muscle
      * @ORM\OneToMany(targetEntity="Exercise", mappedBy="muscle")
      */
     private $exercises;
-
+    /**
+     * Constructor
+     */
+    public function __construct()
+    {
+        $this->exercises = new \Doctrine\Common\Collections\ArrayCollection();
+    }
 
     /**
      * Get id
@@ -47,7 +53,7 @@ class Muscle
     /**
      * Set name
      *
-     * @param string $name
+     * @param  string $name
      * @return Muscle
      */
     public function setName($name)
@@ -65,5 +71,38 @@ class Muscle
     public function getName()
     {
         return $this->name;
+    }
+
+    /**
+     * Add exercises
+     *
+     * @param  \Bpaulin\UpfitBundle\Entity\Exercise $exercises
+     * @return Muscle
+     */
+    public function addExercise(\Bpaulin\UpfitBundle\Entity\Exercise $exercises)
+    {
+        $this->exercises[] = $exercises;
+
+        return $this;
+    }
+
+    /**
+     * Remove exercises
+     *
+     * @param \Bpaulin\UpfitBundle\Entity\Exercise $exercises
+     */
+    public function removeExercise(\Bpaulin\UpfitBundle\Entity\Exercise $exercises)
+    {
+        $this->exercises->removeElement($exercises);
+    }
+
+    /**
+     * Get exercises
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getExercises()
+    {
+        return $this->exercises;
     }
 }

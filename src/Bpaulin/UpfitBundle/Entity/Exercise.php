@@ -37,6 +37,13 @@ class Exercise
      *@ORM\ManyToOne(targetEntity="Muscle", inversedBy="exercices")
      */
     private $muscle;
+    /**
+     * Constructor
+     */
+    public function __construct()
+    {
+        $this->workouts = new \Doctrine\Common\Collections\ArrayCollection();
+    }
 
     /**
      * Get id
@@ -51,7 +58,7 @@ class Exercise
     /**
      * Set name
      *
-     * @param string $name
+     * @param  string   $name
      * @return Exercise
      */
     public function setName($name)
@@ -70,11 +77,60 @@ class Exercise
     {
         return $this->name;
     }
+
     /**
-     * Constructor
+     * Add workouts
+     *
+     * @param  \Bpaulin\UpfitBundle\Entity\Workout $workouts
+     * @return Exercise
      */
-    public function __construct()
+    public function addWorkout(\Bpaulin\UpfitBundle\Entity\Workout $workouts)
     {
-        $this->exercises = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->workouts[] = $workouts;
+
+        return $this;
+    }
+
+    /**
+     * Remove workouts
+     *
+     * @param \Bpaulin\UpfitBundle\Entity\Workout $workouts
+     */
+    public function removeWorkout(\Bpaulin\UpfitBundle\Entity\Workout $workouts)
+    {
+        $this->workouts->removeElement($workouts);
+    }
+
+    /**
+     * Get workouts
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getWorkouts()
+    {
+        return $this->workouts;
+    }
+
+    /**
+     * Set muscle
+     *
+     * @param  \Bpaulin\UpfitBundle\Entity\Muscle $muscle
+     * @return Exercise
+     */
+    public function setMuscle(\Bpaulin\UpfitBundle\Entity\Muscle $muscle = null)
+    {
+        $this->muscle = $muscle;
+
+        return $this;
+    }
+
+    /**
+     * Get muscle
+     *
+     * @return \Bpaulin\UpfitBundle\Entity\Muscle
+     */
+    public function getMuscle()
+    {
+        return $this->muscle;
     }
 }

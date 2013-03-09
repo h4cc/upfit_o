@@ -29,9 +29,16 @@ class Club
     private $name;
 
     /**
-     * @ORM\OneToMany(targetEntity="Session", mappedBy="club")
+     * @ORM\OneToMany(targetEntity="Member", mappedBy="club")
      */
-    private $sessions;
+    private $members;
+    /**
+     * Constructor
+     */
+    public function __construct()
+    {
+        $this->members = new \Doctrine\Common\Collections\ArrayCollection();
+    }
 
     /**
      * Get id
@@ -46,7 +53,7 @@ class Club
     /**
      * Set name
      *
-     * @param string $name
+     * @param  string $name
      * @return Club
      */
     public function setName($name)
@@ -65,44 +72,37 @@ class Club
     {
         return $this->name;
     }
-    /**
-     * Constructor
-     */
-    public function __construct()
-    {
-        $this->sessions = new \Doctrine\Common\Collections\ArrayCollection();
-    }
 
     /**
-     * Add sessions
+     * Add members
      *
-     * @param \Bpaulin\UpfitBundle\Entity\Session $sessions
+     * @param  \Bpaulin\UpfitBundle\Entity\Member $members
      * @return Club
      */
-    public function addSession(\Bpaulin\UpfitBundle\Entity\Session $sessions)
+    public function addMember(\Bpaulin\UpfitBundle\Entity\Member $members)
     {
-        $this->sessions[] = $sessions;
+        $this->members[] = $members;
 
         return $this;
     }
 
     /**
-     * Remove sessions
+     * Remove members
      *
-     * @param \Bpaulin\UpfitBundle\Entity\Session $sessions
+     * @param \Bpaulin\UpfitBundle\Entity\Member $members
      */
-    public function removeSession(\Bpaulin\UpfitBundle\Entity\Session $sessions)
+    public function removeMember(\Bpaulin\UpfitBundle\Entity\Member $members)
     {
-        $this->sessions->removeElement($sessions);
+        $this->members->removeElement($members);
     }
 
     /**
-     * Get sessions
+     * Get members
      *
      * @return \Doctrine\Common\Collections\Collection
      */
-    public function getSessions()
+    public function getMembers()
     {
-        return $this->sessions;
+        return $this->members;
     }
 }

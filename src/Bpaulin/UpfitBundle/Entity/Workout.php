@@ -44,7 +44,7 @@ class Workout
     /**
      * Set session
      *
-     * @param \Bpaulin\UpfitBundle\Entity\Session $session
+     * @param  \Bpaulin\UpfitBundle\Entity\Session $session
      * @return Workout
      */
     public function setSession(\Bpaulin\UpfitBundle\Entity\Session $session = null)
@@ -67,7 +67,7 @@ class Workout
     /**
      * Set exercise
      *
-     * @param \Bpaulin\UpfitBundle\Entity\Exercise $exercise
+     * @param  \Bpaulin\UpfitBundle\Entity\Exercise $exercise
      * @return Workout
      */
     public function setExercise(\Bpaulin\UpfitBundle\Entity\Exercise $exercise = null)

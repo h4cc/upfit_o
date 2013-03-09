@@ -22,19 +22,21 @@ class Session
     private $id;
 
     /**
-     *@ORM\ManyToOne(targetEntity="User", inversedBy="sessions")
+     *@ORM\ManyToOne(targetEntity="Member", inversedBy="sessions")
      */
-    private $user;
-
-    /**
-     *@ORM\ManyToOne(targetEntity="Club", inversedBy="sessions")
-     */
-    private $club;
+    private $member;
 
     /**
      * @ORM\OneToMany(targetEntity="Workout", mappedBy="session")
      */
     private $workouts;
+    /**
+     * Constructor
+     */
+    public function __construct()
+    {
+        $this->workouts = new \Doctrine\Common\Collections\ArrayCollection();
+    }
 
     /**
      * Get id
@@ -45,64 +47,34 @@ class Session
     {
         return $this->id;
     }
-    /**
-     * Constructor
-     */
-    public function __construct()
-    {
-        $this->workouts = new \Doctrine\Common\Collections\ArrayCollection();
-    }
 
     /**
-     * Set user
+     * Set member
      *
-     * @param \Bpaulin\UpfitBundle\Entity\User $user
+     * @param  \Bpaulin\UpfitBundle\Entity\Member $member
      * @return Session
      */
-    public function setUser(\Bpaulin\UpfitBundle\Entity\User $user = null)
+    public function setMember(\Bpaulin\UpfitBundle\Entity\Member $member = null)
     {
-        $this->user = $user;
+        $this->member = $member;
 
         return $this;
     }
 
     /**
-     * Get user
+     * Get member
      *
-     * @return \Bpaulin\UpfitBundle\Entity\User
+     * @return \Bpaulin\UpfitBundle\Entity\Member
      */
-    public function getUser()
+    public function getMember()
     {
-        return $this->user;
-    }
-
-    /**
-     * Set club
-     *
-     * @param \Bpaulin\UpfitBundle\Entity\Club $club
-     * @return Session
-     */
-    public function setClub(\Bpaulin\UpfitBundle\Entity\Club $club = null)
-    {
-        $this->club = $club;
-
-        return $this;
-    }
-
-    /**
-     * Get club
-     *
-     * @return \Bpaulin\UpfitBundle\Entity\Club
-     */
-    public function getClub()
-    {
-        return $this->club;
+        return $this->member;
     }
 
     /**
      * Add workouts
      *
-     * @param \Bpaulin\UpfitBundle\Entity\Workout $workouts
+     * @param  \Bpaulin\UpfitBundle\Entity\Workout $workouts
      * @return Session
      */
     public function addWorkout(\Bpaulin\UpfitBundle\Entity\Workout $workouts)
