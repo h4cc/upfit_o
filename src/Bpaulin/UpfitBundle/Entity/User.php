@@ -28,6 +28,11 @@ class User extends BaseUser
     private $userSocials;
 
     /**
+     * @ORM\OneToMany(targetEntity="Session", mappedBy="user")
+     */
+    private $sessions;
+
+    /**
      * Get id
      *
      * @return integer
@@ -108,5 +113,38 @@ class User extends BaseUser
     public function getUserSocials()
     {
         return $this->userSocials;
+    }
+
+    /**
+     * Add sessions
+     *
+     * @param \Bpaulin\UpfitBundle\Entity\Session $sessions
+     * @return User
+     */
+    public function addSession(\Bpaulin\UpfitBundle\Entity\Session $sessions)
+    {
+        $this->sessions[] = $sessions;
+
+        return $this;
+    }
+
+    /**
+     * Remove sessions
+     *
+     * @param \Bpaulin\UpfitBundle\Entity\Session $sessions
+     */
+    public function removeSession(\Bpaulin\UpfitBundle\Entity\Session $sessions)
+    {
+        $this->sessions->removeElement($sessions);
+    }
+
+    /**
+     * Get sessions
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getSessions()
+    {
+        return $this->sessions;
     }
 }

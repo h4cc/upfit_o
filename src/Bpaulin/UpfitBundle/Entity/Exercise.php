@@ -28,11 +28,16 @@ class Exercise
      */
     private $name;
 
+    /**
+     * @ORM\OneToMany(targetEntity="Workout", mappedBy="exercices")
+     */
+    private $exercises;
+
 
     /**
      * Get id
      *
-     * @return integer 
+     * @return integer
      */
     public function getId()
     {
@@ -48,17 +53,57 @@ class Exercise
     public function setName($name)
     {
         $this->name = $name;
-    
+
         return $this;
     }
 
     /**
      * Get name
      *
-     * @return string 
+     * @return string
      */
     public function getName()
     {
         return $this->name;
+    }
+    /**
+     * Constructor
+     */
+    public function __construct()
+    {
+        $this->exercises = new \Doctrine\Common\Collections\ArrayCollection();
+    }
+
+    /**
+     * Add exercises
+     *
+     * @param \Bpaulin\UpfitBundle\Entity\Workout $exercises
+     * @return Exercise
+     */
+    public function addExercise(\Bpaulin\UpfitBundle\Entity\Workout $exercises)
+    {
+        $this->exercises[] = $exercises;
+
+        return $this;
+    }
+
+    /**
+     * Remove exercises
+     *
+     * @param \Bpaulin\UpfitBundle\Entity\Workout $exercises
+     */
+    public function removeExercise(\Bpaulin\UpfitBundle\Entity\Workout $exercises)
+    {
+        $this->exercises->removeElement($exercises);
+    }
+
+    /**
+     * Get exercises
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getExercises()
+    {
+        return $this->exercises;
     }
 }

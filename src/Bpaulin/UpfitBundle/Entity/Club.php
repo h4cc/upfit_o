@@ -28,11 +28,15 @@ class Club
      */
     private $name;
 
+    /**
+     * @ORM\OneToMany(targetEntity="Session", mappedBy="club")
+     */
+    private $sessions;
 
     /**
      * Get id
      *
-     * @return integer 
+     * @return integer
      */
     public function getId()
     {
@@ -48,17 +52,57 @@ class Club
     public function setName($name)
     {
         $this->name = $name;
-    
+
         return $this;
     }
 
     /**
      * Get name
      *
-     * @return string 
+     * @return string
      */
     public function getName()
     {
         return $this->name;
+    }
+    /**
+     * Constructor
+     */
+    public function __construct()
+    {
+        $this->sessions = new \Doctrine\Common\Collections\ArrayCollection();
+    }
+
+    /**
+     * Add sessions
+     *
+     * @param \Bpaulin\UpfitBundle\Entity\Session $sessions
+     * @return Club
+     */
+    public function addSession(\Bpaulin\UpfitBundle\Entity\Session $sessions)
+    {
+        $this->sessions[] = $sessions;
+
+        return $this;
+    }
+
+    /**
+     * Remove sessions
+     *
+     * @param \Bpaulin\UpfitBundle\Entity\Session $sessions
+     */
+    public function removeSession(\Bpaulin\UpfitBundle\Entity\Session $sessions)
+    {
+        $this->sessions->removeElement($sessions);
+    }
+
+    /**
+     * Get sessions
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getSessions()
+    {
+        return $this->sessions;
     }
 }

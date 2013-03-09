@@ -21,14 +21,69 @@ class Workout
      */
     private $id;
 
+    /**
+     *@ORM\ManyToOne(targetEntity="Session", inversedBy="workouts")
+     */
+    private $session;
+
+    /**
+     *@ORM\ManyToOne(targetEntity="Exercise", inversedBy="exercises")
+     */
+    private $exercise;
 
     /**
      * Get id
      *
-     * @return integer 
+     * @return integer
      */
     public function getId()
     {
         return $this->id;
+    }
+
+    /**
+     * Set session
+     *
+     * @param \Bpaulin\UpfitBundle\Entity\Session $session
+     * @return Workout
+     */
+    public function setSession(\Bpaulin\UpfitBundle\Entity\Session $session = null)
+    {
+        $this->session = $session;
+
+        return $this;
+    }
+
+    /**
+     * Get session
+     *
+     * @return \Bpaulin\UpfitBundle\Entity\Session
+     */
+    public function getSession()
+    {
+        return $this->session;
+    }
+
+    /**
+     * Set exercise
+     *
+     * @param \Bpaulin\UpfitBundle\Entity\Exercise $exercise
+     * @return Workout
+     */
+    public function setExercise(\Bpaulin\UpfitBundle\Entity\Exercise $exercise = null)
+    {
+        $this->exercise = $exercise;
+
+        return $this;
+    }
+
+    /**
+     * Get exercise
+     *
+     * @return \Bpaulin\UpfitBundle\Entity\Exercise
+     */
+    public function getExercise()
+    {
+        return $this->exercise;
     }
 }
