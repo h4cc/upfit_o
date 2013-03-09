@@ -70,16 +70,16 @@
 
     <div class="container-fluid">
       <div class="row-fluid">
-      {% if app.session.hasFlash('error') %}
+      {% for flashMessage in app.session.flashbag.get('error') %}
           <div class="alert-error">
-              {{ app.session.flash('error') }}
+              {{ flashMessage }}
           </div>
-      {% endif %}
-      {% if app.session.hasFlash('success') %}
+      {% endfor %}
+      {% for flashMessage in app.session.flashbag.get('success') %}
           <div class="alert-success">
-              {{ app.session.flash('success') }}
+              {{ flashMessage }}
           </div>
-      {% endif %}
+      {% endfor %}
     {% block body %}
     {% endblock %}
       </div>
