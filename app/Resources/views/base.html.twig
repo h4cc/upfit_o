@@ -16,8 +16,7 @@
       }
     </style>
     {% block stylesheets %}
-    {% stylesheets '@BpaulinUpfitBundle/Resources/public/bootstrap/css/bootstrap.min.css'
-                    '@BpaulinUpfitBundle/Resources/public/bootstrap/css/bootstrap-responsive.min.css'
+    {% stylesheets '//netdna.bootstrapcdn.com/twitter-bootstrap/2.3.1/css/bootstrap-combined.min.css'
                      filter='cssrewrite' %}
     <link rel="stylesheet" href="{{ asset_url }}"/>
     {% endstylesheets %}
@@ -92,8 +91,8 @@
     </div><!-- container -->
 
     {% block javascripts %}
-    {% javascripts '@BpaulinUpfitBundle/Resources/public/jquery/jquery-1.8.3.min.js'
-                   '@BpaulinUpfitBundle/Resources/public/bootstrap/js/bootstrap.min.js' %}
+    {% javascripts '//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js'
+                   '//netdna.bootstrapcdn.com/twitter-bootstrap/2.3.1/js/bootstrap.min.js' %}
     <script type="text/javascript" src="{{ asset_url }}"></script>
     {% endjavascripts %}
     {% endblock %}
