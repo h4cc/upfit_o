@@ -5,12 +5,12 @@ namespace Bpaulin\UpfitBundle\Entity;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * Exercise
+ * Muscle
  *
  * @ORM\Table()
- * @ORM\Entity(repositoryClass="Bpaulin\UpfitBundle\Entity\ExerciseRepository")
+ * @ORM\Entity(repositoryClass="Bpaulin\UpfitBundle\Entity\MuscleRepository")
  */
-class Exercise
+class Muscle
 {
     /**
      * @var integer
@@ -29,14 +29,10 @@ class Exercise
     private $name;
 
     /**
-     * @ORM\OneToMany(targetEntity="Workout", mappedBy="exercices")
+     * @ORM\OneToMany(targetEntity="Exercise", mappedBy="muscle")
      */
-    private $workouts;
+    private $exercises;
 
-    /**
-     *@ORM\ManyToOne(targetEntity="Muscle", inversedBy="exercices")
-     */
-    private $muscle;
 
     /**
      * Get id
@@ -52,7 +48,7 @@ class Exercise
      * Set name
      *
      * @param string $name
-     * @return Exercise
+     * @return Muscle
      */
     public function setName($name)
     {
@@ -69,12 +65,5 @@ class Exercise
     public function getName()
     {
         return $this->name;
-    }
-    /**
-     * Constructor
-     */
-    public function __construct()
-    {
-        $this->exercises = new \Doctrine\Common\Collections\ArrayCollection();
     }
 }
