@@ -1,13 +1,15 @@
 [![Build Status](https://secure.travis-ci.org/bpaulin/upfit.png?branch=master)](https://travis-ci.org/bpaulin/upfit)
 
-# Symfony Upfit
+# Upfit
+
+Avant tout me former, eventuellement servir a gérer des séances de sport
 
 ## mise en place
 
 ### dépendances
 
     curl -s https://getcomposer.org/installer | php
-    composer.phar update --dev
+    php composer.phar update --dev
 
 ### droits
 
