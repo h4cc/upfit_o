@@ -1,0 +1,41 @@
+{% extends "::base.html.twig" %}
+
+{% block body %}
+<h1>Bienvenue!</h1>
+
+<h2>Mes clubs</h2>
+{% if members %}
+<table class="table">
+	<thead>
+		<tr>
+			<th>club</th>
+			<th>owner</th>
+			<th>admin</th>
+		</tr>
+	</thead>
+	<tbody>
+		{% for member in members %}
+		<tr>
+			<td>{{ member.club.name }}</td>
+			<td>{{ member.owner }}</td>
+			<td>{{ member.admin }}</td>
+		</tr>
+		{% endfor %}
+	</tbody>
+</table>
+<h2>Mes sessions</h2>
+	{% if sessions %}
+	{% else %}
+	<p>
+		Vous n'avez aucune session enregistrées! C'est dommage vu que c'est quand même un peu le but
+	</p>
+	<a class="btn btn-primary" href="">Démarrer une session</a>
+	{% endif %}
+{% else %}
+<p>
+	Vous n'etes inscrit a aucun club! Pas grave, vous pouvez créer votre propre club
+</p>
+<a id="user_club_create" class="btn btn-primary" href="{{ path('user_club_create') }}">Créer mon club</a>
+{% endif %}
+
+{% endblock %}

@@ -38,6 +38,7 @@
             {% if app.user.username is defined %}
               <a href="#" class="dropdown-toggle" data-toggle="dropdown">
                 <img src='{{ app.user.gravatarUrl(24) }}'/>
+                {{ app.user.username }}
                 <b class="caret"></b>
               </a>
               <ul class="dropdown-menu">
@@ -61,6 +62,7 @@
           <div class="nav-collapse collapse">
             <ul class="nav">
               <li><a href="https://github.com/bpaulin/upfit" target='_blank'>Github</a></li>
+              <li><a href="{{ path('user_home') }}">Mon espace</a></li>
             </ul>
           </div><!--/.nav-collapse -->
         </div>
@@ -79,15 +81,9 @@
               {{ flashMessage }}
           </div>
       {% endfor %}
-    {% block body %}
-    {% endblock %}
+      {% block body %}
+      {% endblock %}
       </div>
-
-      <hr>
-
-      <footer>
-        <p>&copy; Company 2012</p>
-      </footer>
     </div><!-- container -->
 
     {% block javascripts %}

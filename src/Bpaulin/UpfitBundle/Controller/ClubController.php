@@ -5,53 +5,55 @@ namespace Bpaulin\UpfitBundle\Controller;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Bpaulin\UpfitBundle\Entity\Club;
+use Bpaulin\UpfitBundle\Entity\Member;
 
 /**
  * Club controller.
  *
- * @Route("/club")
+ * @Route("/user/club")
  */
 class ClubController extends Controller
 {
     /**
-     * Lists all Club entities.
+     * Create user personnal club
      *
-     * @Route("/", name="club")
+     * @Route("/create", name="user_club_create")
      * @Method("GET")
-     * @Template()
      */
-    public function indexAction()
+    public function createAction()
     {
+        $referer = $this->getRequest()->headers->get('referer');
+
         $em = $this->getDoctrine()->getManager();
+        $repoMember = $em->getRepository('BpaulinUpfitBundle:Member');
+        $user = $this->getUser();
 
-        $entities = $em->getRepository('BpaulinUpfitBundle:Club')->findAll();
-
-        return array(
-            'entities' => $entities,
+        // Check if club exists
+        $member = $repoMember->findOneBy(
+            array(
+                'user'  => $user,
+                'owner' => true,
+            )
         );
-    }
+        if (!$member) {
+            // club does not exist
+            $club = new Club();
+            $club->setName($user->getUsername());
+            $em->persist($club);
 
-    /**
-     * Finds and displays a Club entity.
-     *
-     * @Route("/{id}", name="club_show")
-     * @Method("GET")
-     * @Template()
-     */
-    public function showAction($id)
-    {
-        $em = $this->getDoctrine()->getManager();
+            $member = new Member();
+            $member
+                ->setClub($club)
+                ->setUser($user)
+                ->setOwner(true)
+                ->setAdmin(true);
 
-        $entity = $em->getRepository('BpaulinUpfitBundle:Club')->find($id);
+            $em->persist($member);
 
-        if (!$entity) {
-            throw $this->createNotFoundException('Unable to find Club entity.');
+            $em->flush();
         }
 
-        return array(
-            'entity'      => $entity,
-        );
+        return $this->redirect($referer);
     }
 }

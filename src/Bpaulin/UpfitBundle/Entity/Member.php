@@ -27,6 +27,11 @@ class Member
     private $admin;
 
     /**
+     * @ORM\Column(name="owner", type="boolean")
+     */
+    private $owner;
+
+    /**
      *@ORM\ManyToOne(targetEntity="User", inversedBy="members")
      */
     private $user;
@@ -159,5 +164,28 @@ class Member
     public function getAdmin()
     {
         return $this->admin;
+    }
+
+    /**
+     * Set owner
+     *
+     * @param  boolean $owner
+     * @return Member
+     */
+    public function setOwner($owner)
+    {
+        $this->owner = $owner;
+
+        return $this;
+    }
+
+    /**
+     * Get owner
+     *
+     * @return boolean
+     */
+    public function getOwner()
+    {
+        return $this->owner;
     }
 }
