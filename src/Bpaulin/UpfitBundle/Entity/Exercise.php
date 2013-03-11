@@ -37,6 +37,12 @@ class Exercise
      *@ORM\ManyToOne(targetEntity="Muscle", inversedBy="exercises")
      */
     private $muscle;
+
+    /**
+     *@ORM\ManyToOne(targetEntity="Club", inversedBy="exercises")
+     */
+    private $club;
+
     /**
      * Constructor
      */
@@ -132,5 +138,28 @@ class Exercise
     public function getMuscle()
     {
         return $this->muscle;
+    }
+
+    /**
+     * Set club
+     *
+     * @param  \Bpaulin\UpfitBundle\Entity\Club $club
+     * @return Exercise
+     */
+    public function setClub(\Bpaulin\UpfitBundle\Entity\Club $club = null)
+    {
+        $this->club = $club;
+
+        return $this;
+    }
+
+    /**
+     * Get club
+     *
+     * @return \Bpaulin\UpfitBundle\Entity\Club
+     */
+    public function getClub()
+    {
+        return $this->club;
     }
 }

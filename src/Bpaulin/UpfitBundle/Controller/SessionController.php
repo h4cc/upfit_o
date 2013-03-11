@@ -11,10 +11,28 @@ use Bpaulin\UpfitBundle\Entity\Session;
 /**
  * Session controller.
  *
- * @Route("/session")
+ * @Route("/user/session")
  */
 class SessionController extends Controller
 {
+    /**
+     * Commencer une session
+     *
+     * @Route("/new", name="user_session_new")
+     * @Method("GET")
+     * @Template()
+     */
+    public function newAction()
+    {
+        $em = $this->getDoctrine()->getManager();
+
+        $entities = $em->getRepository('BpaulinUpfitBundle:Session')->findAll();
+
+        return array(
+            'entities' => $entities,
+        );
+    }
+
     /**
      * Lists all Session entities.
      *

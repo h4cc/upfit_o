@@ -32,6 +32,12 @@ class Club
      * @ORM\OneToMany(targetEntity="Member", mappedBy="club")
      */
     private $members;
+
+    /**
+     * @ORM\OneToMany(targetEntity="Exercise", mappedBy="club")
+     */
+    private $exercises;
+
     /**
      * Constructor
      */
@@ -104,5 +110,38 @@ class Club
     public function getMembers()
     {
         return $this->members;
+    }
+
+    /**
+     * Add exercises
+     *
+     * @param  \Bpaulin\UpfitBundle\Entity\Exercise $exercises
+     * @return Club
+     */
+    public function addExercise(\Bpaulin\UpfitBundle\Entity\Exercise $exercises)
+    {
+        $this->exercises[] = $exercises;
+
+        return $this;
+    }
+
+    /**
+     * Remove exercises
+     *
+     * @param \Bpaulin\UpfitBundle\Entity\Exercise $exercises
+     */
+    public function removeExercise(\Bpaulin\UpfitBundle\Entity\Exercise $exercises)
+    {
+        $this->exercises->removeElement($exercises);
+    }
+
+    /**
+     * Get exercises
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getExercises()
+    {
+        return $this->exercises;
     }
 }

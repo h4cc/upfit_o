@@ -19,7 +19,7 @@ abstract class AbstractController extends Controller
         */
         $get['columns'] = &$columns;
 
-        $em = $this->getDoctrine()->getEntityManager();
+        $em = $this->getDoctrine()->getManager();
         $ajaxTable = $em->getRepository($entity)->ajaxTable($get, true);
 
         $countUnfiltered = $ajaxTable[0];

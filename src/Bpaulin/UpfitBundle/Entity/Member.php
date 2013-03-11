@@ -22,6 +22,11 @@ class Member
     private $id;
 
     /**
+     * @ORM\Column(name="admin", type="boolean")
+     */
+    private $admin;
+
+    /**
      *@ORM\ManyToOne(targetEntity="User", inversedBy="members")
      */
     private $user;
@@ -35,6 +40,7 @@ class Member
      * @ORM\OneToMany(targetEntity="Session", mappedBy="member")
      */
     private $sessions;
+
     /**
      * Constructor
      */
@@ -130,5 +136,28 @@ class Member
     public function getSessions()
     {
         return $this->sessions;
+    }
+
+    /**
+     * Set admin
+     *
+     * @param  boolean $admin
+     * @return Member
+     */
+    public function setAdmin($admin)
+    {
+        $this->admin = $admin;
+
+        return $this;
+    }
+
+    /**
+     * Get admin
+     *
+     * @return boolean
+     */
+    public function getAdmin()
+    {
+        return $this->admin;
     }
 }
