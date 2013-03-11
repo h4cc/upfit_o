@@ -77,6 +77,9 @@
     </target>
 
     <target name="report:test">
+        <exec command="./loadDbTest.sh"
+              passthru="true"
+              checkreturn="true" />
         <exec command="phpunit --testdox-html ${dir.reports}/testdox.html --log-junit ${dir.reports}/phpunit.xml --coverage-clover ${dir.reports}/clover.xml --coverage-html ${dir.reports.coverage}/ -c ${dir.app}"
               passthru="true" />
     </target>
