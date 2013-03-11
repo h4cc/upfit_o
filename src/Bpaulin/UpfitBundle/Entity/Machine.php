@@ -34,6 +34,11 @@ class Machine
     private $adjustments;
 
     /**
+     * @ORM\OneToMany(targetEntity="Exercise", mappedBy="machine")
+     */
+    private $exercises;
+
+    /**
      * Get id
      *
      * @return integer
@@ -104,5 +109,38 @@ class Machine
     public function getAdjustments()
     {
         return $this->adjustments;
+    }
+
+    /**
+     * Add exercises
+     *
+     * @param  \Bpaulin\UpfitBundle\Entity\Exercise $exercises
+     * @return Machine
+     */
+    public function addExercise(\Bpaulin\UpfitBundle\Entity\Exercise $exercises)
+    {
+        $this->exercises[] = $exercises;
+
+        return $this;
+    }
+
+    /**
+     * Remove exercises
+     *
+     * @param \Bpaulin\UpfitBundle\Entity\Exercise $exercises
+     */
+    public function removeExercise(\Bpaulin\UpfitBundle\Entity\Exercise $exercises)
+    {
+        $this->exercises->removeElement($exercises);
+    }
+
+    /**
+     * Get exercises
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getExercises()
+    {
+        return $this->exercises;
     }
 }
