@@ -21,7 +21,7 @@ doctrine:
 doctrine:
     dbal:
         driver:   pdo_sqlite
-        path:   "test.db"
+        path:     "test.db"
         host:     ~
         port:     ~
         dbname:   ~
