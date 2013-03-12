@@ -17,11 +17,14 @@ swiftmailer:
 
 # Doctrine Configuration
 doctrine:
+    dbal:# Doctrine Configuration
+doctrine:
     dbal:
-        driver:   "%database_driver%"
-        host:     "%database_host%"
-        port:     "%database_port%"
-        dbname:   "%database_name%_test"
-        user:     "%database_user%"
-        password: "%database_password%"
+        driver:   pdo_sqlite
+        path:   "test.db"
+        host:     ~
+        port:     ~
+        dbname:   ~
+        user:     ~
+        password: ~
         charset:  UTF8

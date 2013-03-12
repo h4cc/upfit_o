@@ -5,8 +5,9 @@ app/config/parameters.yml
 app/cache/*
 app/logs/*
 build/
-vendor
-bin
+vendor/
+bin/
+test.db
 composer.phar
 php-cs-fixer.phar
 *~
