@@ -31,22 +31,22 @@ class ClubControllerTest extends WebTestCase
     public function testUserCanCreateHisOwnClub()
     {
         $client = static::createClientUser();
+
         $crawler = $client->request('GET', '/user/');
-
         $this->assertEquals(200, $client->getResponse()->getStatusCode());
-
         $this->assertEquals(1, $crawler->filter('a#user_club_create')->count());
+        $this->assertEquals(0, $crawler->filter('table#members tbody tr')->count());
 
         $link = $crawler->filter('a#user_club_create')->first()->link();
         $uri = $link->getUri();
-
         $crawler = $client->click($link);
         $crawler = $client->followRedirect();
-
         $this->assertEquals(1, $crawler->filter('table#members tbody tr')->count());
+        $this->assertEquals(1, $crawler->filter('.alert-success')->count());
 
         $crawler = $client->request('GET', $uri);
         $crawler = $client->followRedirect();
         $this->assertEquals(1, $crawler->filter('table#members tbody tr')->count());
+        $this->assertEquals(1, $crawler->filter('.alert-info')->count());
     }
 }

@@ -36,7 +36,10 @@ class ClubController extends Controller
                 'owner' => true,
             )
         );
-        if (!$member) {
+        if ($member) {
+            // club exists
+            $this->get('session')->getFlashBag()->add('info', 'Club already exist');
+        } else {
             // club does not exist
             $club = new Club();
             $club->setName($user->getUsername());
@@ -48,10 +51,10 @@ class ClubController extends Controller
                 ->setUser($user)
                 ->setOwner(true)
                 ->setAdmin(true);
-
             $em->persist($member);
 
             $em->flush();
+            $this->get('session')->getFlashBag()->add('success', 'Club created');
         }
 
         return $this->redirect($referer);
