@@ -20,11 +20,4 @@ doctrine:
     dbal:# Doctrine Configuration
 doctrine:
     dbal:
-        driver:   pdo_sqlite
-        path:     "test.db"
-        host:     ~
-        port:     ~
-        dbname:   ~
-        user:     ~
-        password: ~
-        charset:  UTF8
+        dbname:   "%database_name%_test"
