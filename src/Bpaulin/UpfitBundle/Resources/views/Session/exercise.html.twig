@@ -1,0 +1,22 @@
+{% extends '::base.html.twig' %}
+
+{% block body -%}
+<h1>
+Session</br>
+<small>{{ session.member.club.name }}, started {{ session.begin|date("m/d/Y") }}</small>
+</h1>
+{{ session.id }}
+
+<ul>
+{% if session.member.admin %}
+    <li><a href="{{ path('session_new_exercise', { idSession: session.id })}}">Create an exercise</a></li>
+{% else %}
+    <li>You can't create an exercise for this club</li>
+{% endif %}
+{% for exercise in session.member.club.exercises %}
+{% else %}
+    <li>No exercise for this club</li>
+{% endfor %}
+    <li><a href="{{ path('user_session_end', { idSession: session.id })}}">End Session</a></li>
+</ul>
+{% endblock %}

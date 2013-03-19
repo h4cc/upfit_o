@@ -24,12 +24,15 @@
 	</tbody>
 </table>
 <h2>Mes sessions</h2>
+    <a class="btn btn-primary" href="{{ path('user_session_new') }}">Démarrer une session</a>
 	{% if sessions %}
+        {% for session in sessions %}
+            {{ session.begin|date("m/d/Y") }}
+        {% endfor %}
 	{% else %}
 	<p>
 		Vous n'avez aucune session enregistrées! C'est dommage vu que c'est quand même un peu le but
 	</p>
-	<a class="btn btn-primary" href="">Démarrer une session</a>
 	{% endif %}
 {% else %}
 <p>

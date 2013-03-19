@@ -31,14 +31,13 @@ class SessionControllerTest extends WebTestCase
     public function testAccessDeniedForAnonymousUserToSession()
     {
         $this->assertEquals(1, 1);
-        // $client = static::createClient();
+        $client = static::createClient();
 
-        // $crawler = $client->request('GET', '/user/session/');
-        // $crawler = $client->followRedirect();
-        // $this->assertEquals('http://localhost/login', $client->getRequest()->getUri());
+        $crawler = $client->request('GET', '/user/session/');
+        $crawler = $client->followRedirect();
+        $this->assertEquals('http://localhost/login', $client->getRequest()->getUri());
     }
 
-    /*
     public function testUserHasLinkToBeginPersonnalSession()
     {
         $client = $this->createClientUser();
@@ -51,12 +50,11 @@ class SessionControllerTest extends WebTestCase
 
     public function testPersonnalSession()
     {
-        $client = $this->createClientUser();
+        $client = $this->createClientUser('adminclub1', 'adminclub1');
         $crawler = $client->request('GET', '/user/session/new');
         $this->assertEquals(
             200,
             $client->getResponse()->getStatusCode()
         );
     }
-    */
 }

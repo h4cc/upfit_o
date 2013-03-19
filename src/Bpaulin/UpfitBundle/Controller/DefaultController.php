@@ -34,9 +34,11 @@ class DefaultController extends Controller
             )
         );
 
+        $sessions = $em->getRepository('BpaulinUpfitBundle:Session')->findByUser($this->getUser());
+
         return array(
             'members' => $members,
-            'sessions' => false,
+            'sessions' => $sessions,
         );
     }
 }

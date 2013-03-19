@@ -9,6 +9,7 @@ use Doctrine\ORM\Mapping as ORM;
  *
  * @ORM\Table()
  * @ORM\Entity(repositoryClass="Bpaulin\UpfitBundle\Entity\SessionRepository")
+ * @ORM\HasLifecycleCallbacks()
  */
 class Session
 {
@@ -30,12 +31,31 @@ class Session
      * @ORM\OneToMany(targetEntity="Workout", mappedBy="session")
      */
     private $workouts;
+
+    /**
+     * @ORM\Column(name="begin", type="datetime")
+     */
+    private $begin;
+
+    /**
+     * @ORM\Column(name="end", type="datetime", nullable=true)
+     */
+    private $end;
+
     /**
      * Constructor
      */
     public function __construct()
     {
         $this->workouts = new \Doctrine\Common\Collections\ArrayCollection();
+    }
+
+    /**
+     * @ORM\PrePersist
+     */
+    public function prePersist()
+    {
+        $this->begin = new \DateTime();
     }
 
     /**
@@ -102,5 +122,51 @@ class Session
     public function getWorkouts()
     {
         return $this->workouts;
+    }
+
+    /**
+     * Set begin
+     *
+     * @param \DateTime $begin
+     * @return Session
+     */
+    public function setBegin($begin)
+    {
+        $this->begin = $begin;
+
+        return $this;
+    }
+
+    /**
+     * Get begin
+     *
+     * @return \DateTime
+     */
+    public function getBegin()
+    {
+        return $this->begin;
+    }
+
+    /**
+     * Set end
+     *
+     * @param \DateTime $end
+     * @return Session
+     */
+    public function setEnd($end)
+    {
+        $this->end = $end;
+
+        return $this;
+    }
+
+    /**
+     * Get end
+     *
+     * @return \DateTime
+     */
+    public function getEnd()
+    {
+        return $this->end;
     }
 }

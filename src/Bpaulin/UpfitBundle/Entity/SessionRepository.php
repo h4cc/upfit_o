@@ -12,4 +12,11 @@ use Doctrine\ORM\EntityRepository;
  */
 class SessionRepository extends EntityRepository
 {
+    public function findByUser($user)
+    {
+        return $this->getEntityManager()
+            ->createQuery('SELECT s FROM BpaulinUpfitBundle:Session s JOIN s.member m WHERE m.user=:user')
+            ->setParameter('user', $user)
+            ->getResult();
+    }
 }
