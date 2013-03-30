@@ -1,5 +1,5 @@
 {% extends '::base.html.twig' %}
 {% block body %}
-<h1>Admin <small>{{ club.name }}</small></h1>
+<h1>Administration <small>{{ club.name }}</small></h1>
 <a href="{{ path('exercise', {'idClub' : club.id}) }}">Exercises</a>
 {% endblock %}

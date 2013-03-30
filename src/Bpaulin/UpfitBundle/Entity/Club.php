@@ -47,6 +47,15 @@ class Club
     }
 
     /**
+     * string representation
+     *
+     * @return string
+     */
+    public function __toString() {
+        return $this->name;
+    }
+
+    /**
      * Get id
      *
      * @return integer

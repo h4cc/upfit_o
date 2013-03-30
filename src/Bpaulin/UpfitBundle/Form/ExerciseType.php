@@ -13,8 +13,7 @@ class ExerciseType extends AbstractType
         $builder
             ->add('name')
             ->add('muscle')
-            ->add('machine')
-            ->add('club');
+            ->add('machine');
     }
 
     public function setDefaultOptions(OptionsResolverInterface $resolver)

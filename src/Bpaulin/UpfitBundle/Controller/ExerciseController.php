@@ -24,41 +24,30 @@ class ExerciseController extends Controller
      * @Method("GET")
      * @Template()
      */
-    public function indexAction()
+    public function indexAction($idClub)
     {
         $em = $this->getDoctrine()->getManager();
 
-        $entities = $em->getRepository('BpaulinUpfitBundle:Exercise')->findAll();
+        $repoClub = $em->getRepository('BpaulinUpfitBundle:Club');
+        $club = $repoClub->find($idClub);
+
+        $securityContext = $this->get('security.context');
+
+        // check for edit access
+        if (false === $securityContext->isGranted('MASTER', $club)) {
+            $this->get('session')->getFlashBag()->add('error', "You're not admin in this club");
+            return $this->redirect($this->generateUrl('user_home'));
+        }
+
+        $entities = $em->getRepository('BpaulinUpfitBundle:Exercise')->findBy(
+            array(
+                'club' => $club
+            )
+        );
 
         return array(
             'entities' => $entities,
-        );
-    }
-
-    /**
-     * Creates a new Exercise entity.
-     *
-     * @Route("/", name="exercise_create")
-     * @Method("POST")
-     * @Template("BpaulinUpfitBundle:Exercise:new.html.twig")
-     */
-    public function createAction(Request $request)
-    {
-        $entity  = new Exercise();
-        $form = $this->createForm(new ExerciseType(), $entity);
-        $form->bind($request);
-
-        if ($form->isValid()) {
-            $em = $this->getDoctrine()->getManager();
-            $em->persist($entity);
-            $em->flush();
-
-            return $this->redirect($this->generateUrl('exercise_show', array('id' => $entity->getId())));
-        }
-
-        return array(
-            'entity' => $entity,
-            'form'   => $form->createView(),
+            'club' => $club
         );
     }
 
@@ -69,10 +58,65 @@ class ExerciseController extends Controller
      * @Method("GET")
      * @Template()
      */
-    public function newAction()
+    public function newAction($idClub)
     {
+        $em = $this->getDoctrine()->getManager();
+
+        $repoClub = $em->getRepository('BpaulinUpfitBundle:Club');
+        $club = $repoClub->find($idClub);
+
+        $securityContext = $this->get('security.context');
+
+        // check for edit access
+        if (false === $securityContext->isGranted('MASTER', $club)) {
+            $this->get('session')->getFlashBag()->add('error', "You're not admin in this club");
+            return $this->redirect($this->generateUrl('user_home'));
+        }
+
         $entity = new Exercise();
         $form   = $this->createForm(new ExerciseType(), $entity);
+
+        return array(
+            'club'   => $club,
+            'entity' => $entity,
+            'form'   => $form->createView(),
+        );
+    }
+
+    /**
+     * Creates a new Exercise entity.
+     *
+     * @Route("/", name="exercise_create")
+     * @Method("POST")
+     * @Template("BpaulinUpfitBundle:Exercise:new.html.twig")
+     */
+    public function createAction($idClub, Request $request)
+    {
+        $em = $this->getDoctrine()->getManager();
+
+        $repoClub = $em->getRepository('BpaulinUpfitBundle:Club');
+        $club = $repoClub->find($idClub);
+
+        $securityContext = $this->get('security.context');
+
+        // check for edit access
+        if (false === $securityContext->isGranted('MASTER', $club)) {
+            $this->get('session')->getFlashBag()->add('error', "You're not admin in this club");
+            return $this->redirect($this->generateUrl('user_home'));
+        }
+
+        $entity  = new Exercise();
+        $entity->setClub($club);
+        $form = $this->createForm(new ExerciseType(), $entity);
+        $form->bind($request);
+
+        if ($form->isValid()) {
+            $em->persist($entity);
+            $em->flush();
+
+            $this->get('session')->getFlashBag()->add('success', "Exercise created");
+            return $this->redirect($this->generateUrl('exercise', array('idClub'=>$club->getId())));
+        }
 
         return array(
             'entity' => $entity,

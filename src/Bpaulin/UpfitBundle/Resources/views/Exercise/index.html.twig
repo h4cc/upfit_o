@@ -1,41 +1,37 @@
 {% extends '::base.html.twig' %}
 
 {% block body -%}
-    <h1>Exercise list</h1>
-
-    <table class="records_list">
+    <h1>Exercise list <small>{{ club.name }}</small></h1>
+    <div class='btn-group'>
+        <a class='btn' href="{{ path('user_club_admin', {'idClub': club.id}) }}">
+            Back to administration
+        </a>
+        <a class='btn' href="{{ path('exercise_new', { 'idClub': club.id }) }}">
+            Create a new exercise
+        </a>
+    </div>
+    <hr/>
+    <table class="table table-bordered table-striped table-condensed table-hover">
         <thead>
             <tr>
-                <th>Id</th>
+                <th width="1">&nbsp;</th>
                 <th>Name</th>
-                <th>Actions</th>
+                <th>Muscle</th>
             </tr>
         </thead>
         <tbody>
         {% for entity in entities %}
             <tr>
-                <td><a href="{{ path('exercise_show', { 'id': entity.id }) }}">{{ entity.id }}</a></td>
-                <td>{{ entity.name }}</td>
                 <td>
-                <ul>
-                    <li>
-                        <a href="{{ path('exercise_show', { 'id': entity.id }) }}">show</a>
-                    </li>
-                    <li>
-                        <a href="{{ path('exercise_edit', { 'id': entity.id }) }}">edit</a>
-                    </li>
-                </ul>
+                <div class='btn-group'>
+                    <a class="btn btn-mini" href="{{ path('exercise_show', {'idClub': club.id, 'id': entity.id }) }}">show</a>
+                    <a class="btn btn-mini" href="{{ path('exercise_edit', {'idClub': club.id, 'id': entity.id }) }}">edit</a>
+                </div>
                 </td>
+                <td>{{ entity.name }}</td>
+                <td>{{ entity.muscle }}</td>
             </tr>
         {% endfor %}
         </tbody>
     </table>
-
-        <ul>
-        <li>
-            <a href="{{ path('exercise_new', { 'id': club.id }) }}">
-                Create a new entry
-            </a>
-        </li>
-    </ul>
-    {% endblock %}
+{% endblock %}
