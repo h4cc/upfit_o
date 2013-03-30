@@ -13,7 +13,7 @@ use Bpaulin\UpfitBundle\Form\ExerciseType;
 /**
  * Exercise controller.
  *
- * @Route("/exercise")
+ * @Route("club/{idClub}/exercise")
  */
 class ExerciseController extends Controller
 {

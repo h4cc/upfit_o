@@ -139,7 +139,7 @@ class SessionController extends Controller
         }
 
         if ($session->getMember()->getAdmin()) {
-            $this->get('session')->getFlashBag()->add('error', "You can't create exercisefor this club");
+            $this->get('session')->getFlashBag()->add('error', "You can't create exercise for this club");
             return $this->redirect('BpaulinUpfitBundle:Default:user', array());
         }
 
@@ -147,8 +147,8 @@ class SessionController extends Controller
         $form   = $this->createForm(new ExerciseType(), $entity);
 
         return array(
-            'entity' => $entity,
-            'form'   => $form->createView(),
+            'entity'  => $entity,
+            'form'    => $form->createView(),
             'session' => $session,
         );
     }

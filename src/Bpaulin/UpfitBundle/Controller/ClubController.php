@@ -5,6 +5,7 @@ namespace Bpaulin\UpfitBundle\Controller;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Bpaulin\UpfitBundle\Entity\Club;
 use Bpaulin\UpfitBundle\Entity\Member;
 
@@ -58,5 +59,32 @@ class ClubController extends Controller
         }
 
         return $this->redirect($referer);
+    }
+
+    /**
+     * @Route("/{idClub}/admin/", name="user_club_admin")
+     * @Method("GET")
+     * @Template()
+     */
+    public function adminAction($idClub)
+    {
+        $em = $this->getDoctrine()->getManager();
+
+        $repoMember = $em->getRepository('BpaulinUpfitBundle:Member');
+        $repoClub = $em->getRepository('BpaulinUpfitBundle:Club');
+        $club = $repoClub->find($idClub);
+        $member = $repoMember->findOneBy(
+            array(
+                "club"  => $club,
+                "admin" => 1
+            )
+        );
+        if (!$member){
+            $this->get('session')->getFlashBag()->add('error', "You're not admin in this club");
+            return $this->redirect($this->generateUrl('user_home'));
+        }
+        return array(
+            'club' => $club
+        );
     }
 }

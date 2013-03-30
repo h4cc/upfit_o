@@ -18,7 +18,13 @@
 		<tr>
 			<td>{{ member.club.name }}</td>
 			<td>{{ member.owner }}</td>
-			<td>{{ member.admin }}</td>
+			<td>
+            {% if member.admin %}
+                <a id="user_club_admin" class="btn btn-primary" href="{{ path('user_club_admin', {'idClub': member.club.id}) }}">
+                    Gestion
+                </a>
+            {% endif %}
+            </td>
 		</tr>
 		{% endfor %}
 	</tbody>
