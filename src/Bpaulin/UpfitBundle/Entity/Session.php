@@ -127,7 +127,7 @@ class Session
     /**
      * Set begin
      *
-     * @param \DateTime $begin
+     * @param  \DateTime $begin
      * @return Session
      */
     public function setBegin($begin)
@@ -150,7 +150,7 @@ class Session
     /**
      * Set end
      *
-     * @param \DateTime $end
+     * @param  \DateTime $end
      * @return Session
      */
     public function setEnd($end)

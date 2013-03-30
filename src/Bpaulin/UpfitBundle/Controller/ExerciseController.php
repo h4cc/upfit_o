@@ -47,7 +47,7 @@ class ExerciseController extends Controller
 
         return array(
             'entities' => $entities,
-            'club' => $club
+            'club'     => $club
         );
     }
 
@@ -56,7 +56,7 @@ class ExerciseController extends Controller
      *
      * @Route("/new", name="exercise_new")
      * @Method("GET")
-     * @Template()
+     * @Template("BpaulinUpfitBundle:Exercise:edit.html.twig")
      */
     public function newAction($idClub)
     {
@@ -70,6 +70,7 @@ class ExerciseController extends Controller
         // check for edit access
         if (false === $securityContext->isGranted('MASTER', $club)) {
             $this->get('session')->getFlashBag()->add('error', "You're not admin in this club");
+
             return $this->redirect($this->generateUrl('user_home'));
         }
 
@@ -88,7 +89,7 @@ class ExerciseController extends Controller
      *
      * @Route("/", name="exercise_create")
      * @Method("POST")
-     * @Template("BpaulinUpfitBundle:Exercise:new.html.twig")
+     * @Template("BpaulinUpfitBundle:Exercise:edit.html.twig")
      */
     public function createAction($idClub, Request $request)
     {
@@ -102,6 +103,7 @@ class ExerciseController extends Controller
         // check for edit access
         if (false === $securityContext->isGranted('MASTER', $club)) {
             $this->get('session')->getFlashBag()->add('error', "You're not admin in this club");
+
             return $this->redirect($this->generateUrl('user_home'));
         }
 
@@ -115,6 +117,7 @@ class ExerciseController extends Controller
             $em->flush();
 
             $this->get('session')->getFlashBag()->add('success', "Exercise created");
+
             return $this->redirect($this->generateUrl('exercise', array('idClub'=>$club->getId())));
         }
 
@@ -131,9 +134,21 @@ class ExerciseController extends Controller
      * @Method("GET")
      * @Template()
      */
-    public function showAction($id)
+    public function showAction($idClub, $id)
     {
         $em = $this->getDoctrine()->getManager();
+
+        $repoClub = $em->getRepository('BpaulinUpfitBundle:Club');
+        $club = $repoClub->find($idClub);
+
+        $securityContext = $this->get('security.context');
+
+        // check for edit access
+        if (false === $securityContext->isGranted('MASTER', $club)) {
+            $this->get('session')->getFlashBag()->add('error', "You're not admin in this club");
+
+            return $this->redirect($this->generateUrl('user_home'));
+        }
 
         $entity = $em->getRepository('BpaulinUpfitBundle:Exercise')->find($id);
 
@@ -141,11 +156,9 @@ class ExerciseController extends Controller
             throw $this->createNotFoundException('Unable to find Exercise entity.');
         }
 
-        $deleteForm = $this->createDeleteForm($id);
-
         return array(
             'entity'      => $entity,
-            'delete_form' => $deleteForm->createView(),
+            'club'        =>$club,
         );
     }
 
@@ -156,9 +169,21 @@ class ExerciseController extends Controller
      * @Method("GET")
      * @Template()
      */
-    public function editAction($id)
+    public function editAction($idClub, $id)
     {
         $em = $this->getDoctrine()->getManager();
+
+        $repoClub = $em->getRepository('BpaulinUpfitBundle:Club');
+        $club = $repoClub->find($idClub);
+
+        $securityContext = $this->get('security.context');
+
+        // check for edit access
+        if (false === $securityContext->isGranted('MASTER', $club)) {
+            $this->get('session')->getFlashBag()->add('error', "You're not admin in this club");
+
+            return $this->redirect($this->generateUrl('user_home'));
+        }
 
         $entity = $em->getRepository('BpaulinUpfitBundle:Exercise')->find($id);
 
@@ -167,33 +192,42 @@ class ExerciseController extends Controller
         }
 
         $editForm = $this->createForm(new ExerciseType(), $entity);
-        $deleteForm = $this->createDeleteForm($id);
 
         return array(
+            'club'        => $club,
             'entity'      => $entity,
-            'edit_form'   => $editForm->createView(),
-            'delete_form' => $deleteForm->createView(),
+            'form'        => $editForm->createView(),
         );
     }
 
     /**
      * Edits an existing Exercise entity.
      *
-     * @Route("/{id}", name="exercise_update")
-     * @Method("PUT")
+     * @Route("/{id}/update", name="exercise_update")
+     * @Method("POST")
      * @Template("BpaulinUpfitBundle:Exercise:edit.html.twig")
      */
-    public function updateAction(Request $request, $id)
+    public function updateAction(Request $request, $idClub, $id)
     {
         $em = $this->getDoctrine()->getManager();
+
+        $repoClub = $em->getRepository('BpaulinUpfitBundle:Club');
+        $club = $repoClub->find($idClub);
+
+        $securityContext = $this->get('security.context');
+
+        // check for edit access
+        if (false === $securityContext->isGranted('MASTER', $club)) {
+            $this->get('session')->getFlashBag()->add('error', "You're not admin in this club");
+
+            return $this->redirect($this->generateUrl('user_home'));
+        }
 
         $entity = $em->getRepository('BpaulinUpfitBundle:Exercise')->find($id);
 
         if (!$entity) {
             throw $this->createNotFoundException('Unable to find Exercise entity.');
         }
-
-        $deleteForm = $this->createDeleteForm($id);
         $editForm = $this->createForm(new ExerciseType(), $entity);
         $editForm->bind($request);
 
@@ -201,54 +235,14 @@ class ExerciseController extends Controller
             $em->persist($entity);
             $em->flush();
 
-            return $this->redirect($this->generateUrl('exercise_edit', array('id' => $id)));
+            $this->get('session')->getFlashBag()->add('success', "Exercise updated");
+
+            return $this->redirect($this->generateUrl('exercise', array('idClub'=>$club->getId())));
         }
 
         return array(
             'entity'      => $entity,
             'edit_form'   => $editForm->createView(),
-            'delete_form' => $deleteForm->createView(),
         );
-    }
-
-    /**
-     * Deletes a Exercise entity.
-     *
-     * @Route("/{id}", name="exercise_delete")
-     * @Method("DELETE")
-     */
-    public function deleteAction(Request $request, $id)
-    {
-        $form = $this->createDeleteForm($id);
-        $form->bind($request);
-
-        if ($form->isValid()) {
-            $em = $this->getDoctrine()->getManager();
-            $entity = $em->getRepository('BpaulinUpfitBundle:Exercise')->find($id);
-
-            if (!$entity) {
-                throw $this->createNotFoundException('Unable to find Exercise entity.');
-            }
-
-            $em->remove($entity);
-            $em->flush();
-        }
-
-        return $this->redirect($this->generateUrl('exercise'));
-    }
-
-    /**
-     * Creates a form to delete a Exercise entity by id.
-     *
-     * @param mixed $id The entity id
-     *
-     * @return Symfony\Component\Form\Form The form
-     */
-    private function createDeleteForm($id)
-    {
-        return $this->createFormBuilder(array('id' => $id))
-            ->add('id', 'hidden')
-            ->getForm()
-        ;
     }
 }

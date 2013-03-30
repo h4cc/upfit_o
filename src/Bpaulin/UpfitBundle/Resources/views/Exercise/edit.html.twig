@@ -1,28 +1,32 @@
 {% extends '::base.html.twig' %}
+{% if entity.id %}
+    {% set actionRoute = 'exercise_update' %}
+{% else %}
+    {% set actionRoute = 'exercise_create' %}
+{% endif %}
 
 {% block body -%}
-    <h1>Exercise edit</h1>
-
-    <form action="{{ path('exercise_update', { 'id': entity.id }) }}" method="post" {{ form_enctype(edit_form) }}>
-        <input type="hidden" name="_method" value="PUT" />
-        {{ form_widget(edit_form) }}
-        <p>
-            <button type="submit">Edit</button>
-        </p>
-    </form>
-
-        <ul class="record_actions">
-    <li>
-        <a href="{{ path('exercise') }}">
+    <h1>
+        Exercise {% if entity.id %}edition{% else %}creation{% endif %}
+        <small>
+            {{ club.name }} {% if entity.id %} | {{ entity }}{% endif %}
+        </small>
+    </h1>
+    <div class='btn-group'>
+        <a class='btn' href="{{ path('exercise', {'idClub' : club.id}) }}">
             Back to the list
         </a>
-    </li>
-    <li>
-        <form action="{{ path('exercise_delete', { 'id': entity.id }) }}" method="post">
-            <input type="hidden" name="_method" value="DELETE" />
-            {{ form_widget(delete_form) }}
-            <button type="submit">Delete</button>
-        </form>
-    </li>
-</ul>
+    </div>
+    <hr/>
+    <form class="form-horizontal"
+          action="{{ path(actionRoute, {'idClub' : club.id, 'id': entity.id}) }}"
+          method="post"
+          {{ form_enctype(form) }}>
+        {{ form_widget(form) }}
+        <div class="control-group">
+            <div class="controls">
+                <button type="submit" class="btn">{% if entity.id %}Save{% else %}Create{% endif %}</button>
+            </div>
+        </div>
+    </form>
 {% endblock %}

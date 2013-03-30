@@ -57,6 +57,7 @@ class SessionController extends Controller
 
         if (!$member) {
             $this->get('session')->getFlashBag()->add('error', "You are not a member of this club");
+
             return $this->redirect('BpaulinUpfitBundle:Default:user', array());
         }
 
@@ -85,6 +86,7 @@ class SessionController extends Controller
 
         if (!$session || $session->getMember()->getUser() != $this->getUser()) {
             $this->get('session')->getFlashBag()->add('error', "This session is not yours");
+
             return $this->redirect('BpaulinUpfitBundle:Default:user', array());
         }
 
@@ -112,6 +114,7 @@ class SessionController extends Controller
 
         if (!$session || $session->getMember()->getUser() != $this->getUser()) {
             $this->get('session')->getFlashBag()->add('error', "This session is not yours");
+
             return $this->redirect('BpaulinUpfitBundle:Default:user', array());
         }
 
@@ -135,11 +138,13 @@ class SessionController extends Controller
 
         if (!$session || $session->getMember()->getUser() != $this->getUser()) {
             $this->get('session')->getFlashBag()->add('error', "This session is not yours");
+
             return $this->redirect('BpaulinUpfitBundle:Default:user', array());
         }
 
         if ($session->getMember()->getAdmin()) {
             $this->get('session')->getFlashBag()->add('error', "You can't create exercise for this club");
+
             return $this->redirect('BpaulinUpfitBundle:Default:user', array());
         }
 

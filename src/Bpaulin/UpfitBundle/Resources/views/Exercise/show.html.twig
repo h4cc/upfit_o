@@ -1,9 +1,17 @@
 {% extends '::base.html.twig' %}
 
 {% block body -%}
-    <h1>Exercise</h1>
-
-    <table class="record_properties">
+    <h1>Exercise edition <small>{{ club.name }} | {{ entity }}</small></h1>
+    <div class='btn-group'>
+        <a class='btn' href="{{ path('exercise', {'idClub' : club.id}) }}">
+            Back to the list
+        </a>
+        <a class="btn" href="{{ path('exercise_edit', {'idClub': club.id, 'id': entity.id }) }}">
+            edit
+        </a>
+    </div>
+    <hr/>
+    <table class="table table-condensed">
         <tbody>
             <tr>
                 <th>Id</th>
@@ -13,26 +21,10 @@
                 <th>Name</th>
                 <td>{{ entity.name }}</td>
             </tr>
+            <tr>
+                <th>Muscle</th>
+                <td>{{ entity.muscle }}</td>
+            </tr>
         </tbody>
     </table>
-
-        <ul class="record_actions">
-    <li>
-        <a href="{{ path('exercise') }}">
-            Back to the list
-        </a>
-    </li>
-    <li>
-        <a href="{{ path('exercise_edit', { 'id': entity.id }) }}">
-            Edit
-        </a>
-    </li>
-    <li>
-        <form action="{{ path('exercise_delete', { 'id': entity.id }) }}" method="post">
-            <input type="hidden" name="_method" value="DELETE" />
-            {{ form_widget(delete_form) }}
-            <button type="submit">Delete</button>
-        </form>
-    </li>
-</ul>
 {% endblock %}

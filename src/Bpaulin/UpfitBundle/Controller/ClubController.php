@@ -6,7 +6,6 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
-use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use Symfony\Component\Security\Acl\Domain\ObjectIdentity;
 use Symfony\Component\Security\Acl\Domain\UserSecurityIdentity;
 use Symfony\Component\Security\Acl\Permission\MaskBuilder;
@@ -96,6 +95,7 @@ class ClubController extends Controller
         // check for edit access
         if (false === $securityContext->isGranted('MASTER', $club)) {
             $this->get('session')->getFlashBag()->add('error', "You're not admin in this club");
+
             return $this->redirect($this->generateUrl('user_home'));
         }
 

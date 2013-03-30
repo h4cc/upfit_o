@@ -17,10 +17,13 @@ framework:
     trust_proxy_headers: false # Whether or not the Request object should trust proxy headers (X_FORWARDED_FOR/HTTP_CLIENT_IP)
     session:         ~
 
-# Twig Configurationupfit% 
+# Twig Configurationupfit%
 twig:
     debug:            "%kernel.debug%"
     strict_variables: "%kernel.debug%"
+    form:
+        resources:
+            - 'BpaulinUpfitBundle:Form:form.html.twig'
 
 # Assetic Configuration
 assetic:
