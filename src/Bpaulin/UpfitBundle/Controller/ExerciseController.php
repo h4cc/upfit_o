@@ -36,6 +36,7 @@ class ExerciseController extends Controller
         // check for edit access
         if (false === $securityContext->isGranted('MASTER', $club)) {
             $this->get('session')->getFlashBag()->add('error', "You're not admin in this club");
+
             return $this->redirect($this->generateUrl('user_home'));
         }
 

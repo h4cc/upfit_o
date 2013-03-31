@@ -1,0 +1,35 @@
+{% extends '::base.html.twig' %}
+
+{% block body -%}
+    <h1>Program list <small>{{ club.name }}</small></h1>
+    <div class='btn-group'>
+        <a class='btn' href="{{ path('user_club_admin', {'idClub': club.id}) }}">
+            Back to administration
+        </a>
+        <a class='btn' href="{{ path('program_new', { 'idClub': club.id }) }}">
+            Create a new program
+        </a>
+    </div>
+    <hr/>
+    <table class="table table-bordered table-striped table-condensed table-hover">
+        <thead>
+            <tr>
+                <th width="1">&nbsp;</th>
+                <th>Name</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for entity in entities %}
+            <tr>
+                <td>
+                {#<div class='btn-group'>
+                    <a class="btn btn-mini" href="{{ path('program_show', {'idClub': club.id, 'id': entity.id }) }}">show</a>
+                    <a class="btn btn-mini" href="{{ path('program_edit', {'idClub': club.id, 'id': entity.id }) }}">edit</a>
+                </div>#}
+                </td>
+                <td>{{ entity.name }}</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+{% endblock %}

@@ -39,6 +39,11 @@ class Club
     private $exercises;
 
     /**
+     * @ORM\OneToMany(targetEntity="Program", mappedBy="club")
+     */
+    private $programs;
+
+    /**
      * Constructor
      */
     public function __construct()
@@ -153,5 +158,38 @@ class Club
     public function getExercises()
     {
         return $this->exercises;
+    }
+
+    /**
+     * Add programs
+     *
+     * @param  \Bpaulin\UpfitBundle\Entity\Program $programs
+     * @return Club
+     */
+    public function addProgram(\Bpaulin\UpfitBundle\Entity\Program $programs)
+    {
+        $this->programs[] = $programs;
+
+        return $this;
+    }
+
+    /**
+     * Remove programs
+     *
+     * @param \Bpaulin\UpfitBundle\Entity\Program $programs
+     */
+    public function removeProgram(\Bpaulin\UpfitBundle\Entity\Program $programs)
+    {
+        $this->programs->removeElement($programs);
+    }
+
+    /**
+     * Get programs
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getPrograms()
+    {
+        return $this->programs;
     }
 }

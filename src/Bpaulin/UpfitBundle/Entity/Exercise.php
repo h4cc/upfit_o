@@ -49,6 +49,11 @@ class Exercise
     private $club;
 
     /**
+     * @ORM\OneToMany(targetEntity="Stage", mappedBy="exercise")
+     */
+    private $stages;
+
+    /**
      * Constructor
      */
     public function __construct()
@@ -199,5 +204,38 @@ class Exercise
     public function getMachine()
     {
         return $this->machine;
+    }
+
+    /**
+     * Add stages
+     *
+     * @param  \Bpaulin\UpfitBundle\Entity\Stage $stages
+     * @return Exercise
+     */
+    public function addStage(\Bpaulin\UpfitBundle\Entity\Stage $stages)
+    {
+        $this->stages[] = $stages;
+
+        return $this;
+    }
+
+    /**
+     * Remove stages
+     *
+     * @param \Bpaulin\UpfitBundle\Entity\Stage $stages
+     */
+    public function removeStage(\Bpaulin\UpfitBundle\Entity\Stage $stages)
+    {
+        $this->stages->removeElement($stages);
+    }
+
+    /**
+     * Get stages
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getStages()
+    {
+        return $this->stages;
     }
 }

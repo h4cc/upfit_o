@@ -1,0 +1,55 @@
+{% extends '::base.html.twig' %}
+{% if entity.id %}
+    {% set actionRoute = 'exercise_update' %}
+{% else %}
+    {% set actionRoute = 'exercise_create' %}
+{% endif %}
+
+{% block body -%}
+    <h1>
+        Exercise {% if entity.id %}edition{% else %}creation{% endif %}
+        <small>
+            {{ club.name }} {% if entity.id %} | {{ entity }}{% endif %}
+        </small>
+    </h1>
+    <div class='btn-group'>
+        <a class='btn' href="{{ path('exercise', {'idClub' : club.id}) }}">
+            Back to the list
+        </a>
+    </div>
+    <hr/>
+    <form class="form-horizontal"
+          action="{{ path(actionRoute, {'idClub' : club.id, 'id': entity.id}) }}"
+          method="post"
+          {{ form_enctype(form) }}>
+        {{ form_widget(form) }}
+        <div class='row-fluid'>
+            <div class='span8'>
+            {% for exercise in exercises %}
+                <div>{{ exercise }}</div>
+            {% endfor %}
+            </div>
+            <div class='span4'>
+            {% for exercise in exercises %}
+                <div>{{ exercise }}</div>
+            {% endfor %}
+            </div>
+        </div>
+
+        <div class="control-group">
+            <div class="controls">
+                <button type="submit" class="btn">{% if entity.id %}Save{% else %}Create{% endif %}</button>
+            </div>
+        </div>
+    </form>
+{% endblock %}
+
+{% block javascripts %}
+{{ parent() }}
+<script type="text/javascript" src="//code.jquery.com/ui/1.10.2/jquery-ui.min.js"></script>
+{% endblock %}
+
+{% block stylesheets %}
+{{ parent() }}
+<link rel="stylesheet" href="//code.jquery.com/ui/1.10.2/themes/flick/jquery-ui.min.css"/>
+{% endblock %}
