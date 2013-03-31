@@ -8,7 +8,6 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Bpaulin\UpfitBundle\Entity\Exercise;
-use Bpaulin\UpfitBundle\Entity\Stage;
 use Bpaulin\UpfitBundle\Entity\Program;
 use Bpaulin\UpfitBundle\Form\ProgramType;
 
@@ -77,21 +76,14 @@ class ProgramController extends Controller
             return $this->redirect($this->generateUrl('user_home'));
         }
 
-        $repoExercise = $em->getRepository('BpaulinUpfitBundle:Exercise');
-        $exercises = $repoExercise->findBy(
-            array(
-                'club'=>$club
-            )
-        );
-
         $entity = new Program();
+        $entity->setClub($club);
         $form   = $this->createForm(new ProgramType(), $entity);
 
         return array(
             'club'   => $club,
             'entity' => $entity,
             'form'   => $form->createView(),
-            'exercises' => $exercises
         );
     }
 

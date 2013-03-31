@@ -13,7 +13,7 @@ class StageType extends AbstractType
         $builder
             ->add(
                 'position',
-                null,
+                'hidden',
                 array(
                     'label' => false,
                     'attr' => array(

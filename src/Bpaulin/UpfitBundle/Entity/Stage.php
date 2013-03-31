@@ -134,20 +134,20 @@ class Stage
     /**
      * Set number
      *
-     * @param integer $number
+     * @param  integer $number
      * @return Stage
      */
     public function setNumber($number)
     {
         $this->number = $number;
-    
+
         return $this;
     }
 
     /**
      * Get number
      *
-     * @return integer 
+     * @return integer
      */
     public function getNumber()
     {
@@ -157,20 +157,20 @@ class Stage
     /**
      * Set repetition
      *
-     * @param integer $repetition
+     * @param  integer $repetition
      * @return Stage
      */
     public function setRepetition($repetition)
     {
         $this->repetition = $repetition;
-    
+
         return $this;
     }
 
     /**
      * Get repetition
      *
-     * @return integer 
+     * @return integer
      */
     public function getRepetition()
     {

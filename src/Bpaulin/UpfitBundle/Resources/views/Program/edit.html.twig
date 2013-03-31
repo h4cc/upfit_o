@@ -23,18 +23,6 @@
           method="post"
           {{ form_enctype(form) }}>
         {{ form_widget(form) }}
-        <div class='row-fluid'>
-            <div class='span8'>
-            {% for exercise in exercises %}
-                <div>{{ exercise }}</div>
-            {% endfor %}
-            </div>
-            <div class='span4'>
-            {% for exercise in exercises %}
-                <div>{{ exercise }}</div>
-            {% endfor %}
-            </div>
-        </div>
 
         <div class="control-group">
             <div class="controls">

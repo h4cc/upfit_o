@@ -88,6 +88,7 @@ class Program
     {
         $this->stages[] = $stages;
         $stages->setProgram($this);
+
         return $this;
     }
 
