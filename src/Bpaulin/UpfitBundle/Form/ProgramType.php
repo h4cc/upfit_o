@@ -12,14 +12,25 @@ class ProgramType extends AbstractType
     {
         $builder
             ->add('name')
-        ;
+            ->add(
+                'stages',
+                'collection',
+                array(
+                    'type' => new StageType(),
+                    'allow_add'    => true,
+                    'allow_delete' => true,
+                    'by_reference' => false
+                )
+            );
     }
 
     public function setDefaultOptions(OptionsResolverInterface $resolver)
     {
-        $resolver->setDefaults(array(
-            'data_class' => 'Bpaulin\UpfitBundle\Entity\Program'
-        ));
+        $resolver->setDefaults(
+            array(
+                'data_class' => 'Bpaulin\UpfitBundle\Entity\Program'
+            )
+        );
     }
 
     public function getName()

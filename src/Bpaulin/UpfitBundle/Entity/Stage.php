@@ -29,6 +29,20 @@ class Stage
     private $position;
 
     /**
+     * @var integer
+     *
+     * @ORM\Column(name="number", type="smallint")
+     */
+    private $number;
+
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="repetition", type="smallint")
+     */
+    private $repetition;
+
+    /**
      *@ORM\ManyToOne(targetEntity="Program", inversedBy="stages")
      */
     private $program;
@@ -115,5 +129,51 @@ class Stage
     public function getExercise()
     {
         return $this->exercise;
+    }
+
+    /**
+     * Set number
+     *
+     * @param integer $number
+     * @return Stage
+     */
+    public function setNumber($number)
+    {
+        $this->number = $number;
+    
+        return $this;
+    }
+
+    /**
+     * Get number
+     *
+     * @return integer 
+     */
+    public function getNumber()
+    {
+        return $this->number;
+    }
+
+    /**
+     * Set repetition
+     *
+     * @param integer $repetition
+     * @return Stage
+     */
+    public function setRepetition($repetition)
+    {
+        $this->repetition = $repetition;
+    
+        return $this;
+    }
+
+    /**
+     * Get repetition
+     *
+     * @return integer 
+     */
+    public function getRepetition()
+    {
+        return $this->repetition;
     }
 }

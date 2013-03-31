@@ -37,7 +37,7 @@
             <li class="dropdown">
             {% if app.user.username is defined %}
               <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-                <img src='{{ app.user.gravatarUrl(24) }}'/>
+                <img src='{{ app.user.gravatarUrl(24) }}' alt='gravatar'/>
                 {{ app.user.username }}
                 <b class="caret"></b>
               </a>

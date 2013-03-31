@@ -34,7 +34,7 @@ class Program
     private $club;
 
     /**
-     * @ORM\OneToMany(targetEntity="Stage", mappedBy="program")
+     * @ORM\OneToMany(targetEntity="Stage", mappedBy="program", cascade={"persist"})
      */
     private $stages;
 
@@ -87,7 +87,7 @@ class Program
     public function addStage(\Bpaulin\UpfitBundle\Entity\Stage $stages)
     {
         $this->stages[] = $stages;
-
+        $stages->setProgram($this);
         return $this;
     }
 

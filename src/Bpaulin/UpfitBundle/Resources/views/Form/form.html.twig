@@ -9,3 +9,39 @@
     </div>
 {% endspaceless %}
 {% endblock form_row %}
+
+{% block collection_widget %}
+{% spaceless %}
+    <div class="collection">
+        {% if prototype is defined %}
+            {% set attr = attr|merge({'data-prototype': block('collection_item_widget') }) %}
+        {% endif %}
+        <div {{ block('widget_container_attributes') }}>
+            {{ form_errors(form) }}
+            {% for rows in form %}
+                <div class="form-inline">
+                {% for row in rows %}
+                    <div>
+                    {{ form_label(row) }}
+                    {{ form_widget(row) }}
+                    </div>
+                {% endfor %}
+                </div>
+            {% endfor %}
+            {{ form_rest(form) }}
+        </div>
+    </div>
+    <div class="clear"></div>
+{% endspaceless %}
+{% endblock collection_widget %}
+
+{% block collection_item_widget %}
+{% spaceless %}
+    <div class="form-inline">
+    {% for row in prototype %}
+        {{ form_label(row) }}
+        {{ form_widget(row) }}
+    {% endfor %}
+    </div>
+{% endspaceless %}
+{% endblock collection_item_widget %}

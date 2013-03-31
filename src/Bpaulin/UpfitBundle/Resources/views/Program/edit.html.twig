@@ -1,19 +1,19 @@
 {% extends '::base.html.twig' %}
 {% if entity.id %}
-    {% set actionRoute = 'exercise_update' %}
+    {% set actionRoute = 'program_update' %}
 {% else %}
     {% set actionRoute = 'exercise_create' %}
 {% endif %}
 
 {% block body -%}
     <h1>
-        Exercise {% if entity.id %}edition{% else %}creation{% endif %}
+        Program {% if entity.id %}edition{% else %}creation{% endif %}
         <small>
             {{ club.name }} {% if entity.id %} | {{ entity }}{% endif %}
         </small>
     </h1>
     <div class='btn-group'>
-        <a class='btn' href="{{ path('exercise', {'idClub' : club.id}) }}">
+        <a class='btn' href="{{ path('program', {'idClub' : club.id}) }}">
             Back to the list
         </a>
     </div>
@@ -47,6 +47,85 @@
 {% block javascripts %}
 {{ parent() }}
 <script type="text/javascript" src="//code.jquery.com/ui/1.10.2/jquery-ui.min.js"></script>
+<script type="text/javascript">
+// Get the div that holds the collection of tags
+var collectionHolder = $('div#bpaulin_upfitbundle_programtype_stages');
+
+// setup an "add a tag" link
+var $addTagLink = $('<a href="#" class="btn add_tag_link">Add a stage</a>');
+var $newLinkLi = $('<div></div>').append($addTagLink);
+
+jQuery(document).ready(function() {
+    $( "#bpaulin_upfitbundle_programtype_stages" ).sortable({
+        update: function( event, ui ) {reorder(collectionHolder)}
+    });
+
+    // add a delete link to all of the existing tag form li elements
+    collectionHolder.find('div.collection-item').each(function() {
+        addTagFormDeleteLink($(this));
+    });
+
+    // add the "add a tag" anchor and li to the tags ul
+    collectionHolder.append($newLinkLi);
+
+    // count the current form inputs we have (e.g. 2), use that as the new
+    // index when inserting a new item (e.g. 2)
+    collectionHolder.data('index', collectionHolder.find('div.collection-item').length);
+
+    $addTagLink.on('click', function(e) {
+        // prevent the link from creating a "#" on the URL
+        e.preventDefault();
+
+        // add a new tag form (see next code block)
+        addTagForm(collectionHolder, $newLinkLi);
+    });
+});
+
+function addTagForm(collectionHolder, $newLinkLi) {
+    // Get the data-prototype explained earlier
+    var prototype = collectionHolder.data('prototype');
+
+    // get the new index
+    var index = collectionHolder.data('index');
+
+    // Replace '__name__' in the prototype's HTML to
+    // instead be a number based on how many items we have
+    var newForm = prototype.replace(/__name__/g, index);
+
+    // increase the index with one for the next item
+    collectionHolder.data('index', index + 1);
+
+    // Display the form in the page in an div, before the "Add a tag" link li
+    var $newFormLi = $('<div class="collection-item"></div>').append(newForm);
+    $newLinkLi.before($newFormLi);
+
+    $newFormLi.find('.position').val(index);
+
+    // add a delete link to the new form
+    addTagFormDeleteLink($newFormLi);
+}
+
+function addTagFormDeleteLink($tagFormLi) {
+    var $removeFormA = $('<a href="#" class="btn">delete this stage</a>');
+    $tagFormLi.find('.form-inline').append($removeFormA);
+
+    $removeFormA.on('click', function(e) {
+        // prevent the link from creating a "#" on the URL
+        e.preventDefault();
+
+        // remove the li for the tag form
+        $tagFormLi.remove();
+        reorder(collectionHolder);
+    });
+}
+
+function reorder(collectionHolder) {
+    collectionHolder.find('.position').each(function( index ) {
+        $(this).val(index);
+    });
+    collectionHolder.data('index', parseInt(collectionHolder.find('.position').last().val())+1);
+}
+</script>
 {% endblock %}
 
 {% block stylesheets %}
