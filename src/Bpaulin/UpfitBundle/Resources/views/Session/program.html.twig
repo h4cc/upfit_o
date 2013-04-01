@@ -1,0 +1,18 @@
+{% extends '::base.html.twig' %}
+
+{% block body -%}
+<h1>New Session <small>{{ club.name }}</small></h1>
+<h2>Select a program</h2>
+<table class="table">
+    <tbody>
+{% for program in programs %}
+    <tr>
+        <td>
+            <a class="btn btn-primary" href="{{ path('user_session_begin', {idClub: club.id, idProgram: program.id}) }}">{{ program.name }}</a>
+        </td>
+    </tr>
+{% else %}
+    </tbody>
+</table>
+{% endfor %}
+{% endblock %}

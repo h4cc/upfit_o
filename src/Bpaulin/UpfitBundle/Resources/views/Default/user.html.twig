@@ -1,50 +1,21 @@
 {% extends "::base.html.twig" %}
 
 {% block body %}
-<h1>Bienvenue!</h1>
+<h1>Welcome!</h1>
 
-<h2>Mes clubs</h2>
-{% if members %}
-<table class="table" id="members">
-	<thead>
-		<tr>
-			<th>club</th>
-			<th>owner</th>
-			<th>admin</th>
-		</tr>
-	</thead>
-	<tbody>
-		{% for member in members %}
-		<tr>
-			<td>{{ member.club.name }}</td>
-			<td>{{ member.owner }}</td>
-			<td>
-            {% if member.admin %}
-                <a id="user_club_admin" class="btn btn-primary" href="{{ path('user_club_admin', {'idClub': member.club.id}) }}">
-                    Gestion
-                </a>
-            {% endif %}
-            </td>
-		</tr>
-		{% endfor %}
-	</tbody>
-</table>
-<h2>Mes sessions</h2>
-    <a class="btn btn-primary" href="{{ path('user_session_new') }}">Démarrer une session</a>
-	{% if sessions %}
-        {% for session in sessions %}
-            {{ session.begin|date("m/d/Y") }}
-        {% endfor %}
-	{% else %}
-	<p>
-		Vous n'avez aucune session enregistrées! C'est dommage vu que c'est quand même un peu le but
-	</p>
-	{% endif %}
+<h2>My clubs</h2>
+{% for member in members %}
+        <div class="btn-group">
+        <a class="btn btn-primary" href="{{ path('user_session_program', {'idClub': member.club.id}) }}">
+            <strong>{{ member.club.name }}:</strong> Start a session
+        </a>
+    {% if is_granted('MASTER', member.club) %}
+        <a id="user_club_admin" class="btn" href="{{ path('user_club_admin', {'idClub': member.club.id}) }}">
+            Administration
+        </a>
+        </div>
+    {% endif %}
 {% else %}
-<p>
-	Vous n'etes inscrit a aucun club! Pas grave, vous pouvez créer votre propre club
-</p>
-<a id="user_club_create" class="btn btn-primary" href="{{ path('user_club_create') }}">Créer mon club</a>
-{% endif %}
-
+{% endfor %}
+{#<a id="user_club_create" class="btn btn-primary" href="{{ path('user_club_create') }}">Créer mon club</a>#}
 {% endblock %}

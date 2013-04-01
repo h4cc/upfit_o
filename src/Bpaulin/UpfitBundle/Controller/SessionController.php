@@ -11,54 +11,66 @@ use Bpaulin\UpfitBundle\Entity\Session;
 /**
  * Session controller.
  *
- * @Route("/user/session")
+ * @Route("session/{idClub}")
  */
 class SessionController extends Controller
 {
     /**
-     * Create session
+     * Select program
      *
-     * @Route("/new", name="user_session_new")
+     * @Route("/program", name="user_session_program")
      * @Method("GET")
      * @Template()
      */
-    public function newAction()
+    public function programAction($idClub)
     {
         $em = $this->getDoctrine()->getManager();
 
-        $members = $em->getRepository('BpaulinUpfitBundle:Member')->findBy(
+        $repoClub = $em->getRepository('BpaulinUpfitBundle:Club');
+        $club = $repoClub->find($idClub);
+
+        $securityContext = $this->get('security.context');
+
+        // check for member access
+        if (false === $securityContext->isGranted('VIEW', $club)) {
+            $this->get('session')->getFlashBag()->add('error', "You're not a member of this club");
+
+            return $this->redirect($this->generateUrl('user_home'));
+        }
+
+        $programs = $em->getRepository('BpaulinUpfitBundle:Program')->findBy(
             array(
-                'user'  => $this->getUser(),
+                'club' => $club
             )
         );
 
         return array(
-            'members' => $members,
+            'club' => $club,
+            'programs' => $programs,
         );
     }
 
     /**
      * Begin session
      *
-     * @Route("/{idClub}/begin", name="user_session_begin")
+     * @Route("/program/{idProgram}/begin", name="user_session_begin")
      * @Method("GET")
      * @Template()
      */
-    public function beginAction($idClub)
+    public function beginAction($idClub, $idProgram)
     {
         $em = $this->getDoctrine()->getManager();
 
-        $member = $em->getRepository('BpaulinUpfitBundle:Member')->findOneBy(
-            array(
-                'user'  => $this->getUser(),
-                'club'  => $idClub,
-            )
-        );
+        $repoClub = $em->getRepository('BpaulinUpfitBundle:Club');
+        $club = $repoClub->find($idClub);
 
-        if (!$member) {
-            $this->get('session')->getFlashBag()->add('error', "You are not a member of this club");
+        $securityContext = $this->get('security.context');
 
-            return $this->redirect('BpaulinUpfitBundle:Default:user', array());
+        // check for member access
+        if (false === $securityContext->isGranted('VIEW', $club)) {
+            $this->get('session')->getFlashBag()->add('error', "You're not a member of this club");
+
+            return $this->redirect($this->generateUrl('user_home'));
         }
 
         $session = new Session();
