@@ -129,4 +129,41 @@ class ProgramController extends Controller
             'form'   => $form->createView(),
         );
     }
+
+
+    /**
+     * Finds and displays a Program entity.
+     *
+     * @Route("/{id}", name="program_show")
+     * @Method("GET")
+     * @Template()
+     */
+    public function showAction($idClub, $id)
+    {
+        $em = $this->getDoctrine()->getManager();
+
+        $repoClub = $em->getRepository('BpaulinUpfitBundle:Club');
+        $club = $repoClub->find($idClub);
+
+        $securityContext = $this->get('security.context');
+
+        // check for edit access
+        if (false === $securityContext->isGranted('MASTER', $club)) {
+            $this->get('session')->getFlashBag()->add('error', "You're not admin in this club");
+
+            return $this->redirect($this->generateUrl('user_home'));
+        }
+
+        $entity = $em->getRepository('BpaulinUpfitBundle:Program')->find($id);
+
+        if (!$entity) {
+            throw $this->createNotFoundException('Unable to find Program entity.');
+        }
+
+        return array(
+            'entity'      => $entity,
+            'club'        => $club,
+        );
+    }
+
 }

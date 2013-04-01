@@ -1,0 +1,50 @@
+{% extends '::base.html.twig' %}
+
+{% block body -%}
+    <h1>Program <small>{{ club.name }} | {{ entity }}</small></h1>
+    <div class='btn-group'>
+        <a class='btn' href="{{ path('program', {'idClub' : club.id}) }}">
+            Back to the list
+        </a>
+        <a class="btn" href="{#{{ path('program_edit', {'idClub': club.id, 'id': entity.id }) }}#}">
+            edit
+        </a>
+    </div>
+    <hr/>
+    <table class="table table-condensed">
+        <tbody>
+            <tr>
+                <th>Id</th>
+                <td>{{ entity.id }}</td>
+            </tr>
+            <tr>
+                <th>Name</th>
+                <td>{{ entity.name }}</td>
+            </tr>
+            <tr>
+                <th>Stages</th>
+                <td>
+                    <table class="table table-condensed">
+                        <thead>
+                            <tr>
+                                <th>Muscle</th>
+                                <th>Exercise</th>
+                                <th>Sets</th>
+                                <th>Repetitions</th>
+                        </thead>
+                        <tbody>
+                            {% for stage in entity.stages %}
+                            <tr>
+                                <td>{{ stage.exercise.muscle }}</td>
+                                <td>{{ stage.exercise }}</td>
+                                <td>{{ stage.number }}</td>
+                                <td>{{ stage.repetition }}</td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+{% endblock %}
