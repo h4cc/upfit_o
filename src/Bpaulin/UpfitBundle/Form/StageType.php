@@ -2,14 +2,23 @@
 
 namespace Bpaulin\UpfitBundle\Form;
 
+use Doctrine\ORM\EntityRepository;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 
 class StageType extends AbstractType
 {
+    protected $club;
+
+    public function __Construct($club)
+    {
+        $this->club = $club;
+    }
+
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
+        $club = $this->club;
         $builder
             ->add(
                 'position',
@@ -23,9 +32,16 @@ class StageType extends AbstractType
             )
             ->add(
                 'exercise',
-                null,
+                'entity',
                 array(
-                    'label' => 'Exercise: '
+                'class' => 'BpaulinUpfitBundle:Exercise',
+                'label' => 'Exercise: ',
+                'query_builder' => function(EntityRepository $er) use ($club){
+                      return $er->createQueryBuilder('e')
+                                ->orderBy('e.name', 'ASC')
+                                ->where('e.club= :club')
+                                ->setParameter('club', $club);
+                      }
                 )
             )
             ->add(

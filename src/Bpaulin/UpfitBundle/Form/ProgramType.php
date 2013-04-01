@@ -10,13 +10,14 @@ class ProgramType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
+        $idClub = $options['data']->getClub();
         $builder
             ->add('name')
             ->add(
                 'stages',
                 'collection',
                 array(
-                    'type' => new StageType(),
+                    'type'         => new StageType($idClub),
                     'allow_add'    => true,
                     'allow_delete' => true,
                     'by_reference' => false
