@@ -166,4 +166,88 @@ class ProgramController extends Controller
         );
     }
 
+    /**
+     * Displays a form to edit an existing Program entity.
+     *
+     * @Route("/{id}/edit", name="program_edit")
+     * @Method("GET")
+     * @Template()
+     */
+    public function editAction($idClub, $id)
+    {
+        $em = $this->getDoctrine()->getManager();
+
+        $repoClub = $em->getRepository('BpaulinUpfitBundle:Club');
+        $club = $repoClub->find($idClub);
+
+        $securityContext = $this->get('security.context');
+
+        // check for edit access
+        if (false === $securityContext->isGranted('MASTER', $club)) {
+            $this->get('session')->getFlashBag()->add('error', "You're not admin in this club");
+
+            return $this->redirect($this->generateUrl('user_home'));
+        }
+
+        $entity = $em->getRepository('BpaulinUpfitBundle:Program')->find($id);
+
+        if (!$entity) {
+            throw $this->createNotFoundException('Unable to find Program entity.');
+        }
+
+        $editForm = $this->createForm(new ProgramType(), $entity);
+
+        return array(
+            'club'        => $club,
+            'entity'      => $entity,
+            'form'        => $editForm->createView(),
+        );
+    }
+
+    /**
+     * Edits an existing Exercise entity.
+     *
+     * @Route("/{id}/update", name="program_update")
+     * @Method("POST")
+     * @Template("BpaulinUpfitBundle:Program:edit.html.twig")
+     */
+    public function updateAction(Request $request, $idClub, $id)
+    {
+        $em = $this->getDoctrine()->getManager();
+
+        $repoClub = $em->getRepository('BpaulinUpfitBundle:Club');
+        $club = $repoClub->find($idClub);
+
+        $securityContext = $this->get('security.context');
+
+        // check for edit access
+        if (false === $securityContext->isGranted('MASTER', $club)) {
+            $this->get('session')->getFlashBag()->add('error', "You're not admin in this club");
+
+            return $this->redirect($this->generateUrl('user_home'));
+        }
+
+        $entity = $em->getRepository('BpaulinUpfitBundle:Program')->find($id);
+
+        if (!$entity) {
+            throw $this->createNotFoundException('Unable to find Program entity.');
+        }
+        $editForm = $this->createForm(new ProgramType(), $entity);
+        $editForm->bind($request);
+
+        if ($editForm->isValid()) {
+            $em->persist($entity);
+            $em->flush();
+
+            $this->get('session')->getFlashBag()->add('success', "Program updated");
+
+            return $this->redirect($this->generateUrl('program', array('idClub'=>$club->getId())));
+        }
+
+        return array(
+            'entity'      => $entity,
+            'edit_form'   => $editForm->createView(),
+        );
+    }
+
 }

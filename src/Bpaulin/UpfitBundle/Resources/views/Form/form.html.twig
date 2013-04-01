@@ -19,13 +19,13 @@
         <div {{ block('widget_container_attributes') }}>
             {{ form_errors(form) }}
             {% for rows in form %}
-                <div class="form-inline">
-                {% for row in rows %}
-                    <div>
-                    {{ form_label(row) }}
-                    {{ form_widget(row) }}
+                <div class="collection-item">
+                    <div class="form-inline">
+                    {% for row in rows %}
+                        {{ form_label(row) }}
+                        {{ form_widget(row) }}
+                    {% endfor %}
                     </div>
-                {% endfor %}
                 </div>
             {% endfor %}
             {{ form_rest(form) }}
