@@ -1,31 +1,38 @@
-{% extends '::base.html.twig' %}
+{% extends "::base.html.twig" %}
 
-{% block body -%}
-    <h1>Club list</h1>
-
-    <table class="records_list">
+{% block body %}
+    <table id="clubslist" class="table table-bordered table-striped table-hover">
         <thead>
             <tr>
                 <th>Id</th>
                 <th>Name</th>
-                <th>Actions</th>
             </tr>
-        </thead>
-        <tbody>
-        {% for entity in entities %}
-            <tr>
-                <td><a href="{{ path('club_show', { 'id': entity.id }) }}">{{ entity.id }}</a></td>
-                <td>{{ entity.name }}</td>
-                <td>
-                <ul>
-                    <li>
-                        <a href="{{ path('club_show', { 'id': entity.id }) }}">show</a>
-                    </li>
-                </ul>
-                </td>
-            </tr>
-        {% endfor %}
-        </tbody>
-    </table>
+    </thead>
+    <tbody>
+    </tbody>
+</table>
+{% endblock %}
 
-    {% endblock %}
+{% block javascripts %}
+    {{ parent() }}
+    {% javascripts '//ajax.aspnetcdn.com/ajax/jquery.dataTables/1.9.4/jquery.dataTables.min.js'
+                    '@BpaulinUpfitBundle/Resources/public/js/datatables.js'
+                     filter='cssrewrite' %}
+    <script type="text/javascript" src="{{ asset_url }}"></script>
+    {% endjavascripts %}
+    <script>
+    $(document).ready(function() {
+        $('#clubslist').dataTable( {
+            "sAjaxSource": "{{ path('admin_ajax_clubs_list') }}",
+        } );
+    } );
+    </script>
+{% endblock %}
+
+{% block stylesheets %}
+    {{ parent() }}
+    {% stylesheets '//ajax.aspnetcdn.com/ajax/jquery.dataTables/1.9.4/css/jquery.dataTables.css'
+                    '@BpaulinUpfitBundle/Resources/public/css/datatables.css' %}
+     <link rel="stylesheet" href="{{ asset_url }}" media="screen"/>
+    {% endstylesheets %}
+{% endblock %}

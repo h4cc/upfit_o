@@ -3,6 +3,7 @@
 namespace Bpaulin\UpfitBundle\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Component\HttpFoundation\Request;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
@@ -13,12 +14,60 @@ use Bpaulin\UpfitBundle\Entity\Club;
 use Bpaulin\UpfitBundle\Entity\Member;
 
 /**
- * Club controller.
- *
- * @Route("/user/club")
+ * Club controller
  */
-class ClubController extends Controller
+class ClubController extends AbstractController
 {
+    /**
+     * @Route("/admin/club/", name="admin_club")
+     * @Template()
+     */
+    public function indexAction()
+    {
+        return array();
+    }
+
+    /**
+     * @Route("/admin/club/ajax", name="admin_ajax_clubs_list")
+     * @Template()
+     */
+    public function clubsAjaxAction(Request $request)
+    {
+        return $this->abstractAjaxAction(
+            $request,
+            'BpaulinUpfitBundle:Club',
+            array('id', 'name')
+        );
+    }
+
+    /**
+     * Home page for a club management
+     *
+     * @Route("/user/club/{idClub}/admin/", name="user_club_admin")
+     * @Method("GET")
+     * @Template()
+     */
+    public function adminAction($idClub)
+    {
+        $em = $this->getDoctrine()->getManager();
+
+        $repoClub = $em->getRepository('BpaulinUpfitBundle:Club');
+        $club = $repoClub->find($idClub);
+
+        $securityContext = $this->get('security.context');
+
+        // check for edit access
+        if (false === $securityContext->isGranted('MASTER', $club)) {
+            $this->get('session')->getFlashBag()->add('error', "You're not admin in this club");
+
+            return $this->redirect($this->generateUrl('user_home'));
+        }
+
+        return array(
+            'club' => $club
+        );
+    }
+
     /**
      * Create user personnal club
      *
@@ -76,31 +125,5 @@ class ClubController extends Controller
         }
 
         return $this->redirect($referer);
-    }
-
-    /**
-     * @Route("/{idClub}/admin/", name="user_club_admin")
-     * @Method("GET")
-     * @Template()
-     */
-    public function adminAction($idClub)
-    {
-        $em = $this->getDoctrine()->getManager();
-
-        $repoClub = $em->getRepository('BpaulinUpfitBundle:Club');
-        $club = $repoClub->find($idClub);
-
-        $securityContext = $this->get('security.context');
-
-        // check for edit access
-        if (false === $securityContext->isGranted('MASTER', $club)) {
-            $this->get('session')->getFlashBag()->add('error', "You're not admin in this club");
-
-            return $this->redirect($this->generateUrl('user_home'));
-        }
-
-        return array(
-            'club' => $club
-        );
     }
 }
