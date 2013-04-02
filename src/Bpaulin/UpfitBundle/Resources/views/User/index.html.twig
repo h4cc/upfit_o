@@ -57,7 +57,7 @@
 {% block stylesheets %}
     {{ parent() }}
     {% stylesheets '//ajax.aspnetcdn.com/ajax/jquery.dataTables/1.9.4/css/jquery.dataTables.css'
-                    '@BpaulinUpfitBundle/Resources/public/css/datatables.css' %}
+                    'bundles/bpaulin_upfit/css/datatables.css' filter='cssrewrite'%}
      <link rel="stylesheet" href="{{ asset_url }}" media="screen"/>
     {% endstylesheets %}
 {% endblock %}

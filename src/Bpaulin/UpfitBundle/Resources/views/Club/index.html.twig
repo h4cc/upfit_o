@@ -16,8 +16,7 @@
 {% block javascripts %}
     {{ parent() }}
     {% javascripts '//ajax.aspnetcdn.com/ajax/jquery.dataTables/1.9.4/jquery.dataTables.min.js'
-                    '@BpaulinUpfitBundle/Resources/public/js/datatables.js'
-                     filter='cssrewrite' %}
+                    '@BpaulinUpfitBundle/Resources/public/js/datatables.js' %}
     <script type="text/javascript" src="{{ asset_url }}"></script>
     {% endjavascripts %}
     <script>
@@ -32,7 +31,7 @@
 {% block stylesheets %}
     {{ parent() }}
     {% stylesheets '//ajax.aspnetcdn.com/ajax/jquery.dataTables/1.9.4/css/jquery.dataTables.css'
-                    '@BpaulinUpfitBundle/Resources/public/css/datatables.css' %}
+                    'bundles/bpaulin_upfit/css/datatables.css' filter='cssrewrite'%}
      <link rel="stylesheet" href="{{ asset_url }}" media="screen"/>
     {% endstylesheets %}
 {% endblock %}

@@ -42,6 +42,13 @@ Avant tout me former, eventuellement servir a gérer des séances de sport
 
     ./bin/phing report
 
+## Mise à jour en production
+
+	git pull
+	php app/console doctrine:migrations:migrate --env=prod
+	php app/console cache:clear --env=prod
+	php app/console cache:clear --env=prod
+	php app/console assetic:dump --env=prod --no-debug
 
 
 

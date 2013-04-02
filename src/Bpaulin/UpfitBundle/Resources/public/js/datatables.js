@@ -2,7 +2,7 @@
 $.extend( true, $.fn.dataTable.defaults, {
 	"sDom": "<'row-fluid'<'span6'l><'span6'f>r>t<'row-fluid'<'span6'i><'span6'p>>",
 	"sPaginationType": "bootstrap",
-    "oLanguage": {
+    /*"oLanguage": {
         "sProcessing":     "Traitement en cours...",
         "sSearch":         "Rechercher&nbsp;:",
         "sLengthMenu":     "Afficher _MENU_ &eacute;l&eacute;ments",
@@ -23,7 +23,7 @@ $.extend( true, $.fn.dataTable.defaults, {
             "sSortAscending":  ": activer pour trier la colonne par ordre croissant",
             "sSortDescending": ": activer pour trier la colonne par ordre décroissant"
         }
-    },
+    },*/
     "bProcessing": true,
     "bServerSide": true,
     "bStateSave": true,
