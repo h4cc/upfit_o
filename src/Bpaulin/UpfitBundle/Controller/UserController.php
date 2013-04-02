@@ -8,16 +8,16 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 
 /**
- * @Route("/admin/users")
+ * @Route("/admin/user")
  */
 class UserController extends AbstractController
 {
 
     /**
-     * @Route("/list", name="admin_users_list")
+     * @Route("/", name="admin_user")
      * @Template()
      */
-    public function usersListAction()
+    public function indexAction()
     {
         return array();
     }

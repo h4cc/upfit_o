@@ -2,21 +2,28 @@
 
 {% block body %}
 <div class="hero-unit">
-  <h1>Upfit</h1>
-  <p>Nothing to say... </p>
-  <div class="btn-group">
-  {% if app.user.username is defined %}
-    <a class="btn btn-primary btn-large" href="{{ path('user_home') }}">
-      My space
-    </a>
-    <a class="btn btn-large" href="{{ path('fos_user_security_logout') }}">
-        Logout
-    </a>
-  {% else %}
-    <a class="btn btn-primary btn-large" href="{{ path('fos_user_security_login') }}">
-      Login
-    </a>
-  {% endif %}
-  </div>
+    <h1>Upfit</h1>
+    <p>Nothing to say... </p>
+    <div class="btn-group">
+    {% if app.user.username is defined %}
+        {% if is_granted('ROLE_USER') %}
+           <a class="btn btn-primary btn-large" href="{{ path('user_home') }}">
+                USE !
+            </a>
+        {% endif %}
+        {% if is_granted('ROLE_SUPER_ADMIN') %}
+           <a class="btn btn-danger btn-large" href="{{ path('admin_home') }}">
+                Administration
+            </a>
+        {% endif %}
+        <a class="btn btn-large" href="{{ path('fos_user_security_logout') }}">
+            Logout
+        </a>
+    {% else %}
+        <a class="btn btn-primary btn-large" href="{{ path('fos_user_security_login') }}">
+            Login
+        </a>
+    {% endif %}
+    </div>
 </div>
 {% endblock %}

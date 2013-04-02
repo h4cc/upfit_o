@@ -41,4 +41,13 @@ class DefaultController extends Controller
             'sessions' => $sessions,
         );
     }
+
+    /**
+     * @Route("/admin/", name="admin_home")
+     * @Template()
+     */
+    public function adminAction()
+    {
+        return array();
+    }
 }
