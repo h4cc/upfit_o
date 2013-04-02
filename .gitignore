@@ -1,5 +1,7 @@
 syntax: glob
 web/bundles/
+web/css/
+web/js/
 app/bootstrap.php.cache
 app/config/parameters.yml
 app/cache/*
