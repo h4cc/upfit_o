@@ -1,0 +1,34 @@
+{% extends '::base.html.twig' %}
+{% if entity.id %}
+    {% set actionRoute = 'admin_club_update' %}
+{% else %}
+    {% set actionRoute = 'admin_club_create' %}
+{% endif %}
+
+{% block body -%}
+    <h1>
+        Club {% if entity.id %}edition{% else %}creation{% endif %}
+        {% if entity.id %}
+        <small>
+            {{ entity }}
+        </small>
+        {% endif %}
+    </h1>
+    <div class='btn-group'>
+        <a class='btn' href="{{ path('admin_club') }}">
+            Back to the list
+        </a>
+    </div>
+    <hr/>
+    <form class="form-horizontal"
+          action="{{ path(actionRoute, {'id': entity.id}) }}"
+          method="post"
+          {{ form_enctype(form) }}>
+        {{ form_widget(form) }}
+        <div class="control-group">
+            <div class="controls">
+                <button type="submit" class="btn">{% if entity.id %}Save{% else %}Create{% endif %}</button>
+            </div>
+        </div>
+    </form>
+{% endblock %}

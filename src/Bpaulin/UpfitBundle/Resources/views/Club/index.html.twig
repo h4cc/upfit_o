@@ -1,15 +1,23 @@
 {% extends "::base.html.twig" %}
 
 {% block body %}
-    <table id="clubslist" class="table table-bordered table-striped table-hover">
-        <thead>
-            <tr>
-                <th>Id</th>
-                <th>Name</th>
-            </tr>
-    </thead>
-    <tbody>
-    </tbody>
+<h1>Clubs List</h1>
+
+<div class="btn-group">
+    <a class="btn" href="{{ path('admin_club_new') }}">
+        Create a new club
+    </a>
+</div>
+
+<table id="clubslist" class="table table-bordered table-striped table-hover">
+    <thead>
+        <tr>
+            <th>Id</th>
+            <th>Name</th>
+        </tr>
+</thead>
+<tbody>
+</tbody>
 </table>
 {% endblock %}
 
@@ -25,6 +33,27 @@
     $(document).ready(function() {
         $('#clubslist').dataTable( {
             "sAjaxSource": "{{ path('admin_ajax_clubs_list') }}",
+            "aoColumnDefs": [
+                {
+                    "mRender": function ( data, type, row ) {
+
+                        return "<div class='btn-group'><a class='btn btn-mini' href='"
+                                + Routing.generate('admin_club_show', { id: row[0] })
+                                + "'>Show</a>"+
+                                "<a class='btn btn-mini' href='"
+                                + Routing.generate('admin_club_edit', { id: row[0] })
+                                + "'>Edit</a></div";
+                    },
+                    "sWidth": "1%",
+                    "bSearchable": false,
+                    "bSortable": false,
+                    "aTargets": [ 0 ]
+                },
+                {
+                    "bSearchable": true,
+                    "aTargets": [ 1 ]
+                },
+             ]
         } );
     } );
     </script>

@@ -2,16 +2,13 @@
 
 namespace Bpaulin\UpfitBundle\Controller;
 
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
-use Symfony\Component\Security\Acl\Domain\ObjectIdentity;
-use Symfony\Component\Security\Acl\Domain\UserSecurityIdentity;
-use Symfony\Component\Security\Acl\Permission\MaskBuilder;
 use Bpaulin\UpfitBundle\Entity\Club;
-use Bpaulin\UpfitBundle\Entity\Member;
+use Bpaulin\UpfitBundle\Form\ClubType;
 
 /**
  * Club controller
@@ -19,7 +16,9 @@ use Bpaulin\UpfitBundle\Entity\Member;
 class ClubController extends AbstractController
 {
     /**
+     * Lists all Club entities.
      * @Route("/admin/club/", name="admin_club")
+     * @Method("GET")
      * @Template()
      */
     public function indexAction()
@@ -41,89 +40,127 @@ class ClubController extends AbstractController
     }
 
     /**
-     * Home page for a club management
+     * Displays a form to create a new Club entity.
      *
-     * @Route("/user/club/{idClub}/admin/", name="user_club_admin")
+     * @Route("/new", name="admin_club_new")
      * @Method("GET")
-     * @Template()
+     * @Template("BpaulinUpfitBundle:Club:edit.html.twig")
      */
-    public function adminAction($idClub)
+    public function newAction()
     {
-        $em = $this->getDoctrine()->getManager();
-
-        $repoClub = $em->getRepository('BpaulinUpfitBundle:Club');
-        $club = $repoClub->find($idClub);
-
-        $securityContext = $this->get('security.context');
-
-        // check for edit access
-        if (false === $securityContext->isGranted('MASTER', $club)) {
-            $this->get('session')->getFlashBag()->add('error', "You're not admin in this club");
-
-            return $this->redirect($this->generateUrl('user_home'));
-        }
+        $entity = new Club();
+        $form   = $this->createForm(new ClubType(), $entity);
 
         return array(
-            'club' => $club
+            'entity' => $entity,
+            'form'   => $form->createView(),
         );
     }
 
     /**
-     * Create user personnal club
+     * Creates a new Club entity.
      *
-     * @Route("/create", name="user_club_create")
-     * @Method("GET")
+     * @Route("/", name="admin_club_create")
+     * @Method("POST")
+     * @Template("BpaulinUpfitBundle:Club:edit.html.twig")
      */
-    public function createAction()
+    public function createAction(Request $request)
     {
-        $referer = $this->getRequest()->headers->get('referer');
+        $entity  = new Club();
+        $form = $this->createForm(new ClubType(), $entity);
+        $form->bind($request);
 
-        $em = $this->getDoctrine()->getManager();
-        $repoMember = $em->getRepository('BpaulinUpfitBundle:Member');
-        $user = $this->getUser();
-
-        // Check if club exists
-        $member = $repoMember->findOneBy(
-            array(
-                'user'  => $user,
-                'owner' => true,
-            )
-        );
-        if ($member) {
-            // club exists
-            $this->get('session')->getFlashBag()->add('info', 'Club already exist');
-        } else {
-            // club does not exist
-            $club = new Club();
-            $club->setName($user->getUsername());
-            $em->persist($club);
-
-            $member = new Member();
-            $member
-                ->setClub($club)
-                ->setUser($user)
-                ->setOwner(true)
-                ->setAdmin(true);
-            $em->persist($member);
+        if ($form->isValid()) {
+            $em = $this->getDoctrine()->getManager();
+            $em->persist($entity);
             $em->flush();
 
-            // creating the ACL
-            $aclProvider = $this->get('security.acl.provider');
-            $objectIdentity = ObjectIdentity::fromDomainObject($club);
-            $acl = $aclProvider->createAcl($objectIdentity);
-
-            // retrieving the security identity of the currently logged-in user
-            $securityContext = $this->get('security.context');
-            $user = $securityContext->getToken()->getUser();
-            $securityIdentity = UserSecurityIdentity::fromAccount($user);
-
-            // grant owner access
-            $acl->insertObjectAce($securityIdentity, MaskBuilder::MASK_OWNER);
-            $aclProvider->updateAcl($acl);
-
-            $this->get('session')->getFlashBag()->add('success', 'Club created');
+            return $this->redirect($this->generateUrl('admin_club', array('id' => $entity->getId())));
         }
 
-        return $this->redirect($referer);
+        return array(
+            'entity' => $entity,
+            'form'   => $form->createView(),
+        );
+    }
+
+    /**
+     * Finds and displays a Club entity.
+     *
+     * @Route("/admin/club/{id}/show", name="admin_club_show", options={"expose"=true})
+     * @Method("GET")
+     * @Template()
+     */
+    public function showAction($id)
+    {
+        $em = $this->getDoctrine()->getManager();
+
+        $entity = $em->getRepository('BpaulinUpfitBundle:Club')->find($id);
+
+        if (!$entity) {
+            throw $this->createNotFoundException('Unable to find Club entity.');
+        }
+
+        return array(
+            'entity'      => $entity,
+        );
+    }
+
+    /**
+     * Displays a form to edit an existing Club entity.
+     *
+     * @Route("/admin/club/{id}/edit", name="admin_club_edit", options={"expose"=true})
+     * @Method("GET")
+     * @Template()
+     */
+    public function editAction($id)
+    {
+        $em = $this->getDoctrine()->getManager();
+
+        $entity = $em->getRepository('BpaulinUpfitBundle:Club')->find($id);
+
+        if (!$entity) {
+            throw $this->createNotFoundException('Unable to find Club entity.');
+        }
+
+        $editForm = $this->createForm(new ClubType(), $entity);
+
+        return array(
+            'entity'      => $entity,
+            'form'   => $editForm->createView(),
+        );
+    }
+
+    /**
+     * Edits an existing Club entity.
+     *
+     * @Route("/admin/club/{id}", name="admin_club_update")
+     * @Method("POST")
+     * @Template("BpaulinUpfitBundle:Club:edit.html.twig")
+     */
+    public function updateAction(Request $request, $id)
+    {
+        $em = $this->getDoctrine()->getManager();
+
+        $entity = $em->getRepository('BpaulinUpfitBundle:Club')->find($id);
+
+        if (!$entity) {
+            throw $this->createNotFoundException('Unable to find Club entity.');
+        }
+
+        $editForm = $this->createForm(new ClubType(), $entity);
+        $editForm->bind($request);
+
+        if ($editForm->isValid()) {
+            $em->persist($entity);
+            $em->flush();
+
+            return $this->redirect($this->generateUrl('admin_club'));
+        }
+
+        return array(
+            'entity'      => $entity,
+            'edit_form'   => $editForm->createView(),
+        );
     }
 }

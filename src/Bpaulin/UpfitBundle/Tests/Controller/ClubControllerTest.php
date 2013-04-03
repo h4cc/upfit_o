@@ -6,47 +6,50 @@ use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 
 class ClubControllerTest extends WebTestCase
 {
-    public function createClientUser($username = '', $password = '')
+    /*
+    public function testCompleteScenario()
     {
-        if (!$username) {
-            $username = 'user1';
-            if (!$password) {
-                $password = 'user1';
-            }
-        }
-
+        // Create a new client to browse the application
         $client = static::createClient();
-        $crawler = $client->request('GET', '/login');
-        $form = $crawler->selectButton('_submit')->form(
-            array(
-            '_username'       => $username,
-            '_password'       => $password
-            )
-        );
+
+        // Create a new entry in the database
+        $crawler = $client->request('GET', '/club/');
+        $this->assertEquals(200, $client->getResponse()->getStatusCode(), "Unexpected HTTP status code for GET /club/");
+        $crawler = $client->click($crawler->selectLink('Create a new entry')->link());
+
+        // Fill in the form and submit it
+        $form = $crawler->selectButton('Create')->form(array(
+            'bpaulin_upfitbundle_clubtype[field_name]'  => 'Test',
+            // ... other fields to fill
+        ));
+
         $client->submit($form);
+        $crawler = $client->followRedirect();
 
-        return $client;
+        // Check data in the show view
+        $this->assertGreaterThan(0, $crawler->filter('td:contains("Test")')->count(), 'Missing element td:contains("Test")');
+
+        // Edit the entity
+        $crawler = $client->click($crawler->selectLink('Edit')->link());
+
+        $form = $crawler->selectButton('Edit')->form(array(
+            'bpaulin_upfitbundle_clubtype[field_name]'  => 'Foo',
+            // ... other fields to fill
+        ));
+
+        $client->submit($form);
+        $crawler = $client->followRedirect();
+
+        // Check the element contains an attribute with value equals "Foo"
+        $this->assertGreaterThan(0, $crawler->filter('[value="Foo"]')->count(), 'Missing element [value="Foo"]');
+
+        // Delete the entity
+        $client->submit($crawler->selectButton('Delete')->form());
+        $crawler = $client->followRedirect();
+
+        // Check the entity has been delete on the list
+        $this->assertNotRegExp('/Foo/', $client->getResponse()->getContent());
     }
 
-    public function testUserCanCreateHisOwnClub()
-    {
-        $client = static::createClientUser();
-
-        $crawler = $client->request('GET', '/user/');
-        $this->assertEquals(200, $client->getResponse()->getStatusCode());
-        $this->assertEquals(1, $crawler->filter('a#user_club_create')->count());
-        $this->assertEquals(0, $crawler->filter('table#members tbody tr')->count());
-
-        $link = $crawler->filter('a#user_club_create')->first()->link();
-        $uri = $link->getUri();
-        $crawler = $client->click($link);
-        $crawler = $client->followRedirect();
-        $this->assertEquals(1, $crawler->filter('table#members tbody tr')->count());
-        $this->assertEquals(1, $crawler->filter('.alert-success')->count());
-
-        $crawler = $client->request('GET', $uri);
-        $crawler = $client->followRedirect();
-        $this->assertEquals(1, $crawler->filter('table#members tbody tr')->count());
-        $this->assertEquals(1, $crawler->filter('.alert-info')->count());
-    }
+    */
 }

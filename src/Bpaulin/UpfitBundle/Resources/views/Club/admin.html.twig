@@ -1,8 +1,0 @@
-{% extends '::base.html.twig' %}
-{% block body %}
-<h1>Administration <small>{{ club.name }}</small></h1>
-<div class="btn-group btn-group-vertical">
-    <a class="btn" href="{{ path('exercise', {'idClub' : club.id}) }}">Exercises</a>
-    <a class="btn" href="{{ path('program', {'idClub' : club.id}) }}">Programs</a>
-</div>
-{% endblock %}

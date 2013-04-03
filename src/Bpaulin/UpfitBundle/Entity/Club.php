@@ -62,6 +62,17 @@ class Club
     }
 
     /**
+     * Renvoie le tableau des elements à inclure dans une réponse Json pour datatables
+     */
+    public function getArrayForJson()
+    {
+        return array(
+                $this->getId(),
+                $this->getName(),
+                );
+    }
+
+    /**
      * Get id
      *
      * @return integer
