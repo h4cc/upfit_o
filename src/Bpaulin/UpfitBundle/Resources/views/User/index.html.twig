@@ -17,9 +17,10 @@
 
 {% block javascripts %}
     {{ parent() }}
-    {% javascripts '//ajax.aspnetcdn.com/ajax/jquery.dataTables/1.9.4/jquery.dataTables.min.js'
-                    '@BpaulinUpfitBundle/Resources/public/js/datatables.js'
-                     filter='cssrewrite' %}
+    {% javascripts 
+        '//ajax.aspnetcdn.com/ajax/jquery.dataTables/1.9.4/jquery.dataTables.min.js'
+        '@BpaulinUpfitBundle/Resources/public/js/datatables.js'
+    %}
     <script type="text/javascript" src="{{ asset_url }}"></script>
     {% endjavascripts %}
     <script>
