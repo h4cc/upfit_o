@@ -9,6 +9,8 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Bpaulin\UpfitBundle\Entity\Club;
 use Bpaulin\UpfitBundle\Form\ClubType;
+use Bpaulin\UpfitBundle\Entity\Member;
+use Bpaulin\UpfitBundle\Form\MemberType;
 
 /**
  * Club controller
@@ -101,9 +103,57 @@ class ClubController extends AbstractController
             throw $this->createNotFoundException('Unable to find Club entity.');
         }
 
-        return array(
-            'entity'      => $entity,
+        $members = $em->getRepository('BpaulinUpfitBundle:Member')->findBy(
+            array(
+                'club' => $entity
+            )
         );
+
+        $member = new Member();
+        $form   = $this->createForm(new MemberType(), $member, array(
+    'em' => $this->getDoctrine()->getEntityManager(),
+));
+
+        return array(
+            'entity'  => $entity,
+            'members' => $members,
+            'form'   => $form->createView(),
+        );
+    }
+
+
+
+    /**
+     * Add a member to an existing Club entity.
+     *
+     * @Route("/admin/club/{id}/add", name="admin_club_add_member")
+     * @Method("POST")
+     * @Template()
+     */
+    public function addMemberAction(Request $request, $id)
+    {
+        $em = $this->getDoctrine()->getManager();
+
+        $entity = $em->getRepository('BpaulinUpfitBundle:Club')->find($id);
+
+        if (!$entity) {
+            throw $this->createNotFoundException('Unable to find Club entity.');
+        }
+
+
+        $member = new Member();
+        $member->setClub($entity);
+        $form   = $this->createForm(new MemberType(), $member, array(
+    'em' => $this->getDoctrine()->getEntityManager(),
+));
+
+        $form->bind($request);
+        if ($form->isValid()) {
+            $em->persist($member);
+            $em->flush();
+        }
+
+        return $this->redirect($this->generateUrl('admin_club_show', array('id'=>$id)));
     }
 
     /**

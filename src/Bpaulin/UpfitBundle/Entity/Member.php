@@ -7,7 +7,7 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * Member
  *
- * @ORM\Table()
+ * @ORM\Table(uniqueConstraints={@ORM\UniqueConstraint(name="user_club", columns={"user_id", "club_id"})})
  * @ORM\Entity(repositoryClass="Bpaulin\UpfitBundle\Entity\MemberRepository")
  */
 class Member
@@ -22,12 +22,12 @@ class Member
     private $id;
 
     /**
-     * @ORM\Column(name="admin", type="boolean")
+     * @ORM\Column(name="admin", type="boolean", nullable=true, options={"default" = false})
      */
     private $admin;
 
     /**
-     * @ORM\Column(name="owner", type="boolean")
+     * @ORM\Column(name="owner", type="boolean", nullable=true, options={"default" = false})
      */
     private $owner;
 
