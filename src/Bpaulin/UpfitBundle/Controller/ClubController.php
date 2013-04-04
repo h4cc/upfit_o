@@ -110,9 +110,13 @@ class ClubController extends AbstractController
         );
 
         $member = new Member();
-        $form   = $this->createForm(new MemberType(), $member, array(
-    'em' => $this->getDoctrine()->getEntityManager(),
-));
+        $form   = $this->createForm(
+            new MemberType(),
+            $member,
+            array(
+                'em' => $this->getDoctrine()->getManager(),
+            )
+        );
 
         return array(
             'entity'  => $entity,
@@ -121,14 +125,12 @@ class ClubController extends AbstractController
         );
     }
 
-
-
     /**
      * Add a member to an existing Club entity.
      *
      * @Route("/admin/club/{id}/add", name="admin_club_add_member")
      * @Method("POST")
-     * @Template()
+     * @Template("BpaulinUpfitBundle:Club:show.html.twig")
      */
     public function addMemberAction(Request $request, $id)
     {
@@ -140,20 +142,35 @@ class ClubController extends AbstractController
             throw $this->createNotFoundException('Unable to find Club entity.');
         }
 
+        $members = $em->getRepository('BpaulinUpfitBundle:Member')->findBy(
+            array(
+                'club' => $entity
+            )
+        );
 
         $member = new Member();
         $member->setClub($entity);
-        $form   = $this->createForm(new MemberType(), $member, array(
-    'em' => $this->getDoctrine()->getEntityManager(),
-));
+        $form   = $this->createForm(
+            new MemberType(),
+            $member,
+            array(
+                'em' => $this->getDoctrine()->getManager(),
+            )
+        );
 
         $form->bind($request);
         if ($form->isValid()) {
             $em->persist($member);
             $em->flush();
+        return $this->redirect($this->generateUrl('admin_club_show', array('id'=>$id)));
         }
 
-        return $this->redirect($this->generateUrl('admin_club_show', array('id'=>$id)));
+        return array(
+            'entity'  => $entity,
+            'members' => $members,
+            'form'   => $form->createView(),
+        );
+
     }
 
     /**

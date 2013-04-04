@@ -3,11 +3,13 @@
 namespace Bpaulin\UpfitBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
 /**
  * Member
  *
  * @ORM\Table(uniqueConstraints={@ORM\UniqueConstraint(name="user_club", columns={"user_id", "club_id"})})
+ * @UniqueEntity({"user", "club"})
  * @ORM\Entity(repositoryClass="Bpaulin\UpfitBundle\Entity\MemberRepository")
  */
 class Member
