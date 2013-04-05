@@ -26,7 +26,7 @@ Avant tout me former, eventuellement servir a gérer des séances de sport
 	php app/console doctrine:database:create --env=dev
 	php app/console init:acl
 	php app/console doctrine:migrations:migrate --env=dev
-	php app/console fos:user:create `whoami` --super --env=dev
+	php app/console fos:user:create `whoami` --super-admin --env=dev
 
 ## Commandes
 
