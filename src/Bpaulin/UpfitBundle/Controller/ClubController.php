@@ -44,7 +44,7 @@ class ClubController extends AbstractController
     /**
      * Displays a form to create a new Club entity.
      *
-     * @Route("/new", name="admin_club_new")
+     * @Route("/admin/club/new", name="admin_club_new")
      * @Method("GET")
      * @Template("BpaulinUpfitBundle:Club:edit.html.twig")
      */
@@ -62,7 +62,7 @@ class ClubController extends AbstractController
     /**
      * Creates a new Club entity.
      *
-     * @Route("/", name="admin_club_create")
+     * @Route("/admin/club/create", name="admin_club_create")
      * @Method("POST")
      * @Template("BpaulinUpfitBundle:Club:edit.html.twig")
      */

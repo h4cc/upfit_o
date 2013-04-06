@@ -1,24 +1,28 @@
 {% extends '::base.html.twig' %}
+{% set breadcrumbs =
+  {
+    'Admin': path('admin_home'),
+    'Clubs': path('admin_club'),
+    (entity.name): path('admin_club_show', {'id': entity.id })
+  }
+%}
+{% set actions =
+  {
+    'Show': {'path':path('admin_club_show', {'id': entity.id }), 'icon':'icon-eye-open'},
+    'Edit': {'path':path('admin_club_edit', {'id': entity.id }), 'icon':'icon-edit'},
+    'Delete': {'path':'#', 'icon':'icon-remove-sign'},
+    'Members': {'path':'#', 'icon':'icon-list'}
+  }
+%}
 
 {% block body -%}
-    <h1>Club <small>{{ entity }}</small></h1>
-    <div class='btn-group'>
-        <a class='btn' href="{{ path('admin_club') }}">
-            Back to the list
-        </a>
-        <a class="btn" href="{{ path('admin_club_edit', {'id': entity.id }) }}">
-            Edit
-        </a>
-    </div>
-    <hr/>
-
-    <dl class="dl-horizontal">
-        <dt>Id</dt>
-        <dd>{{ entity.id }}</dd>
-        <dt>Name</dt>
-        <dd>{{ entity.name }}</dd>
-    </dl>
-
+<dl class="dl-horizontal">
+  <dt>Id</dt>
+  <dd>{{ entity.id }}</dd>
+  <dt>Name</dt>
+  <dd>{{ entity.name }}</dd>
+</dl>
+{#
     <h2>Members</h2>
     <form class="form-horizontal"
           action="{{ path('admin_club_add_member', {'id': entity.id}) }}"
@@ -45,4 +49,5 @@
     {% else %}
     <p>No members for this club!</p>
     {% endif %}
+    #}
 {% endblock %}

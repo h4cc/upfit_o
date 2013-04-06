@@ -1,25 +1,32 @@
 {% extends '::base.html.twig' %}
+{% set breadcrumbs = { 'Admin': path('admin_home'),
+                       'Clubs': path('admin_club'),
+                    }
+%}
+{% set actions =
+  {
+    'Show': {'path':path('admin_club_show', {'id': entity.id }), 'icon':'icon-eye-open'},
+    'Edit': {'path':path('admin_club_edit', {'id': entity.id }), 'icon':'icon-edit'},
+    'Delete': {'path':'#', 'icon':'icon-remove-sign'},
+    'Members': {'path':'#', 'icon':'icon-list'}
+  }
+%}
 {% if entity.id %}
     {% set actionRoute = 'admin_club_update' %}
+    {% set breadcrumbs = breadcrumbs|merge({
+                            (entity.name): path('admin_club_show', {'id': entity.id }),
+                            'Edit': path('admin_club_edit', {'id': entity.id })
+                        })
+    %}
 {% else %}
     {% set actionRoute = 'admin_club_create' %}
+    {% set breadcrumbs = breadcrumbs|merge({
+                            'New': path('admin_club_new')
+                        })
+    %}
 {% endif %}
 
 {% block body -%}
-    <h1>
-        Club {% if entity.id %}edition{% else %}creation{% endif %}
-        {% if entity.id %}
-        <small>
-            {{ entity }}
-        </small>
-        {% endif %}
-    </h1>
-    <div class='btn-group'>
-        <a class='btn' href="{{ path('admin_club') }}">
-            Back to the list
-        </a>
-    </div>
-    <hr/>
     <form class="form-horizontal"
           action="{{ path(actionRoute, {'id': entity.id}) }}"
           method="post"
@@ -27,7 +34,10 @@
         {{ form_widget(form) }}
         <div class="control-group">
             <div class="controls">
-                <button type="submit" class="btn">{% if entity.id %}Save{% else %}Create{% endif %}</button>
+                <button type="submit" class="btn">
+                    <i class="icon-ok"></i>
+                    {% if entity.id %}Save{% else %}Create{% endif %}
+                </button>
             </div>
         </div>
     </form>

@@ -1,14 +1,13 @@
 {% extends "::base.html.twig" %}
+{% set breadcrumbs = { 'Admin': path('admin_home'), 'Clubs': path('admin_club')} %}
 
 {% block body %}
-<h1>Clubs List</h1>
-
 <div class="btn-group">
-    <a class="btn" href="{{ path('admin_club_new') }}">
+    <a class="btn btn-small" href="{{ path('admin_club_new') }}">
         Create a new club
     </a>
 </div>
-
+<hr/>
 <table id="clubslist" class="table table-bordered table-striped table-hover">
     <thead>
         <tr>
@@ -36,13 +35,9 @@
             "aoColumnDefs": [
                 {
                     "mRender": function ( data, type, row ) {
-
                         return "<div class='btn-group'><a class='btn btn-mini' href='"
                                 + Routing.generate('admin_club_show', { id: row[0] })
-                                + "'>Show</a>"+
-                                "<a class='btn btn-mini' href='"
-                                + Routing.generate('admin_club_edit', { id: row[0] })
-                                + "'>Edit</a></div";
+                                + "'>Show</a></div";
                     },
                     "sWidth": "1%",
                     "bSearchable": false,

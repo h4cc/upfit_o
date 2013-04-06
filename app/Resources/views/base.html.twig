@@ -2,7 +2,18 @@
 <html>
   <head>
     <meta charset="utf-8">
-    <title>{% block title %}Upfit{% endblock %}</title>
+    <title>
+      {%- block title -%}
+      {% spaceless %}
+        {% if breadcrumbs is defined %}
+          {% for label in breadcrumbs|keys|reverse %}
+            {{- label~' :: ' -}}
+          {% endfor %}
+        {% endif %}
+        {{- 'Upfit' -}}
+      {% endspaceless %}
+      {% endblock %}
+    </title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="icon" type="image/x-icon" href="{{ asset('favicon.ico') }}" />
     <!-- style -->
@@ -70,6 +81,24 @@
 
     <div class="container-fluid">
       <div class="row-fluid">
+        <ul class="breadcrumb">
+          <li>
+            <a href="{{ path('upfit_home') }}">Upfit</a>
+            <span class="divider">/</span>
+          </li>
+            {% for label, url in breadcrumbs %}
+              {% if loop.last %}
+                <li class="active">{{ label }}</li>
+              {% else %}
+                <li>
+                  <a href="{{ url }}">
+                    {{ label }}
+                  </a>
+                  <span class="divider">/</span>
+                </li>
+              {% endif %}
+            {% endfor %}
+        </ul>
       {% for level in ['error', 'info', 'success'] %}
           {% for flashMessage in app.session.flashbag.get(level) %}
               <div class="alert alert-{{ level }}">
@@ -78,6 +107,19 @@
               </div>
           {% endfor %}
       {% endfor %}
+      {% if actions is defined %}
+        <ul class="nav nav-pills">
+          {% for label, data in actions %}
+          {% set current_action = (data.path == path(app.request.attributes.get('_route'),
+                app.request.attributes.get('_route_params'))) %}
+          <li{{ current_action? " class='active'" }}>
+            <a href="{{ current_action? "#": data.path }}">
+              <i class="{{ data.icon }}"></i> {{ label }}
+            </a>
+          </li>
+          {% endfor %}
+        </ul>
+      {% endif %}
       {% block body %}
       {% endblock %}
       </div>
