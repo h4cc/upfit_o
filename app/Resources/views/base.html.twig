@@ -86,18 +86,20 @@
             <a href="{{ path('upfit_home') }}">Upfit</a>
             <span class="divider">/</span>
           </li>
-            {% for label, url in breadcrumbs %}
-              {% if loop.last %}
-                <li class="active">{{ label }}</li>
-              {% else %}
-                <li>
-                  <a href="{{ url }}">
-                    {{ label }}
-                  </a>
-                  <span class="divider">/</span>
-                </li>
-              {% endif %}
-            {% endfor %}
+            {% if breadcrumbs is defined %}
+                {% for label, url in breadcrumbs %}
+                  {% if loop.last %}
+                    <li class="active">{{ label }}</li>
+                  {% else %}
+                    <li>
+                      <a href="{{ url }}">
+                        {{ label }}
+                      </a>
+                      <span class="divider">/</span>
+                    </li>
+                  {% endif %}
+                {% endfor %}
+            {% endif %}
         </ul>
       {% for level in ['error', 'info', 'success'] %}
           {% for flashMessage in app.session.flashbag.get(level) %}

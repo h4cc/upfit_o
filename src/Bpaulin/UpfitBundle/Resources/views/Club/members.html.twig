@@ -5,25 +5,31 @@
     'Admin': path('admin_home'),
     'Clubs': path('admin_club'),
     (entity.name): path('admin_club_show', {'id': entity.id }),
-    'Members': path('admin_club_member', {'id': entity.id })
+    'Members': path('admin_club_members', {'id': entity.id })
   }
 %}
 {% set current_action='Members' %}
 
+{% if member.id %}
+    {% set actionRoute = path('admin_club_update_member', {'id': entity.id, 'member_id':member.id }) %}
+{% else %}
+    {% set actionRoute = path('admin_club_add_member', {'id': entity.id }) %}
+{% endif %}
+
 {% block body -%}
 {% include 'BpaulinUpfitBundle:Club:actions.html.twig' %}
 <button type="button" class="btn" data-toggle="collapse" data-target="#demo">
-  Add a member
+  {{ member.id? 'Edit': 'Add' }} a member
 </button>
-<div id="demo" class="collapse in">
+<div id="demo" class="collapse {{ (app.request.attributes.get('_route') == 'admin_club_members')? 'out': 'in' }}">
   <form class="form-horizontal"
-        action="{{ path('admin_club_add_member', {'id': entity.id}) }}"
+        action="{{ actionRoute }}"
         method="post"
         {{ form_enctype(form) }}>
       {{ form_widget(form) }}
       <div class="control-group">
           <div class="controls">
-              <button type="submit" class="btn">{% if entity.id %}Save{% else %}Create{% endif %}</button>
+              <button type="submit" class="btn">{% if member.id %}Update{% else %}Add{% endif %}</button>
           </div>
       </div>
   </form>
@@ -56,7 +62,7 @@
                 {
                     "mRender": function ( data, type, row ) {
                         return "<div class='btn-group'><a class='btn btn-mini' href='"
-                                + Routing.generate('admin_club_show', { id: row[0] })
+                                + Routing.generate('admin_club_member', { member_id: row[0], id: {{entity.id}} })
                                 + "'>Edit</a></div";
                     },
                     "sWidth": "1%",

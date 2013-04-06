@@ -23,7 +23,7 @@ class MemberType extends AbstractType
                 'admin',
                 'choice',
                 array(
-                    'choices'   => array('0' => 'User', '1' => 'Admin'),
+                    'choices'   => array('0' => 'Member', '1' => 'Admin'),
                 )
             )
         ;

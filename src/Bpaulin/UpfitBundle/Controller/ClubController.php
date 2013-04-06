@@ -7,6 +7,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Bpaulin\UpfitBundle\Entity\Club;
 use Bpaulin\UpfitBundle\Form\ClubType;
 use Bpaulin\UpfitBundle\Entity\Member;
@@ -117,11 +118,11 @@ class ClubController extends AbstractController
     /**
      * Display club's members.
      *
-     * @Route("/admin/club/{id}/members", name="admin_club_member", options={"expose"=true})
+     * @Route("/admin/club/{id}/members", name="admin_club_members", options={"expose"=true})
      * @Method("GET")
-     * @Template()
+     * @Template("BpaulinUpfitBundle:Club:members.html.twig")
      */
-    public function memberAction(Club $entity)
+    public function membersAction(Club $entity)
     {
         $em = $this->getDoctrine()->getManager();
 
@@ -143,6 +144,82 @@ class ClubController extends AbstractController
         return array(
             'entity'  => $entity,
             'members' => $members,
+            'member' => $member,
+            'form'   => $form->createView(),
+        );
+    }
+
+    /**
+     * Edit a club member.
+     *
+     * @Route("/admin/club/{id}/member/{member_id}", name="admin_club_member", options={"expose"=true})
+     * @ParamConverter("member", class="BpaulinUpfitBundle:Member", options={"id" = "member_id"})
+     * @Method("GET")
+     * @Template("BpaulinUpfitBundle:Club:members.html.twig")
+     */
+    public function memberAction(Club $entity, Member $member)
+    {
+        $em = $this->getDoctrine()->getManager();
+
+        $members = $em->getRepository('BpaulinUpfitBundle:Member')->findBy(
+            array(
+                'club' => $entity
+            )
+        );
+
+        $form   = $this->createForm(
+            new MemberType(),
+            $member,
+            array(
+                'em' => $this->getDoctrine()->getManager(),
+            )
+        );
+
+        return array(
+            'entity'  => $entity,
+            'members' => $members,
+            'member' => $member,
+            'form'   => $form->createView(),
+        );
+    }
+
+    /**
+     * Update a club member.
+     *
+     * @Route("/admin/club/{id}/member/{member_id}", name="admin_club_update_member")
+     * @ParamConverter("member", class="BpaulinUpfitBundle:Member", options={"id" = "member_id"})
+     * @Method("POST")
+     * @Template("BpaulinUpfitBundle:Club:members.html.twig")
+     */
+    public function updateMemberAction(Request $request, Club $entity, Member $member)
+    {
+        $em = $this->getDoctrine()->getManager();
+
+        $members = $em->getRepository('BpaulinUpfitBundle:Member')->findBy(
+            array(
+                'club' => $entity
+            )
+        );
+
+        $form   = $this->createForm(
+            new MemberType(),
+            $member,
+            array(
+                'em' => $this->getDoctrine()->getManager(),
+            )
+        );
+
+        $form->bind($request);
+        if ($form->isValid()) {
+            $em->persist($member);
+            $em->flush();
+            return $this->redirect($this->generateUrl('admin_club_members', array('id'=>$entity->getId())));
+        }
+
+        return array(
+            'entity'  => $entity,
+            'members' => $members,
+            'member' => $member,
             'form'   => $form->createView(),
         );
     }
@@ -152,7 +229,7 @@ class ClubController extends AbstractController
      *
      * @Route("/admin/club/{id}/add", name="admin_club_add_member")
      * @Method("POST")
-     * @Template("BpaulinUpfitBundle:Club:member.html.twig")
+     * @Template("BpaulinUpfitBundle:Club:members.html.twig")
      */
     public function addMemberAction(Request $request, Club $entity)
     {
@@ -178,15 +255,15 @@ class ClubController extends AbstractController
         if ($form->isValid()) {
             $em->persist($member);
             $em->flush();
-            return $this->redirect($this->generateUrl('admin_club_member', array('id'=>$entity->getId())));
+            return $this->redirect($this->generateUrl('admin_club_members', array('id'=>$entity->getId())));
         }
 
         return array(
             'entity'  => $entity,
             'members' => $members,
+            'member' => $member,
             'form'   => $form->createView(),
         );
-
     }
 
     /**
