@@ -20,7 +20,9 @@
 {% endif %}
 
 {% block body -%}
-{% include 'BpaulinUpfitBundle:Club:actions.html.twig' %}
+{% if entity.id %}
+    {% include 'BpaulinUpfitBundle:Club:actions.html.twig' %}
+{% endif %}
     <form class="form-horizontal"
           action="{{ path(actionRoute, {'id': entity.id}) }}"
           method="post"

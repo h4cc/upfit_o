@@ -57,6 +57,19 @@ class Member
     }
 
     /**
+     * Renvoie le tableau des elements à inclure dans une réponse Json pour datatables
+     */
+    public function getArrayForJson()
+    {
+        return array(
+                $this->getId(),
+                $this->getUser()->getUsername(),
+                $this->getUser()->getEmail(),
+                $this->getAdmin(),
+                );
+    }
+
+    /**
      * Get id
      *
      * @return integer

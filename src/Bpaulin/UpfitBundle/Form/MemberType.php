@@ -19,7 +19,13 @@ class MemberType extends AbstractType
             $builder->create('user', 'email')
                 ->addModelTransformer($transformer)
         )
-            ->add('admin')
+            ->add(
+                'admin',
+                'choice',
+                array(
+                    'choices'   => array('0' => 'User', '1' => 'Admin'),
+                )
+            )
         ;
     }
 

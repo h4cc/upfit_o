@@ -42,6 +42,20 @@ class ClubController extends AbstractController
     }
 
     /**
+     * @Route("/admin/club/{id}/member/ajax", name="admin_ajax_member_list")
+     * @Template()
+     */
+    public function membersAjaxAction(Request $request, Club $entity)
+    {
+        return $this->abstractAjaxAction(
+            $request,
+            'BpaulinUpfitBundle:Member',
+            array('id','user.username','user.email','admin'),
+            'club = '.$entity->getId()
+        );
+    }
+
+    /**
      * Displays a form to create a new Club entity.
      *
      * @Route("/admin/club/new", name="admin_club_new")
@@ -164,7 +178,7 @@ class ClubController extends AbstractController
         if ($form->isValid()) {
             $em->persist($member);
             $em->flush();
-            return $this->redirect($this->generateUrl('admin_club_member', array('id'=>$id)));
+            return $this->redirect($this->generateUrl('admin_club_member', array('id'=>$entity->getId())));
         }
 
         return array(

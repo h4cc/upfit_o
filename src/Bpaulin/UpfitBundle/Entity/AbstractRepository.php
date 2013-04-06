@@ -14,7 +14,7 @@ use Doctrine\ORM\Query\Expr;
 abstract class AbstractRepository extends EntityRepository
 {
 
-    public function abstractAjaxTable(array $get, $tableObjectName, $flag = false)
+    public function abstractAjaxTable(array $get, $tableObjectName, $flag = false, $where='')
     {
         /* Indexed column (used for fast and accurate table cardinality) */
         $alias = 'a';
@@ -40,7 +40,10 @@ abstract class AbstractRepository extends EntityRepository
                         ->createQueryBuilder($alias)
                         ->select('COUNT (a)')
                         ->setMaxResults(1);
-
+        if ($where) {
+            $cb->where('a.'.$where);
+            $cbCount->where('a.'.$where);
+        }
         /*
          * Filtering
          * NOTE this does not match the built-in DataTables filtering which does it

@@ -1,0 +1,15 @@
+{% block datatables_javascripts %}
+    {% javascripts
+        '//ajax.aspnetcdn.com/ajax/jquery.dataTables/1.9.4/jquery.dataTables.min.js'
+        '@BpaulinUpfitBundle/Resources/public/js/datatables.js'
+    %}
+    <script type="text/javascript" src="{{ asset_url }}"></script>
+    {% endjavascripts %}
+{% endblock %}
+
+{% block datatables_stylesheets %}
+    {% stylesheets '//ajax.aspnetcdn.com/ajax/jquery.dataTables/1.9.4/css/jquery.dataTables.css'
+                    '@BpaulinUpfitBundle/Resources/public/css/datatables.css' filter='cssrewrite'%}
+     <link rel="stylesheet" href="{{ asset_url }}" media="screen"/>
+    {% endstylesheets %}
+{% endblock %}

@@ -1,37 +1,98 @@
 {% extends '::base.html.twig' %}
+{% use 'BpaulinUpfitBundle::datatables.html.twig' %}
 {% set breadcrumbs =
   {
     'Admin': path('admin_home'),
     'Clubs': path('admin_club'),
-    (entity.name): path('admin_club_show', {'id': entity.id })
+    (entity.name): path('admin_club_show', {'id': entity.id }),
+    'Members': path('admin_club_member', {'id': entity.id })
   }
 %}
 {% set current_action='Members' %}
+
 {% block body -%}
 {% include 'BpaulinUpfitBundle:Club:actions.html.twig' %}
-    <form class="form-horizontal"
-          action="{{ path('admin_club_add_member', {'id': entity.id}) }}"
-          method="post"
-          {{ form_enctype(form) }}>
-        {{ form_widget(form) }}
-        <div class="control-group">
-            <div class="controls">
-                <button type="submit" class="btn">{% if entity.id %}Save{% else %}Create{% endif %}</button>
-            </div>
-        </div>
-    </form>
-    {% if members %}
-    <table class="table table-condensed">
-        <tbody>
-            {% for member in members %}
-            <tr>
-                <td>{{ member.user }}</td>
-                <td>{{ member.admin }}</td>
-            </tr>
-            {% endfor %}
-        </tbody>
-    </table>
-    {% else %}
-    <p>No members for this club!</p>
-    {% endif %}
+<button type="button" class="btn" data-toggle="collapse" data-target="#demo">
+  Add a member
+</button>
+<div id="demo" class="collapse in">
+  <form class="form-horizontal"
+        action="{{ path('admin_club_add_member', {'id': entity.id}) }}"
+        method="post"
+        {{ form_enctype(form) }}>
+      {{ form_widget(form) }}
+      <div class="control-group">
+          <div class="controls">
+              <button type="submit" class="btn">{% if entity.id %}Save{% else %}Create{% endif %}</button>
+          </div>
+      </div>
+  </form>
+</div>
+
+<hr/>
+
+<table id="memberslist" class="table table-bordered table-striped table-hover">
+    <thead>
+        <tr>
+            <th></th>
+            <th>User</th>
+            <th>Email</th>
+            <th>Role</th>
+        </tr>
+    </thead>
+<tbody>
+</tbody>
+</table>
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+    {{ block('datatables_javascripts') }}
+    <script>
+    $(document).ready(function() {
+        $('#memberslist').dataTable( {
+            "sAjaxSource": "{{ path('admin_ajax_member_list', {'id': entity.id}) }}",
+            "aoColumnDefs": [
+                {
+                    "mRender": function ( data, type, row ) {
+                        return "<div class='btn-group'><a class='btn btn-mini' href='"
+                                + Routing.generate('admin_club_show', { id: row[0] })
+                                + "'>Edit</a></div";
+                    },
+                    "sWidth": "1%",
+                    "bSearchable": false,
+                    "bSortable": false,
+                    "aTargets": [ 0 ]
+                },
+                {
+                    "bSearchable": false,
+                    "bSortable": false,
+                    "aTargets": [ 1 ]
+                },
+                {
+                    "bSearchable": false,
+                    "bSortable": false,
+                    "aTargets": [ 2 ]
+                },
+                {
+                    "mRender": function ( data, type, row ) {
+                        if (row[3]) {
+                          return 'Admin';
+                        } else {
+                          return 'Member';
+                        };
+                    },
+                    "bSearchable": false,
+                    "bSortable": false,
+                    "aTargets": [ 3 ]
+                },
+             ]
+        } );
+    } );
+    </script>
+{% endblock %}
+
+{% block stylesheets %}
+    {{ parent() }}
+    {{ block('datatables_stylesheets') }}
 {% endblock %}

@@ -8,7 +8,7 @@ use Symfony\Component\HttpFoundation\Response;
 
 abstract class AbstractController extends Controller
 {
-    protected function abstractAjaxAction(Request $request, $entity, $columns)
+    protected function abstractAjaxAction(Request $request, $entity, $columns, $where='')
     {
         $get = $request->query->all();
         if (!isset($get['sEcho'])) {
@@ -20,7 +20,7 @@ abstract class AbstractController extends Controller
         $get['columns'] = &$columns;
 
         $em = $this->getDoctrine()->getManager();
-        $ajaxTable = $em->getRepository($entity)->ajaxTable($get, true);
+        $ajaxTable = $em->getRepository($entity)->ajaxTable($get, true, $where);
 
         $countUnfiltered = $ajaxTable[0];
         $rResult =  $ajaxTable[1]->getResult();
@@ -33,7 +33,7 @@ abstract class AbstractController extends Controller
          */
         $output = array(
             "sEcho" => intval($get['sEcho']),
-            "iTotalRecords" => $em->getRepository($entity)->getCount(),
+            "iTotalRecords" => $em->getRepository($entity)->getCount($where),
             "iTotalDisplayRecords" => $countUnfiltered,
             "aaData" => array()
         );
