@@ -93,15 +93,9 @@ class ClubController extends AbstractController
      * @Method("GET")
      * @Template()
      */
-    public function showAction($id)
+    public function showAction(Club $entity)
     {
         $em = $this->getDoctrine()->getManager();
-
-        $entity = $em->getRepository('BpaulinUpfitBundle:Club')->find($id);
-
-        if (!$entity) {
-            throw $this->createNotFoundException('Unable to find Club entity.');
-        }
 
         $members = $em->getRepository('BpaulinUpfitBundle:Member')->findBy(
             array(
@@ -132,15 +126,9 @@ class ClubController extends AbstractController
      * @Method("POST")
      * @Template("BpaulinUpfitBundle:Club:show.html.twig")
      */
-    public function addMemberAction(Request $request, $id)
+    public function addMemberAction(Request $request, Club $entity)
     {
         $em = $this->getDoctrine()->getManager();
-
-        $entity = $em->getRepository('BpaulinUpfitBundle:Club')->find($id);
-
-        if (!$entity) {
-            throw $this->createNotFoundException('Unable to find Club entity.');
-        }
 
         $members = $em->getRepository('BpaulinUpfitBundle:Member')->findBy(
             array(
@@ -180,15 +168,9 @@ class ClubController extends AbstractController
      * @Method("GET")
      * @Template()
      */
-    public function editAction($id)
+    public function editAction(Club $entity)
     {
         $em = $this->getDoctrine()->getManager();
-
-        $entity = $em->getRepository('BpaulinUpfitBundle:Club')->find($id);
-
-        if (!$entity) {
-            throw $this->createNotFoundException('Unable to find Club entity.');
-        }
 
         $editForm = $this->createForm(new ClubType(), $entity);
 
@@ -205,15 +187,9 @@ class ClubController extends AbstractController
      * @Method("POST")
      * @Template("BpaulinUpfitBundle:Club:edit.html.twig")
      */
-    public function updateAction(Request $request, $id)
+    public function updateAction(Request $request, Club $entity)
     {
         $em = $this->getDoctrine()->getManager();
-
-        $entity = $em->getRepository('BpaulinUpfitBundle:Club')->find($id);
-
-        if (!$entity) {
-            throw $this->createNotFoundException('Unable to find Club entity.');
-        }
 
         $editForm = $this->createForm(new ClubType(), $entity);
         $editForm->bind($request);
