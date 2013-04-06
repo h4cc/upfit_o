@@ -107,19 +107,6 @@
               </div>
           {% endfor %}
       {% endfor %}
-      {% if actions is defined %}
-        <ul class="nav nav-pills">
-          {% for label, data in actions %}
-          {% set current_action = (data.path == path(app.request.attributes.get('_route'),
-                app.request.attributes.get('_route_params'))) %}
-          <li{{ current_action? " class='active'" }}>
-            <a href="{{ current_action? "#": data.path }}">
-              <i class="{{ data.icon }}"></i> {{ label }}
-            </a>
-          </li>
-          {% endfor %}
-        </ul>
-      {% endif %}
       {% block body %}
       {% endblock %}
       </div>

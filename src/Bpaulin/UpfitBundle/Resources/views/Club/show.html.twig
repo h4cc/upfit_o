@@ -6,48 +6,14 @@
     (entity.name): path('admin_club_show', {'id': entity.id })
   }
 %}
-{% set actions =
-  {
-    'Show': {'path':path('admin_club_show', {'id': entity.id }), 'icon':'icon-eye-open'},
-    'Edit': {'path':path('admin_club_edit', {'id': entity.id }), 'icon':'icon-edit'},
-    'Delete': {'path':'#', 'icon':'icon-remove-sign'},
-    'Members': {'path':'#', 'icon':'icon-list'}
-  }
-%}
+{% set current_action='Show' %}
 
 {% block body -%}
+{% include 'BpaulinUpfitBundle:Club:actions.html.twig' %}
 <dl class="dl-horizontal">
   <dt>Id</dt>
   <dd>{{ entity.id }}</dd>
   <dt>Name</dt>
   <dd>{{ entity.name }}</dd>
 </dl>
-{#
-    <h2>Members</h2>
-    <form class="form-horizontal"
-          action="{{ path('admin_club_add_member', {'id': entity.id}) }}"
-          method="post"
-          {{ form_enctype(form) }}>
-        {{ form_widget(form) }}
-        <div class="control-group">
-            <div class="controls">
-                <button type="submit" class="btn">{% if entity.id %}Save{% else %}Create{% endif %}</button>
-            </div>
-        </div>
-    </form>
-    {% if members %}
-    <table class="table table-condensed">
-        <tbody>
-            {% for member in members %}
-            <tr>
-                <td>{{ member.user }}</td>
-                <td>{{ member.admin }}</td>
-            </tr>
-            {% endfor %}
-        </tbody>
-    </table>
-    {% else %}
-    <p>No members for this club!</p>
-    {% endif %}
-    #}
 {% endblock %}

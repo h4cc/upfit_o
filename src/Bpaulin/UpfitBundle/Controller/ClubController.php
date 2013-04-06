@@ -95,6 +95,20 @@ class ClubController extends AbstractController
      */
     public function showAction(Club $entity)
     {
+        return array(
+            'entity'  => $entity,
+        );
+    }
+
+    /**
+     * Display club's members.
+     *
+     * @Route("/admin/club/{id}/members", name="admin_club_member", options={"expose"=true})
+     * @Method("GET")
+     * @Template()
+     */
+    public function memberAction(Club $entity)
+    {
         $em = $this->getDoctrine()->getManager();
 
         $members = $em->getRepository('BpaulinUpfitBundle:Member')->findBy(
@@ -124,7 +138,7 @@ class ClubController extends AbstractController
      *
      * @Route("/admin/club/{id}/add", name="admin_club_add_member")
      * @Method("POST")
-     * @Template("BpaulinUpfitBundle:Club:show.html.twig")
+     * @Template("BpaulinUpfitBundle:Club:member.html.twig")
      */
     public function addMemberAction(Request $request, Club $entity)
     {
@@ -150,7 +164,7 @@ class ClubController extends AbstractController
         if ($form->isValid()) {
             $em->persist($member);
             $em->flush();
-        return $this->redirect($this->generateUrl('admin_club_show', array('id'=>$id)));
+            return $this->redirect($this->generateUrl('admin_club_member', array('id'=>$id)));
         }
 
         return array(

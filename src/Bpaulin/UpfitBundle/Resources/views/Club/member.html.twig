@@ -1,0 +1,37 @@
+{% extends '::base.html.twig' %}
+{% set breadcrumbs =
+  {
+    'Admin': path('admin_home'),
+    'Clubs': path('admin_club'),
+    (entity.name): path('admin_club_show', {'id': entity.id })
+  }
+%}
+{% set current_action='Members' %}
+{% block body -%}
+{% include 'BpaulinUpfitBundle:Club:actions.html.twig' %}
+    <form class="form-horizontal"
+          action="{{ path('admin_club_add_member', {'id': entity.id}) }}"
+          method="post"
+          {{ form_enctype(form) }}>
+        {{ form_widget(form) }}
+        <div class="control-group">
+            <div class="controls">
+                <button type="submit" class="btn">{% if entity.id %}Save{% else %}Create{% endif %}</button>
+            </div>
+        </div>
+    </form>
+    {% if members %}
+    <table class="table table-condensed">
+        <tbody>
+            {% for member in members %}
+            <tr>
+                <td>{{ member.user }}</td>
+                <td>{{ member.admin }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    {% else %}
+    <p>No members for this club!</p>
+    {% endif %}
+{% endblock %}

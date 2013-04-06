@@ -1,0 +1,23 @@
+{% set actions =
+  {
+    'Show': {'path':path('admin_club_show', {'id': entity.id }), 'icon':'icon-eye-open'},
+    'Edit': {'path':path('admin_club_edit', {'id': entity.id }), 'icon':'icon-edit'},
+    'Delete': {'path':'#', 'icon':'icon-remove-sign'},
+    'Members': {'path':path('admin_club_member', {'id': entity.id }), 'icon':'icon-list'}
+  }
+%}
+{% if actions is defined %}
+{% if current_action is not defined %}
+    {% set current_action='' %}
+{% endif %}
+<ul class="nav nav-pills">
+  {% for label, data in actions %}
+  {% set active = (current_action == label) %}
+  <li{{ active? " class='active'" }}>
+    <a href="{{ active? "#": data.path }}">
+      <i class="{{ data.icon }}"></i> {{ label }}
+    </a>
+  </li>
+  {% endfor %}
+</ul>
+{% endif %}

@@ -3,14 +3,7 @@
                        'Clubs': path('admin_club'),
                     }
 %}
-{% set actions =
-  {
-    'Show': {'path':path('admin_club_show', {'id': entity.id }), 'icon':'icon-eye-open'},
-    'Edit': {'path':path('admin_club_edit', {'id': entity.id }), 'icon':'icon-edit'},
-    'Delete': {'path':'#', 'icon':'icon-remove-sign'},
-    'Members': {'path':'#', 'icon':'icon-list'}
-  }
-%}
+{% set current_action='Edit' %}
 {% if entity.id %}
     {% set actionRoute = 'admin_club_update' %}
     {% set breadcrumbs = breadcrumbs|merge({
@@ -27,6 +20,7 @@
 {% endif %}
 
 {% block body -%}
+{% include 'BpaulinUpfitBundle:Club:actions.html.twig' %}
     <form class="form-horizontal"
           action="{{ path(actionRoute, {'id': entity.id}) }}"
           method="post"
