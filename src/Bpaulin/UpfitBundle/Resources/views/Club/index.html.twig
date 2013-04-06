@@ -2,11 +2,14 @@
 {% set breadcrumbs = { 'Admin': path('admin_home'), 'Clubs': path('admin_club')} %}
 
 {% block body %}
-<div class="btn-group">
-    <a class="btn btn-small" href="{{ path('admin_club_new') }}">
+<ul class="nav nav-pills">
+  <li>
+    <a href="{{ path('admin_club_new') }}">
         Create a new club
     </a>
-</div>
+  </li>
+</ul>
+
 <hr/>
 <table id="clubslist" class="table table-bordered table-striped table-hover">
     <thead>

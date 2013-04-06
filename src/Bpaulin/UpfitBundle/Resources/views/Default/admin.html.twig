@@ -1,9 +1,13 @@
 {% extends '::base.html.twig' %}
+{% set breadcrumbs = { 'Admin': path('admin_home')} %}
 
 {% block body %}
-<h1>Administration</h1>
-<div class="btn-group btn-group-vertical">
-    <a class="btn" href="{{ path('admin_user') }}">Users</a>
-    <a class="btn" href="{{ path('admin_club') }}">Clubs</a>
-</div>
+<ul class="nav nav-pills">
+  <li>
+    <a href="{{ path('admin_user') }}">Users</a>
+   </li>
+   <li>
+    <a href="{{ path('admin_club') }}">Clubs</a>
+  </li>
+</ul>
 {% endblock %}

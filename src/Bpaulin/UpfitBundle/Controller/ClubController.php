@@ -115,24 +115,15 @@ class ClubController extends AbstractController
         );
     }
 
-    /**
-     * Display club's members.
-     *
-     * @Route("/admin/club/{id}/members", name="admin_club_members", options={"expose"=true})
-     * @Method("GET")
-     * @Template("BpaulinUpfitBundle:Club:members.html.twig")
-     */
-    public function membersAction(Club $entity)
+    protected function commonMember(Club $entity, Member $member)
     {
         $em = $this->getDoctrine()->getManager();
-
         $members = $em->getRepository('BpaulinUpfitBundle:Member')->findBy(
             array(
                 'club' => $entity
             )
         );
 
-        $member = new Member();
         $form   = $this->createForm(
             new MemberType(),
             $member,
@@ -145,8 +136,23 @@ class ClubController extends AbstractController
             'entity'  => $entity,
             'members' => $members,
             'member' => $member,
-            'form'   => $form->createView(),
+            'form'   => $form,
         );
+    }
+
+    /**
+     * Display club's members.
+     *
+     * @Route("/admin/club/{id}/members", name="admin_club_members", options={"expose"=true})
+     * @Method("GET")
+     * @Template("BpaulinUpfitBundle:Club:members.html.twig")
+     */
+    public function membersAction(Club $entity)
+    {
+        $member = new Member();
+        $return = $this->commonMember($entity, $member);
+        $return['form'] = $return['form']->createView();
+        return $return;
     }
 
     /**
@@ -159,28 +165,9 @@ class ClubController extends AbstractController
      */
     public function memberAction(Club $entity, Member $member)
     {
-        $em = $this->getDoctrine()->getManager();
-
-        $members = $em->getRepository('BpaulinUpfitBundle:Member')->findBy(
-            array(
-                'club' => $entity
-            )
-        );
-
-        $form   = $this->createForm(
-            new MemberType(),
-            $member,
-            array(
-                'em' => $this->getDoctrine()->getManager(),
-            )
-        );
-
-        return array(
-            'entity'  => $entity,
-            'members' => $members,
-            'member' => $member,
-            'form'   => $form->createView(),
-        );
+        $return = $this->commonMember($entity, $member);
+        $return['form'] = $return['form']->createView();
+        return $return;
     }
 
     /**
@@ -193,35 +180,18 @@ class ClubController extends AbstractController
      */
     public function updateMemberAction(Request $request, Club $entity, Member $member)
     {
-        $em = $this->getDoctrine()->getManager();
+        $return = $this->commonMember($entity, $member);
 
-        $members = $em->getRepository('BpaulinUpfitBundle:Member')->findBy(
-            array(
-                'club' => $entity
-            )
-        );
-
-        $form   = $this->createForm(
-            new MemberType(),
-            $member,
-            array(
-                'em' => $this->getDoctrine()->getManager(),
-            )
-        );
-
-        $form->bind($request);
-        if ($form->isValid()) {
+        $return['form']->bind($request);
+        if ($return['form']->isValid()) {
+            $em = $this->getDoctrine()->getManager();
             $em->persist($member);
             $em->flush();
             return $this->redirect($this->generateUrl('admin_club_members', array('id'=>$entity->getId())));
         }
 
-        return array(
-            'entity'  => $entity,
-            'members' => $members,
-            'member' => $member,
-            'form'   => $form->createView(),
-        );
+        $return['form'] = $return['form']->createView();
+        return $return;
     }
 
     /**
@@ -233,37 +203,20 @@ class ClubController extends AbstractController
      */
     public function addMemberAction(Request $request, Club $entity)
     {
-        $em = $this->getDoctrine()->getManager();
-
-        $members = $em->getRepository('BpaulinUpfitBundle:Member')->findBy(
-            array(
-                'club' => $entity
-            )
-        );
-
         $member = new Member();
         $member->setClub($entity);
-        $form   = $this->createForm(
-            new MemberType(),
-            $member,
-            array(
-                'em' => $this->getDoctrine()->getManager(),
-            )
-        );
+        $return = $this->commonMember($entity, $member);
 
-        $form->bind($request);
-        if ($form->isValid()) {
+        $return['form']->bind($request);
+        if ($return['form']->isValid()) {
+            $em = $this->getDoctrine()->getManager();
             $em->persist($member);
             $em->flush();
             return $this->redirect($this->generateUrl('admin_club_members', array('id'=>$entity->getId())));
         }
 
-        return array(
-            'entity'  => $entity,
-            'members' => $members,
-            'member' => $member,
-            'form'   => $form->createView(),
-        );
+        $return['form'] = $return['form']->createView();
+        return $return;
     }
 
     /**
